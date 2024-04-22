@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
+{% endblock %} {% block contenido %}
+<div class="ppal">
+    <div class="fila">
+        <div class="c5">
+            <h1>Ooops algo salió mal</h1>
+            <p>No existe una pagina con ese nombre...</p>
+        </div>
+        <div class="c5">
+            <img src='{{ url_for("static", filename="img/404.png") }}' alt="" width="400px" />
+        </div>
+    </div>
+</div>
+{% endblock %}

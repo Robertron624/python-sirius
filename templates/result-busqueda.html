@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/verpublicaciones.css' ) }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css' ) }}" />
+{% endblock %} {% block nav %}
+<div class="container2">
+    <!-- Navigation -->
+    <nav class="nav-main">
+        <!-- Left Nav -->
+        <ul class="nav-menu">
+            <li>
+                <a href="/feed/">Inicio</a>
+            </li>
+            <li>
+                <a href="/perfil/">Perfil</a>
+            </li>
+            <li>
+                <a href="/nueva_publicacion/">Crear publicación</a>
+            </li>
+            <li>
+                <a href="/ayuda/">Ayuda</a>
+            </li>
+            <li>
+                <a href="/salir/">Cerrar Sesion</a>
+            </li>
+            <li>
+                <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
+            </li>
+            <form class="search-area" method="POST">
+                <div class="search-box">{{form.texto(placeholder="Buscar...")}}</div>
+            </form>
+        </ul>
+    </nav>
+</div>
+<hr />
+{% endblock %} {% block contenido %}
+<div>
+    <img src="{{url_for('static', filename=ava)}}" id="logo" alt="avatar" />
+    <h3>{{session['nom']}} {{session['ape']}}</h3>
+</div>
+
+
+<div id="user-results">
+
+    {% for user in userList %}
+    <div class="fila">
+        <div class='c2'>{{user[1]}} {{user[2]}}</div>
+
+
+
+        <span class="mpicon">
+            <a href="/enviarmensaje/{{session['id']}}/{{idreceptor}}/"><img
+                    src="{{url_for('static', filename='img/msg.png')}}" alt="icono mensaje"></a>
+
+            {% if session['rolid'] == 'ADMINISTRADOR' or session['rolid'] == 'SUPERADMINISTRADOR' %}
+            <a href="/roles/{{idreceptor}}/"><img src="{{url_for('static', filename='img/rol.png')}}"
+                    alt="icono rol"></a>
+            {% endif %}
+        </span>
+
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<div id="img-results">
+    {% for img in imglist %}
+    <a href="/publicacion/{{img[0]}}">
+        <img src="{{url_for('static', filename=img[2])}}" />
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

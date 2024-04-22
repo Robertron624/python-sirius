@@ -1,0 +1,47 @@
+@font-face {
+    font-family: dark;
+    src: url(../img/Dark.otf);
+  }
+  
+  body {
+    position: absolute;
+    margin: 0;
+    background: url(../img/fondo.png) /*#2A2740*/;
+    background-size: cover;
+    font-family: sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: auto;
+    resize: none;
+}
+
+.c2 {
+    width                     : 20%;
+    display                   : inline;
+    float                     : left;
+    overflow-x                : hidden;
+}
+
+
+.mensaje{
+    margin: 2%;
+    padding: 10px;
+    position: relative;
+    width: 80%;
+    left: 10%;
+    background: #342a7d;
+    border-radius: 9px;
+    border: 1px solid;
+    box-shadow: 1px 3px 12px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10%;
+    color: white;
+    height: 70px;
+}
+
+.mensaje .nomremi{
+    font-weight: 900;
+    margin-bottom: 1.3rem;
+    color: gold;
+}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css' ) }}" />
+{% endblock %}
+
+{% block nav %}
+<div class="container2">
+    <!-- Navigation -->
+    <nav class="nav-main">
+        <!-- Left Nav -->
+        <ul class="nav-menu">
+            <li>
+                <a href="/feed/">Inicio</a>
+            </li>
+            <li>
+                <a href="/perfil/">Perfil</a>
+            </li>
+            <li>
+                <a href="/nueva_publicacion/">Crear publicación</a>
+            </li>
+            <li>
+                <a href="/ayuda/">Ayuda</a>
+            </li>
+            <li>
+                <a href="/salir/">Cerrar Sesion</a>
+            </li>
+            <li>
+                <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
+            </li>
+            <form class="search-area" method="POST">
+                <div class="search-box">{{form_busqueda.texto(placeholder="Buscar...")}}</div>
+            </form>
+        </ul>
+    </nav>
+</div>
+<hr />
+{% endblock %}
+
+
+{% block contenido %}
+
+<div class="publicacion">
+    <form class="publicar" method="POST" enctype="multipart/form-data">
+        <img src="{{url_for('static', filename=ava)}}" id="logo" alt="avatar" />
+        <div class="nombres">
+            <div class="remitente">
+                <p>DE:</p>
+                <p>{{session['nom']}} {{session['ape']}}</p>
+            </div>
+            <div class="receptor">
+                <p>PARA:</p>
+                <P>{{receptor[0][0]}} {{receptor[0][1]}}</P>
+            </div>
+        </div>
+
+        <div class="contenedor_texto">
+            <div>{{form_mensaje.texto_mensaje(placeholder="Escribe aquí tu mensaje")}}</div>
+        </div>
+
+        <div id="ultimate">
+            <div id="btngdr">{{form_mensaje.btn_mensaje()}}</div>
+        </div>
+        <!-- <input type="button" id="btngdr" value="Dale vida a lo que Piensas">  -->
+    </form>
+</div>
+{% endblock %}

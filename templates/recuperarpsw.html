@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
+{% endblock %} {% block contenido %}
+<h3 class="nombre">Python Regius</h3>
+<h2>Comparte tus mejores momentos.</h2>
+<div class="login-box">
+    <img class="avatar" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="logopython" />
+    <h1>Recuperar contraseña</h1>
+    <form name="frecu" id="frecu" action="/recuperarcontraseña/" method="POST">
+        <!--nombre de usuario-->
+        <label for="Nombre de usuario">Correo electronico</label>
+        <!--<input type="email" placeholder="Correo electronico" required>-->
+        <div>{{form.usr}}</div>
+        <!--contraseña-->
+        <label for="Contraseña">Confirma el correo electronico</label>
+        <!--<input type="email" placeholder="Confirma el correo electronico" required>-->
+        <div>{{form.cema}}</div>
+        <!--btn login-->
+        <!-- <input type="submit" value="Recuperar">-->
+        <div>{{form.btn}}</div>
+    </form>
+    <a id="volver" href="/login/">Volver</a>
+</div>
+
+{% endblock %}

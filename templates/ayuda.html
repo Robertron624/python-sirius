@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css' ) }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
+{% endblock %} {% block contenido %}
+<h3 class="nombre">Python Regius</h3>
+<h2>Comparte tus mejores momentos.</h2>
+<div class="login-box">
+    <img class="avatar" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="logopython" />
+    <h1>Ayuda</h1>
+    <form name="fayuda" id="fayuda" action="https://formspree.io/f/xqkworog" method="POST">
+        <!--nombre de usuario-->
+        <label for="Nombre de usuario">Correo electronico</label>
+        <!--<input type="email" placeholder="Correo electronico" required>-->
+        <div>{{form.usr}}</div>
+        <!--contraseña-->
+        <label id="duda" for="duda">¿En que podemos ayudarte?</label>
+        <!--<input type="email" placeholder="Confirma el correo electronico" required>-->
+        <div>{{form.duda}}</div>
+        <!--btn login-->
+        <!-- <input type="submit" value="Recuperar">-->
+        <div id="btnvolver">{{form.btn}}</div>
+    </form>
+    <a id="volver2" href="/feed/">Volver</a>
+</div>
+<script>
+    const $form= document.querySelector("#fayuda")
+
+    $form.addEventListener('submit', handlesubmit)
+
+    async function handlesubmit(event){
+        event.preventDefault()
+        const form = new FormData(this)
+        const response= await fetch(this.action,{
+            method: this.method,
+            body:form,
+            headers:{
+                'Accept': 'application/json'           
+        }
+    })
+    if (response.ok){
+        $form.reset()
+        alert('Gracias por contactarte con nosotros!!!')
+    }
+}
+</script>
+{% endblock %}

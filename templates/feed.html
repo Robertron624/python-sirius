@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css' ) }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css' ) }}" />
+{% endblock %} {% block nav %}
+<div class="container2">
+  <!-- Navigation -->
+  <nav class="nav-main">
+    <!-- Left Nav -->
+    <ul class="nav-menu">
+      <li>
+        <a href="/feed/">Inicio</a>
+      </li>
+      <li>
+        <a href="/perfil/">Perfil</a>
+      </li>
+      <li>
+        <a href="/nueva_publicacion/">Crear publicación</a>
+      </li>
+      <li>
+        <a href="/ayuda/">Ayuda</a>
+      </li>
+      <li>
+        <a href="/salir/">Cerrar Sesion</a>
+      </li>
+      <li>
+        <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
+      </li>
+      <form class="search-area" method="POST">
+        <div class="search-box">{{form.texto(placeholder="Buscar...")}}</div>
+      </form>
+
+    </ul>
+  </nav>
+</div>
+<hr />
+{% endblock %} {% block contenido %}
+
+<div class="container">
+  {% for img in imglist %}
+
+  <div class="container-post">
+    <img src="{{url_for('static', filename=img[8])}}" class="avatar" alt="avatar" />
+
+    <div class="nom">
+      <p>{{img[2]}} {{img[3]}}</p>
+      <p style="font-size: 12px" class="time">{{img[4]}}</p>
+    </div>
+
+    <a href="/publicacion/{{img[0]}}">
+      <figure>
+        <img src="{{url_for('static', filename=img[6])}}" alt="publicación " class="imgpubli" />
+      </figure>
+    </a>
+
+  
+  </div>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

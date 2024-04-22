@@ -1,0 +1,211 @@
+h1, h2, h3, h4 {
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: dark;
+  src: url(../img/Dark.otf);
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: url(../img/fondo.png) center center/cover /*#2A2740*/;
+  background-size: cover;
+  font-family: sans-serif;
+  height: 100vh;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+}
+
+.cuerpo {
+  max-width: 700px;
+  margin-inline: auto;
+  display: flex;
+  gap: 3rem
+}
+
+#volver {
+  text-align: center;
+  left: 105px;
+  font-size: 20px;
+}
+#volver2 {
+  text-align: center;
+  left: 105px;
+  font-size: 20px;
+  bottom: 70px;
+}
+#volver3 {
+  text-align: center;
+  left: 105px;
+  font-size: 20px;
+  bottom: 50px;
+}
+#duda {
+  position: relative;
+  bottom: 35px;
+}
+#btnvolver {
+  position: relative;
+  bottom: 35px;
+}
+
+.title-subtitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nombre {
+  margin: 0;
+  padding: 0;
+  font-family: dark;
+  font-size: 70px;
+  color: white;
+  font-weight: lighter;
+  position: relative;
+}
+
+.subtitle {
+  font-size: 19px;
+  color: white;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.398);
+}
+
+
+.login-box {
+  width: 320px;
+  height: 480px;
+  background: #342a7d;
+  color: white;
+  box-sizing: border-box;
+  padding: 70px 30px;
+  border-radius: 5%;
+  box-shadow: 3px 3px 50px 7px black;
+  position: relative;
+}
+
+.login-box .avatar {
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: -50px;
+  transform: translate(-50%, -10%);
+}
+.login-box h1 {
+  margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  display: block;
+  font-size: 22px;
+}
+.login-box label {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  display: block;
+}
+.login-box input {
+  width: 100%;
+  margin-bottom: 20%;
+  color: white;
+}
+.login-box input[type="email"],
+.login-box input[type="password"] {
+  border: none;
+  border-bottom: 1px solid gold;
+  background: transparent;
+  outline: none;
+  height: 40px;
+  color: white;
+  font-size: 16px;
+}
+.login-box ::placeholder {
+  color: gray;
+}
+.login-box input[type="submit"] {
+  border: none;
+  outline: none;
+  height: 40px;
+  background: gold;
+  color: black;
+  font-size: 19px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+#btncla {
+  border: none;
+  outline: none;
+  height: 40px;
+  background: gold;
+  color: black;
+  font-size: 19px;
+  border-radius: 20px;
+  font-weight: bold;
+  bottom: 35px;
+  position: relative;
+}
+
+.login-box input[type="submit"]:hover {
+  color: black;
+  background: #c48319;
+  cursor: pointer;
+}
+.login-box a {
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 15px;
+  color: white;
+  text-align: center;
+  position: relative;
+  bottom: 20px;
+}
+.login-box a:hover {
+  color: gold;
+}
+textarea {
+  border: none;
+  text-decoration: none;
+  margin: 5px 3px;
+  padding: 2px;
+  width: 252px;
+  height: 159px;
+  resize: none;
+}
+
+.fila {
+  height: 35px;
+}
+
+.ppal {
+  width: 60vw;
+  padding: 16px;
+  border-radius: 10px;
+  background-color: #ccc;
+  position: absolute;
+  margin-top: 15vh;
+  margin-left: 20vw;
+}
+
+.c5 {
+  width: 50%;
+  display: inline;
+  float: left;
+  overflow-x: hidden;
+}
+
+#fila {
+  color: white;
+  position: relative;
+  bottom: 40px;
+  text-align: justify;
+  font-size: 14px;
+}

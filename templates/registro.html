@@ -1,0 +1,70 @@
+{% extends 'base.html' %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/registro.css' ) }}" />
+{% endblock %} {% block contenido %}
+<form class="registro" name="fregistro" id="fregistro" action="/registro/" method="POST">
+    <div class="registrate">Registrate</div>
+    <!--nombre y apellido-->
+    <!--<input type="text" placeholder="Nombres">-->
+    <div>
+        {{form.nom(placeholder="Nombres")}} {{form.ape(placeholder="Apellidos")}}
+    </div>
+    <!--correo-->
+    <!--<input type="email" placeholder="Correo electronico">-->
+    <div>{{form.ema(placeholder="Email")}}</div>
+    <!--confirmar correo-->
+    <!--<input type="email" placeholder="Confirmar correo electronico">-->
+    <div>{{form.cema(placeholder="Confirmar email")}}</div>
+    <!--contraseña-->
+    <!--<input type="password" placeholder="Contraseña">-->
+    <div>{{form.cla(placeholder="Contraseña")}}</div>
+    <!--confirmar contraseña-->
+    <!--<input type="password" placeholder="Confirmar contraseña">-->
+    <div>{{form.ver(placeholder="Confirmar contraseña")}}</div>
+    <!--Fecha de nacimiento-->
+    <div class="fnac">
+        <label for="Fecha de nacimiento">Fecha de nacimiento</label>
+    </div>
+    <br /><br />
+    <div>{{form.fnac}}</div>
+
+    <div class="sexo">
+        <label for="Sexo">Sexo</label>
+    </div>
+    <div>
+        <div class="sexo2">{{form.sex}}</div>
+        <!-- <span class="sexo" data-type="radio" data-name="gender_wrapper" id="sexos">
+        <span class="mujer">
+            <label class="mujer" for="u_d_4_bK">Mujer</label>
+            <input type="radio" class="mujer" name="sex" value="1" id="mujer">
+        </span>
+        <span class="hombre">
+            <label class="hombre" for="u_d_5_JJ">Hombre</label>
+            <input type="radio" class="_8esa" name="sex" value="2" id="u_d_5_JJ">
+        </span>
+        <span class="personalizado">
+            <label class="personalizado" for="u_d_6_cD">Personalizado</label>
+            <input type="radio" class="_8esa" name="sex" value="-1" id="u_d_6_cD"></span>
+    </span>-->
+    </div>
+    <div>
+        <!--btn login-->
+        <!--<input type="submit" value="Registrate">-->
+        <div>{{form.btn}}</div>
+    </div>
+
+    <div class="terminos">
+        <a id="yatuc" href="/login/"> Ya tengo una cuenta</a>
+        <p class="">
+            Al hacer clic en "Registrar", aceptas nuestras
+            <a href="#" id="terms-link" target="_blank" rel="nofollow">Condiciones</a>, la
+            <a href="#" id="privacy-link" target="_blank" rel="nofollow">Política de datos</a>
+            y la
+            <a href="#" id="cookie-use-link" target="_blank" rel="nofollow">Política de cookies</a>.
+        </p>
+    </div>
+    {% for msg in get_flashed_messages() %}
+    <div id="fila">{{msg}}</div>
+    {% endfor %}
+</form>
+
+{% endblock %}

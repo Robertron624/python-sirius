@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
+{% endblock %} {% block contenido %}
+<div class="title-subtitle">
+    <h1 class="nombre">Python Regius</h1>
+    <h2 class="subtitle">Comparte tus mejores momentos.</h2>
+</div>
+<div class="login-box">
+    <img class="avatar" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="logopython" />
+    <h3>Inicia sesión</h3>
+    <form name="login" id="flogin" action="/login/" method="POST">
+        <!--nombre de usuario-->
+        <label for="Nombre de usuario">Nombre de usuario</label>
+        <!--<input type="email" placeholder="Correo electronico" required>-->
+        <div>{{form.usr}}</div>
+
+        <!--contraseña-->
+        <label for="Contraseña">Contraseña</label>
+        <!--<input type="password" placeholder="Contraseña" required>-->
+        <div>{{form.pwd}}</div>
+
+        <!--btn login-->
+        <!--<input type="submit" value="Iniciar Sesión">-->
+        <div class="submit">{{form.btn()}}</div>
+        {% for msg in get_flashed_messages() %}
+        <div id="fila">{{msg}}</div>
+        {% endfor %}
+
+        <a href="/recuperarcontraseña/">¿Olvidaste tu contraseña?</a><br />
+        <a href="/registro/">Crear cuenta nueva</a>
+    </form>
+</div>
+
+{% endblock %}

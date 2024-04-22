@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/editarusuario.css' ) }}" />
+{% endblock %} {% block contenido %}
+<form class="registro" name="fregistro" id="fregistro" action="/editarusuario/" method="POST">
+    <div class="registrate">Editar Usuario</div>
+
+    <div>
+        {{form.nom(placeholder="Nombres")}} {{form.ape(placeholder="Apellidos")}}
+    </div>
+
+    <div>{{form.cla(placeholder="Contraseña")}}</div>
+
+    <div class="fnac">
+        <label for="Fecha de nacimiento">Fecha de nacimiento</label>
+    </div>
+    <br /><br />
+    <div>{{form.fnac}}</div>
+
+    <div class="sexo">
+        <label for="Sexo">Sexo</label>
+    </div>
+    <div>
+        <div class="sexo2">{{form.sex}}</div>
+
+    </div>
+    <div>
+
+        <div>{{form.btn}}</div>
+    </div>
+
+
+    {% for msg in get_flashed_messages() %}
+    <div id="fila">{{msg}}</div>
+    {% endfor %}
+</form>
+<a id="volver2" href="/perfil/">Volver</a>
+{% endblock %}
