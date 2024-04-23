@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css' ) }}" />
 {% endblock %} {% block nav %}
-<div class="container2">
+<header class="container2">
   <!-- Navigation -->
   <nav class="nav-main">
     <!-- Left Nav -->
@@ -26,13 +26,13 @@
         <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
       </li>
 
-      <form class="search-area" method="POST">
-        <div class="search-box">{{form_busqueda.texto(placeholder="Buscar...")}}</div>
-      </form>
-
+      
     </ul>
   </nav>
-</div>
+  <form class="search-area" method="POST">
+    <div class="search-box">{{form_busqueda.texto(placeholder="Buscar...")}}</div>
+  </form>
+</header>
 <hr />
 {% endblock %} {% block contenido %}
 
@@ -44,18 +44,19 @@
     </div>
 
 
-    <div class="contene">
-      <div id="txarea">{{form.publi(placeholder="¿Que estas pensando?")}}</div>
-    </div>
+
     <div class="cargarimg" id="carga">
       <figure>
         <img src="{{ url_for('static', filename='img/cargar.jpg') }}" alt="Cargar Imagen" id="carg" />
       </figure>
     </div>
-    <div id="ultimate">
-      <div class="hijo">{{form.adj()}}</div>
+    <div class="textarea-container">
+      <div id="txarea">{{form.publi(placeholder="¿Que estas pensando?")}}</div>
+    </div>
+    <div class="publication-buttons">
+      {{form.adj()}}
 
-      <div id="btngdr">{{form.btn()}}</div>
+      {{form.publish()}}
     </div>
     <!-- <input type="button" id="btngdr" value="Dale vida a lo que Piensas">  -->
   </form>

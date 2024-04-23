@@ -205,7 +205,7 @@ def nueva_publi():
         if request.method == 'GET':
             sex = session["urlava"]
             return render_template('nueva_publicacion.html', titulo='Subir publicación', form=frm, ava=sex, form_busqueda=frm_busqueda)
-        elif request.method == 'POST' and 'btn' in request.form:
+        elif request.method == 'POST' and 'publish' in request.form:
             f = request.files['adj']
             nom2 = secure_filename(f.filename)
             if os.path.isfile(f'uploads/{nom2}'):

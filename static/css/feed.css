@@ -129,12 +129,20 @@ h2 {
   border: 1px black solid;
 }
 
+.publicacion {
+  margin-block-start: 2rem;
+}
+
 .publicar {
   background-color: #342a7df8;
-  width: 407px;
+  max-width: 400px;
   min-height: 450px;
   border-radius: 20px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  padding-block: 1rem;
 }
+
 .opci {
   width: 50px;
   height: 30px;
@@ -164,6 +172,13 @@ h2 {
   /*visibility: hidden;                         ocultar pestaña de editar */
 }
 
+.publication-buttons {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 #editar,
 #eliminado {
   background-color: gold;
@@ -177,19 +192,21 @@ h2 {
   cursor: pointer;
 }
 
-#ultimate {
-}
-
-#btn,
+#publish,
 #adj {
   background-color: gold;
   font-size: medium;
   left: 2px;
   border: none;
-  padding: 3px;
-  margin: 8px;
+  padding-block: .5rem;
+  padding-inline: .8rem;
   border-radius: 7px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+#publish {
+  width: 10rem;
 }
 
 #publi::placeholder {
@@ -198,17 +215,19 @@ h2 {
 
 #publi {
   margin: 0;
-  padding: 0;
-  width: 405px;
+  padding-inline: .5rem;
+  padding-block-start: .7rem;
   height: 90px;
-  resize: none;
+  min-width: 90%;
   border: none;
   font-family: inherit;
   background-color: transparent;
   letter-spacing: 1px;
   outline: none;
   color: white;
-  border: 1px black solid;
+  border: 1px #fff solid;
+  border-radius: 10px;
+  display: block;
 }
 
 input[type="button"] {
@@ -344,19 +363,13 @@ input[type="button"] {
   justify-content: center;
 }
 
-.contene {
-  position: absolute;
+.textarea-container {
   width: 100%;
-  height: 2px;
-  top: 80px;
 }
 
 #carga {
-  position: absolute;
   width: 406px;
   height: 180px;
-  left: 0px;
-  top: 165px;
   cursor: pointer;
 }
 
