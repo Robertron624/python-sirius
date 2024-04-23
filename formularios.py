@@ -27,7 +27,7 @@ class Registro(FlaskForm):
         min=3, max=100, message='Longitud fuera de rango'), InputRequired(message='Email es requerido'),
         EqualTo(ema, message='Email y su verificación no corresponden')])
     cla = PasswordField('Clave *', validators=[Length(
-        min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerido')])
+        min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerida')])
     ver = PasswordField('Verificación *', validators=[Length(min=5, max=40, message='Longitud fuera de rango'), InputRequired(
         message='Clave es requerido'), EqualTo(cla, message='La clave y su verificación no corresponden')])
     fnac = DateField(

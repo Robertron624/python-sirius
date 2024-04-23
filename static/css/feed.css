@@ -3,25 +3,19 @@
   src: url(../img/Dark.otf);
 }
 
-body {
-  position: absolute;
+p {
   margin: 0;
-  background: url(../img/fondo.png) /*#2A2740*/;
-  background-size: cover;
+}
+
+body {
+  margin: 0;
+  background-image: url(../img/fondo.png) /*#2A2740*/;
+  background-size: 100%;
   font-family: sans-serif;
   height: 100vh;
-  width: 100vw;
-  overflow: auto;
-  resize: none;
+  overflow-y: scroll;
 }
-.main{
-  display: inline-block;
-  position: absolute;
-  width: 60%;
-  height: 100vh;
-  left: 17%;
- 
-}
+
 .nombre {
   position: relative;
   font-family: dark;
@@ -32,9 +26,11 @@ body {
   width: 100%;
   height: 10px;
 }
+
 .nom{
   width: 30vw;
 }
+
 h2 {
   position: relative;
   width: 9cm;
@@ -43,6 +39,7 @@ h2 {
   top: -40px;
   color: white;
 }
+
 .login-box {
   position: relative;
   width: 500%;
@@ -56,6 +53,7 @@ h2 {
   box-shadow: 3px 3px 50px 7px black;
   position: fixed;
 }
+
 .login-box .avatar {
   width: 35px;
   height: 35px;
@@ -65,60 +63,48 @@ h2 {
   top: 25px;
   transform: translate(-50%, -10%);
 }
+
 .container {
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  padding-block: 1.2rem;
+  gap: 1rem;
 }
 
 .container-post {
   background-color: #342a7d;
   box-shadow: 0 0 3px #51319e;
-  position: relative;
-  width: 450px;
-  height: 450px;
-  left: 50%;
-  top: 300px;
-  margin-bottom: 15px;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  display: inline-block;
+  padding-block: 1rem;
+  border-radius: 1rem;
+}
+
+.post-header {
+  display: flex;
+  gap: 2rem;
 }
 
 .container-full-post {
   background-color: #342a7d;
   box-shadow: 0 0 3px #51319e;
-  position: relative;
-  width: 50vw;
   height: auto;
-  top: 5vh;
   margin-bottom:10px;
-  left: 8%;
-  
 }
   
 .time {
   font-size: small;
   margin: 0;
   padding: 0;
-  top: -10px;
-  position: relative;
 }
 
 .time2 {
   font-size: small;
   margin: 0;
   padding: 0;
-  top: -10px;
-  position: relative;
 }
 
 .parrafo {
-  position: relative;
   font-size: medium;
   text-align: justify;
   width: 80%;
@@ -130,76 +116,56 @@ h2 {
 }
 
 .imgpubli {
-  position: relative;
   width: 370px;
   height: 300px;
   margin: auto;
-  bottom: 60px;
   border: 1px black solid;
+  border-radius: 1rem;
 }
+
 .imgpubli2 {
-  position: relative;
   width: 550px;
   height: 380px;
   border: 1px black solid;
-  left: 51%;
-  top: 100px;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
 }
 
 .publicar {
   background-color: #342a7df8;
-  position: relative;
   width: 407px;
   min-height: 450px;
-  left: 450px;
-  bottom: -50px;
   border-radius: 20px;
 }
 .opci {
-  position: relative;
   width: 50px;
   height: 30px;
-  top: -100px;
-  right: -350px;
   background-color: rgba(64, 45, 110, 0.294);
   cursor: pointer;
   font-size: larger;
   color: whitesmoke;
 }
+
 .opci1 {
-  position: absolute;
-  display: block;
   width: 50px;
   height: 30px;
-  top: 0px;
-  right: 2px;
   background-color: rgba(64, 45, 110, 0.294);
   cursor: pointer;
   font-size: larger;
   color: whitesmoke;
 }
+
 .formularioOpc {
-  position: absolute;
   display: none;
   width: 90px;
   height: 90px;
-  right: 0px;
-  top: 25px;
   border-radius: 10px;
   background-color: rgba(245, 245, 220, 0.76);
   box-shadow: 0 0 3px #9f9e9e;
   z-index: 99;
   /*visibility: hidden;                         ocultar pestaña de editar */
 }
+
 #editar,
 #eliminado {
-  position: relative;
-  bottom: -15px;
   background-color: gold;
   font-size: medium;
   left: 2px;
@@ -210,13 +176,12 @@ h2 {
   border-radius: 7px;
   cursor: pointer;
 }
+
 #ultimate {
-  position: absolute;
 }
+
 #btn,
 #adj {
-  position: relative;
-  bottom: -300px;
   background-color: gold;
   font-size: medium;
   left: 2px;
@@ -225,11 +190,12 @@ h2 {
   margin: 8px;
   border-radius: 7px;
   cursor: pointer;
-  top: 240px;
 }
+
 #publi::placeholder {
   color: white;
 }
+
 #publi {
   margin: 0;
   padding: 0;
@@ -264,6 +230,7 @@ input[type="button"] {
   background: #c48319;
   cursor: pointer;
 }
+
 .foto,
 .avatar {
   position: relative;
@@ -272,6 +239,7 @@ input[type="button"] {
   margin: 5px;
   border-radius: 50%;
 }
+
 #carf {
   position: relative;
   width: 30px;
@@ -282,17 +250,20 @@ input[type="button"] {
   left: -10px;
   color: white;
 }
+
 .padre1 .hijo1 {
   position: absolute;
   bottom: 1px;
   width: 120px;
   z-index: 99;
 }
+
 .padre1 .hijo1:hover {
   border-radius: 10px;
   background-color: rgba(131, 124, 124, 0.493);
   cursor: pointer;
 }
+
 .foto1 {
   position: relative;
   width: 25px;
@@ -302,6 +273,7 @@ input[type="button"] {
   border-radius: 35%;
   left: 0px;
 }
+
 .calificar {
   position: relative;
   width: 30px;
@@ -312,6 +284,7 @@ input[type="button"] {
   left: -10px;
   color: white;
 }
+
 .padre1 .hijo2 {
   position: absolute;
   bottom: 1px;
@@ -319,6 +292,7 @@ input[type="button"] {
   width: 130px;
   z-index: 99;
 }
+
 .hijo3 {
   position: relative;
   bottom: 19rem;
@@ -332,6 +306,7 @@ input[type="button"] {
   background-color: rgba(131, 124, 124, 0.493);
   cursor: pointer;
 }
+
 .foto2 {
   position: relative;
   width: 25px;
@@ -341,6 +316,7 @@ input[type="button"] {
   padding: 5px;
   border-radius: 35%;
 }
+
 .comentar {
   position: relative;
   width: 30px;
@@ -351,25 +327,30 @@ input[type="button"] {
   left: 0px;
   color: white;
 }
+
 #logo {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   padding: 10px;
 }
+
 .nom {
-  position: relative;
   font-family: Arial;
-  left: 70px;
-  top: -65px;
   color: white;
+  display: flex;
+  gap: .5rem;
+  flex-direction: column;
+  justify-content: center;
 }
+
 .contene {
   position: absolute;
   width: 100%;
   height: 2px;
   top: 80px;
 }
+
 #carga {
   position: absolute;
   width: 406px;
@@ -378,6 +359,7 @@ input[type="button"] {
   top: 165px;
   cursor: pointer;
 }
+
 #carg {
   position: relative;
   width: 150px;
@@ -387,6 +369,7 @@ input[type="button"] {
   left: 80px;
   border-radius: 25px;
 }
+
 #carga_edit {
   position: relative;
   width: 270px;
@@ -429,18 +412,12 @@ input[type="button"]:hover {
 }
 
 .comment_block {
-  position: absolute ;
   display: inline-block;
   width: 81%;
   padding: 10px;
   background-color: #342a7d;
   border-radius: 20px;
-  margin-top: 5%;
-  left:   8%;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
+  margin-top: 1rem;
 }
 
 .comment_block .create_new_comment {
@@ -615,8 +592,6 @@ input[type="button"]:hover {
   top: 22px;
 }
 #btn_mensaje {
-  position: absolute;
-  bottom: -40px;
   background-color: gold;
   font-size: medium;
   left: 2px;

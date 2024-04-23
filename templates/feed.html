@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css' ) }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css' ) }}" />
 {% endblock %} {% block nav %}
-<div class="container2">
+<header class="container2">
   <!-- Navigation -->
   <nav class="nav-main">
     <!-- Left Nav -->
@@ -25,25 +25,27 @@
       <li>
         <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
       </li>
-      <form class="search-area" method="POST">
-        <div class="search-box">{{form.texto(placeholder="Buscar...")}}</div>
-      </form>
-
+      
     </ul>
   </nav>
-</div>
+  <form class="search-area" method="POST">
+    <div class="search-box">{{form.texto(placeholder="Buscar...")}}</div>
+  </form>
+</header>
 <hr />
 {% endblock %} {% block contenido %}
 
-<div class="container">
+<main class="container">
   {% for img in imglist %}
 
   <div class="container-post">
-    <img src="{{url_for('static', filename=img[8])}}" class="avatar" alt="avatar" />
-
-    <div class="nom">
-      <p>{{img[2]}} {{img[3]}}</p>
-      <p style="font-size: 12px" class="time">{{img[4]}}</p>
+    <div class="post-header">
+      <img src="{{url_for('static', filename=img[8])}}" class="avatar" alt="avatar" />
+  
+      <div class="nom">
+        <p>{{img[2]}} {{img[3]}}</p>
+        <p style="font-size: 12px" class="time">{{img[4]}}</p>
+      </div>
     </div>
 
     <a href="/publicacion/{{img[0]}}">
@@ -56,6 +58,6 @@
   </div>
 
   {% endfor %}
-</div>
+</main>
 
 {% endblock %}

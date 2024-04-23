@@ -1,6 +1,7 @@
 import os
 import random
 from logging import exception
+import time
 from flask import Flask, render_template, request, session, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 from wtforms.validators import Email
@@ -123,7 +124,7 @@ def registro():
             flash('ERROR: Debe suministrar una contraseña válida.')
             swerror = True
         if fnac == None or len(fnac) == 0 or nacerror == False:
-            flash('ERROR: Debes tener +18 para registarte.')
+            flash('ERROR: Debes tener +18 para registrarte.')
             swerror = True
         if ema != cema:
             flash('ERRROR: el correo electronico y su verificación no coinciden.')
@@ -153,6 +154,10 @@ def registro():
                 return render_template('registro.html', form=frm, titulo='Rereturn rendergistro de usuario')
             else:
                 flash('Usuario correctamente registrado')
+                
+                # esperar 3 segundos antes de redirigir
+                time.sleep(3)
+                return redirect('/login/')
 
         return render_template('registro.html', form=frm, titulo='Rereturn rendergistro de usuario')
 

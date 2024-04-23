@@ -7,6 +7,7 @@ h1, h2, h3, h4 {
   font-family: dark;
   src: url(../img/Dark.otf);
 }
+
 body {
   margin: 0;
   padding: 0;
@@ -32,22 +33,26 @@ body {
   left: 105px;
   font-size: 20px;
 }
+
 #volver2 {
   text-align: center;
   left: 105px;
   font-size: 20px;
   bottom: 70px;
 }
+
 #volver3 {
   text-align: center;
   left: 105px;
   font-size: 20px;
   bottom: 50px;
 }
+
 #duda {
   position: relative;
   bottom: 35px;
 }
+
 #btnvolver {
   position: relative;
   bottom: 35px;
@@ -88,6 +93,12 @@ body {
   border-radius: 5%;
   box-shadow: 3px 3px 50px 7px black;
   position: relative;
+}
+
+.login-box h3 {
+  margin-bottom: 1rem;
+  color: #d37e7e;
+  font-size: 1.4rem;
 }
 
 .login-box .avatar {

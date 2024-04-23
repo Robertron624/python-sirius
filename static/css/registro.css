@@ -5,28 +5,29 @@ body {
   background-size: cover;
   font-family: sans-serif;
   height: 100vh;
-  overflow: hidden;
-  overflow: scroll;
+  display: grid;
+  place-items: center;
 }
+
+ul,
+h1, h2, h3, h4 {
+  margin: 0;
+  padding: 0;
+}
+
 body a {
   color: gold;
 }
 .registro {
   margin: 0px auto;
-  
   max-width: 450px;
-  height: 550px;
   background: #342a7d;
   color: white;
-  padding: 70px 30px;
+  padding: 1rem 2.5rem;
   border-radius: 5%;
   box-shadow: 3px 3px 50px 7px black;
 }
 .registrate {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  bottom: 40px;
   font-size: 25px;
   font-weight: bold;
 }
@@ -41,8 +42,8 @@ body a {
   font-size: 16px;
   position: relative;
 }
-.registro input[type="email"],
-.registro input[type="password"] {
+
+.registro input {
   border: none;
   border-bottom: 1px solid gold;
   background: transparent;
@@ -51,27 +52,46 @@ body a {
   height: 50px;
   color: white;
   font-size: 16px;
-  position: relative;
-  top: 20px;
 }
+
+.registro input[type="radio"] {
+  width:unset;
+}
+
 .registro ::placeholder {
   color: gray;
 }
+
+.confirm-container {
+  margin-bottom: 1.4rem;
+}
+
 div.fnac {
-  top: 40px;
   position: relative;
   font-size: 20px;
 }
+
+.date-container {
+  margin-bottom: 1rem;
+}
+
 #sex {
   list-style: none;
   display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#sex li {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
 }
 
 div.sexo {
-  top: 20px;
   font-size: 20px;
-  position: relative;
 }
+
 .registro input[type="date"] {
   top: 6px;
   position: relative;
@@ -86,15 +106,16 @@ div.sexo {
   font-size: 19px;
   border-radius: 20px;
   font-weight: bold;
+  margin-bottom: 1.5rem;
+  transition: background 0.3s ease;
 }
+
 .registro input[type="submit"]:hover {
   color: black;
   background: #c48319;
   cursor: pointer;
 }
 .terminos {
-  position: relative;
-  top: 100px;
   text-align: justify;
   font-size: small;
 }
@@ -113,11 +134,13 @@ div.sexo {
   text-decoration: underline;
 }
 
-#fila {
+.submit-container{
+  width:100%;
+  display:flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.error-message {
   color: white;
-  position: relative;
-  bottom: 160px;
-  width: 200px;
-  text-align: justify;
-  left: 230px;
 }
