@@ -5,38 +5,57 @@ body {
   background-size: cover;
   font-family: sans-serif;
   height: 100vh;
-  overflow: hidden;
-  overflow: scroll;
 }
-#logo {
-  margin: 10px;
+
+
+p, h1, h2, h3, h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  max-width: 600px;
+  margin-inline: auto;
+  margin-top: 2rem;
+  align-items: center;
+}
+
+#avatar {
   border-radius: 50%;
-  position: absolute;
-  right: 80%;
   width: 115px;
-  height: 115px;
   box-shadow: 1px 1px 10px 1px white;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
-h3 {
+
+#avatar:hover {
+  transform: scale(1.1);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+p.username {
   color: white;
-  position: absolute;
-  left: 290px;
 }
+
 .search-bar input[type="text"] {
   width: 60vw;
   border-radius: 25px;
   height: 45px;
-  position: absolute;
-  left: 20%;
-  top: 8%;
   font-size: 1.96rem;
 }
+
 #results {
-  margin-top: 10%;
+  margin-top: 3rem;
+  max-width: 1000px;
+  margin-inline: auto;
   padding: 10px;
-  position: absolute;
-  width: 80%;
-  left: 10%;
   background: #342a7d;
   border-radius: 9px;
   border: 1px solid;
@@ -47,23 +66,15 @@ h3 {
 }
 
 #results img {
-  position: relative;
   height: 230px;
   width: 320px;
-  margin: 0 5px;
   border: 1px solid;
   box-shadow: 1px 3px 12px;
-  left: 13px;
 }
 
 #img-results {
   color:white;
-  top:17.5rem;
-  margin-top: 10%;
   padding: 10px;
-  position: relative;
-  width: 80%;
-  left: 10%;
   background: #342a7d;
   border-radius: 9px;
   border: 1px solid;
@@ -73,6 +84,7 @@ h3 {
   grid-gap: 15px;
   margin-bottom: 3rem;
 }
+
 #img-results img {
   position: relative;
   height: 280px;
@@ -84,18 +96,12 @@ h3 {
 }
 
 #user-results{
-  margin-top: 10%;
-  padding: 10px;
-  position: absolute;
-  width: 80%;
-  left: 10%;
   background: #342a7d;
   border-radius: 9px;
   border: 1px solid;
   box-shadow: 1px 3px 12px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 10%;
   color: white;
 }
 
@@ -119,25 +125,27 @@ h3 {
   color: white;
 }
 
-#editbtn {
-  position: relative;
-  display: flex;
-  margin: 5px;
+.username {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.profile-link {
   border: none;
   outline: none;
-  height: 30px;
   background: gold;
   font-size: 15px;
   border-radius: 10px;
   font-weight: bold;
-  left: 287px;
-  top: 50px;
+  cursor: pointer;
+  padding: 1rem 2rem;
+  color: rgb(64, 54, 38);
+  transition: all 0.3s ease-in-out;
 }
 
-#editbtn:hover {
+.profile-link:hover {
   color: black;
   background: #c48319;
-  cursor: pointer;
 }
 
 /* ----------------------------------ICONOS RESULTADOS----------------------------  */

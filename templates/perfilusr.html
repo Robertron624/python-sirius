@@ -22,27 +22,29 @@
       <li>
         <a href="/salir/">Cerrar Sesion</a>
       </li>
-      <form class="search-area" method="POST">
-        <div class="search-box">{{form.texto(placeholder="Buscar...")}}</div>
-
-      </form>
-
-    </ul>
-  </nav>
+      
+    </form>
+    
+  </ul>
+</nav>
+<form class="search-area" method="POST">
+  <div class="search-box">{{form.texto(placeholder="Buscar...")}}</div>
 </div>
 <hr />
 {% endblock %} {% block contenido %}
-<div>
-  <img src="{{url_for('static', filename=ava)}}" id="logo" alt="avatar" />
-  <h3>{{session['nom']}} {{session['ape']}}</h3>
+<div class="profile-header">
+  <img src="{{url_for('static', filename=ava)}}" id="avatar" alt="avatar" />
+  <div class="links">
+    <p class="username">{{session['nom']}} {{session['ape']}}</p>
+    <a href="/editarusuario/" class="profile-link">
+      Edit Profile
+    </a>
+    <a href="/cambiarpsw/" class="profile-link">
+      Change Password
+    </a>
+  </div>
 </div>
-<a href="/editarusuario/" class="edituser">
-  <input type="button" name="elibtn" id="editbtn" value="Editar usuario" />
-</a>
 
-<a href="/cambiarpsw/" class="edituser">
-  <input type="button" name="elibtn" id="editbtn" value="Cambiar contraseña" />
-</a>
 
 <div id="results">
   {% for img in imglist %}

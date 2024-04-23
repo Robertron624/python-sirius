@@ -589,8 +589,6 @@ def cambiarpsw():
 
                 sql = f"UPDATE usuarios SET contraseña='{newcla}' WHERE correo='{usr}'"
                 res = editarimg(sql)
-                print("clave nueva on hash:", newcla,
-                      "clave anterior hash:", cbd, "resultado de la bd:", res)
             if res == 0:
                 flash('ERROR: No se pudo registrar el cambio.')
                 return render_template('cambiarpsw.html', form=recu, titulo='Cambiar contraseña')
