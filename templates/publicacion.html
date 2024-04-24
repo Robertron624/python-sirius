@@ -1,8 +1,8 @@
 {% extends 'base.html' %} {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css') }}" />
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css' ) }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/publication-page.css' ) }}" />
 {% endblock %} {% block nav %}
-<div class="container2">
+<header class="container2">
     <!-- Navigation -->
     <nav class="nav-main">
         <!-- Left Nav -->
@@ -30,30 +30,32 @@
             </form>
         </ul>
     </nav>
-</div>
+</header>
 <hr />
 {% endblock %} {% block contenido %}
-<div class="main">
+<main class="main">
     <div class="container-full-post">
-        <div class="avausuario">
-            <img src="{{url_for('static', filename=ava )}}" class="avatar" alt="avatar" />
-        </div>
-
-        <div class="nom">
-            <p>{{postInfo[0][0]}} {{postInfo[0][1]}}</p>
-            <p style="font-size: 12px" class="time2">{{postInfo[0][2]}}</p>
-
-            {% if session['ema'] == owner %}
-            <div id="eli_edit">
-                <a href="/eliminar/{{id_img}}" class="hijo3">
-                    <input type="button" name="elibtn" id="elibtn" value="Eliminar" />
-                </a>
-                <a href="/editar/{{id_img}}" class="hijo3">
-                    <input type="button" name="editbtn" id="editbtn" value="Editar" />
-                </a>
+        <div class="publication-header">
+            <div class="avausuario">
+                <img src="{{url_for('static', filename=ava )}}" class="avatar" alt="avatar" />
             </div>
-            {% endif %}
-
+    
+            <div class="nom">
+                <p>{{postInfo[0][0]}} {{postInfo[0][1]}}</p>
+                <p style="font-size: 12px" class="time2">{{postInfo[0][2]}}</p>
+    
+                {% if session['ema'] == owner %}
+                <div id="eli_edit">
+                    <a href="/eliminar/{{id_img}}" class="hijo3">
+                        <input type="button" name="elibtn" id="elibtn" value="Eliminar" />
+                    </a>
+                    <a href="/editar/{{id_img}}" class="hijo3">
+                        <input type="button" name="editbtn" id="editbtn" value="Editar" />
+                    </a>
+                </div>
+                {% endif %}
+    
+            </div>
         </div>
 
         <div class="parrafo">
@@ -61,7 +63,7 @@
         </div>
         <div class="imagenesfull">
             <figure>
-                <img src="{{url_for('static', filename=postInfo[0][4])}}" alt="publicación " class="imgpubli2" />
+                <img src="{{url_for('static', filename=postInfo[0][4])}}" alt="publicación " class="post-image" />
             </figure>
         </div>
 
@@ -70,7 +72,7 @@
         <!-- Usado por #user para crear un nuevo comentario -->
         <div class="create_new_comment">
             <!-- Avatar del actual usuario -->
-            <div id="user_avatar">
+            <div id="current_user_avatar">
                 <img src="{{url_for('static', filename=ava )}}" />
             </div>
             <!-- the input field -->
@@ -85,18 +87,19 @@
         <!--comentario-->
         <div class="new_comment">
             <!-- Construir comentario -->
-            <ul class="user_comment">
-                <!-- avatar del usuario actual -->
-                <div class="user_avatar">
-                    <img src="{{ url_for('static', filename=comentario[6] ) }}" />
+            <div class="user_comment">
+                <div class="main-comment">
+                    <!-- avatar del usuario actual -->
+                    <div class="comment_user_avatar">
+                        <img src="{{ url_for('static', filename=comentario[6] ) }}" />
+                    </div>
+                    <!-- Cuerpo del comentario -->
+                    <div class="comment_body">
+                        <p>
+                            {{comentario[4]}}
+                        </p>
+                    </div>
                 </div>
-                <!-- Cuerpo del comentario -->
-                <div class="comment_body">
-                    <p>
-                        {{comentario[4]}}
-                    </p>
-                </div>
-
                 <!-- comentario toolbar -->
                 <div class="comment_toolbar">
                     <!-- fecha y hora -->
@@ -118,10 +121,10 @@
                     </div>
 
                 </div>
-            </ul>
+            </div>
         </div>
         {% endfor %}
 
     </div>
-</div>
+</main>
 {% endblock %}
