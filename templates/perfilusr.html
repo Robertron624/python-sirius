@@ -47,10 +47,19 @@
 
 
 <div id="results">
-  {% for img in imglist %}
-  <a href="/publicacion/{{img[0]}}">
-    <img src="{{url_for('static', filename=img[1])}}" />
-  </a>
+  {% for post in postList %}
+  <div class="post-container">
+    <div class="post-user">
+      <img src="{{url_for('static', filename=post['urlavatar'])}}" />
+      <a href="/perfilusr/{{post['id']}}">{{post['nombre']}} {{post['apellido']}}</a>
+    </div>
+    <a class="image-container" href="/publicacion/{{post['id']}}">
+      <img src="{{url_for('static', filename=post['url'])}}" />
+    </a>
+    <div class="post-text">
+      <p>{{post['text']}}</p>
+    </div>
+  </div>
   {% endfor %}
 </div>
 {% endblock %}

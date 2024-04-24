@@ -200,10 +200,17 @@ def perfil():
             sql = f"SELECT id, nombre, apellido, datepost, text, urlavatar, url FROM post WHERE correo='{usr}'"
             res = seleccion(sql)
 
-            id, nom, ape, fec, text, urlava, url = res[0]
+            formatted_results = [{ 'id': row[0], 
+                       'nombre': row[1], 
+                       'apellido': row[2], 
+                       'datepost': format_datetime(row[3]),
+                       'text': row[4],
+                       'urlavatar': row[5],
+                       'url': row[6],
+                        } for row in res]
 
             print("RESGET -> ",res)
-            return render_template('perfilusr.html', titulo='Mi perfil', ava=sex, form=frm, postList=res)
+            return render_template('perfilusr.html', titulo='Mi perfil', ava=sex, form=frm, postList=formatted_results)
         else:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')

@@ -70,7 +70,7 @@ hr {
 #texto {
   text-decoration: none;
   outline: none;
-  width: 300px;
+  width: 240px;
   height: 35px;
   position: relative;
   display: block;
@@ -80,6 +80,10 @@ hr {
 @media screen and (min-width: 640px) {
   .container2 {
     flex-direction: row;
+  }
+
+  #texto {
+    width: 300px;
   }
   
 }

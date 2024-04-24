@@ -1,12 +1,16 @@
 body {
   margin: 0;
   padding: 0;
-  background: url(../img/fondo.png) no-repeat center top /*#2A2740*/;
+  background: url(../img/fondo.png) repeat center top /*#2A2740*/;
   background-size: cover;
   font-family: sans-serif;
   height: 100vh;
 }
 
+.cuerpo {
+  padding-block: 2rem;
+  padding-inline: 1rem;
+}
 
 p, h1, h2, h3, h4 {
   margin: 0;
@@ -18,7 +22,6 @@ p, h1, h2, h3, h4 {
   justify-content: space-between;
   max-width: 600px;
   margin-inline: auto;
-  margin-top: 2rem;
   align-items: center;
 }
 
@@ -53,25 +56,52 @@ p.username {
 
 #results {
   margin-top: 3rem;
-  max-width: 1000px;
+  max-width: 600px;
   margin-inline: auto;
-  padding: 10px;
+  padding-block: 2.5rem;
+  padding-inline: 2rem;
   background: #342a7d;
   border-radius: 9px;
   border: 1px solid;
   box-shadow: 1px 3px 12px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 15px;
+  grid-gap: 1.5rem;
+  color: #fff;
 }
 
-#results img {
-  height: 230px;
-  width: 320px;
-  border: 1px solid;
-  box-shadow: 1px 3px 12px;
+#results .post-container {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  width: 90%;
+  margin-inline: auto;
+  box-shadow: 1px 3px 12px 1px rgba(0, 0, 0, .7);
+  border-radius: 10px;
+  padding: 1rem;
+  max-width: 310px;
 }
 
+.port-container .post-user {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.post-user img {
+  border-radius: 50%;
+  width: 50px;
+  box-shadow: 1px 1px 10px 1px white;
+}
+
+.post-container .image-container img{
+  width: 240px;
+  max-width: 100%;
+  display: block;
+  margin-inline: auto;
+}
+
+
+/* Search results */
 #img-results {
   color:white;
   padding: 10px;
