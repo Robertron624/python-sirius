@@ -40,23 +40,20 @@
 
   <div class="container-post">
     <div class="post-header">
-      <img src="{{url_for('static', filename=img[8])}}" class="avatar" alt="avatar" />
+      <img src="{{url_for('static', filename=img['urlavatar'])}}" class="avatar" alt="user avatar" />
   
       <div class="nom">
-        <p>{{img[2]}} {{img[3]}}</p>
-        <p style="font-size: 12px" class="time">{{img[4]}}</p>
+        <p>{{img['nombre']}} {{img['apellido']}}</p>
+        <p style="font-size: 12px" class="time">{{img['datepost']}}</p>
       </div>
     </div>
 
-    <a href="/publicacion/{{img[0]}}">
+    <a class="image-container" href="/publicacion/{{img['id']}}">
       <figure>
-        <img src="{{url_for('static', filename=img[6])}}" alt="publicación " class="imgpubli" />
+        <img src="{{url_for('static', filename=img['url'])}}" alt="publicación" class="imgpubli" />
       </figure>
     </a>
-
-  
   </div>
-
   {% endfor %}
 </main>
 

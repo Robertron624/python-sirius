@@ -77,12 +77,28 @@ h2 {
   background-color: #342a7d;
   box-shadow: 0 0 3px #51319e;
   padding-block: 1rem;
+  padding-inline: 1rem;
   border-radius: 1rem;
+  width: 90%;
+  max-width: 450px;
 }
 
 .post-header {
   display: flex;
   gap: 2rem;
+  max-width: 370px;
+  margin-inline: auto;
+}
+
+.image-container {
+  margin-block-start: 1.5rem;
+  display: block;
+}
+
+.image-container figure {
+  margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .container-full-post {
@@ -116,8 +132,8 @@ h2 {
 }
 
 .imgpubli {
-  width: 370px;
-  height: 300px;
+  width: 300px;
+  height: 250px;
   margin: auto;
   border: 1px black solid;
   border-radius: 1rem;
@@ -255,7 +271,6 @@ input[type="button"] {
   position: relative;
   width: 50px;
   height: 50px;
-  margin: 5px;
   border-radius: 50%;
 }
 
@@ -618,3 +633,13 @@ input[type="button"]:hover {
 
 /* ----------------------- FINAL PAGINA DE ENVIAR MENSAJES----------------------- */
 
+
+/* MEDIA QUERIES */
+
+@media screen and (min-width: 640px){
+  .imgpubli {
+    widtH: 370px;
+    height: 300px;
+  }
+  
+}

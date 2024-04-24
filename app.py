@@ -10,7 +10,7 @@ from markupsafe import escape
 import os
 from db import accion, editarimg, seleccion, eliminarimg
 from werkzeug.security import check_password_hash, generate_password_hash
-from utilidades import email_valido, pass_valido
+from utilidades import email_valido, pass_valido, format_datetime
 from datetime import datetime
 
 app = Flask(__name__)
@@ -171,7 +171,18 @@ def home():
         if request.method == 'GET':
             sql = f"SELECT id, correo,nombre,apellido, datepost, text, url, sexo, urlavatar FROM post"
             resget = seleccion(sql)
-            return render_template('feed.html', titulo='Feed', imglist=resget, form=frm)
+
+            formatted_results = [{ 'id': row[0], 
+                       'correo': row[1], 
+                       'nombre': row[2], 
+                       'apellido': row[3], 
+                       'datepost': format_datetime(row[4]),
+                       'text': row[5], 
+                       'url': row[6], 
+                       'sexo': row[7], 
+                       'urlavatar': row[8] } for row in resget]
+
+            return render_template('feed.html', titulo='Feed', imglist=formatted_results, form=frm)
         else:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -186,10 +197,13 @@ def perfil():
         if request.method == 'GET':
             usr = session['ema']
             sex = session["urlava"]
-            sql = f"SELECT id, url FROM post WHERE correo='{usr}'"
+            sql = f"SELECT id, nombre, apellido, datepost, text, urlavatar, url FROM post WHERE correo='{usr}'"
             res = seleccion(sql)
 
-            return render_template('perfilusr.html', titulo='Mi perfil', imglist=res, ava=sex, form=frm)
+            id, nom, ape, fec, text, urlava, url = res[0]
+
+            print("RESGET -> ",res)
+            return render_template('perfilusr.html', titulo='Mi perfil', ava=sex, form=frm, postList=res)
         else:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
