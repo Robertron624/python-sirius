@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url(../img/fondo.png) repeat center top /*#2A2740*/;
+    background-size: cover;
+    font-family: sans-serif;
+    height: 100vh;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.cuerpo {
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+  
+  .container {
+    max-width: 500px;
+    padding: 16px;
+    border-radius: 10px;
+    background-color: #ccc;
+  }
+
+.fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.go-back {
+    text-decoration: none;
+    font-weight: 700;
+    color: #7c44d6;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 20rem;
+    margin-inline: auto;
+    margin-top: 1rem;
+}
+
+.go-back::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #7c44d6;
+    transition: all 0.3s;
+    margin-top: 6px;
+
+}
+
+.go-back:hover {
+    color: #5658bc;
+}
+
+.go-back:hover::after {
+    width: 100%;
+}
