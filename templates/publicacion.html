@@ -34,6 +34,7 @@
 <hr />
 {% endblock %} {% block contenido %}
 <script src="{{ url_for('static', filename='/js/publicacion.js') }}"></script>
+<script src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
 {% block js %} {% endblock %}
 <main class="main">
     <div class="container-full-post">
@@ -115,9 +116,9 @@
                     <!-- fecha y hora -->
                     <div class="comment_details">
                             {% if session['ema'] == comentario['correo'] %}
-                                <a href="/eliminarcomment/{{id_img}}/{{comentario['id']}}" class="delete-comment">
+                                <button class="delete-comment-trigger" data-comment-id="{{comentario['id']}}" data-image-id="{{id_img}}">
                                     Borrar
-                                </a>
+                                </button>
                             {% endif %}
                         </ul>
                     </div>
@@ -126,7 +127,21 @@
             </div>
         </div>
         {% endfor %}
-
+        <dialog id="delete-comment-modal">
+            <div class="inner">
+                <p>
+                    ¿Estás seguro que quieres eliminar este comentario ?
+                </p>
+                <div class="modal-buttons">
+                    <button class="cancel-delete-comment">
+                        Cancelar
+                    </button>
+                    <a class="confirm-delete-comment">
+                        Borrar
+                    </a>
+                </div>
+            </div>
+        </dialog>
     </div>
 </main>
 {% endblock %}

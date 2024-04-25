@@ -187,7 +187,7 @@ body {
     text-align: left;
   }
 
-  .delete-comment{
+  .delete-comment-trigger{
     background-color: #c0330c;
     color: white;
     padding: .5rem 1rem .5rem 1rem;
@@ -195,9 +195,11 @@ body {
     font-size: medium;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
+    border: none;
+    box-shadow: 0 0 3px #1b0849;
   }
 
-    .delete-comment:hover {
+    .delete-comment-trigger:hover {
         background-color: #922101;
     }
 
@@ -283,6 +285,57 @@ body {
     justify-content: center;
     color: #fff;
   }
+
+  /* ----------------------- DELETE COMMENT MODAL----------------------- */
+
+#delete-comment-modal {
+    background-color: rgba(125, 106, 236, 1);
+    color:antiquewhite;
+    border-radius: 10px;
+  }
+
+  #delete-comment-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  #delete-comment-modal .inner {
+    padding: 1rem;
+  }
+
+  #delete-comment-modal .inner .modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.2rem;
+  }
+
+  
+  #delete-comment-modal .inner .modal-buttons .confirm-delete-comment,
+  #delete-comment-modal .inner .modal-buttons .cancel-delete-comment{
+    padding: .4rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    border: none;
+  }
+
+    #delete-comment-modal .inner .modal-buttons .confirm-delete-comment {
+        background-color: #c0330c;
+    }
+
+    #delete-comment-modal .inner .modal-buttons .confirm-delete-comment:hover {
+        background-color: #922101;
+    }
+
+    #delete-comment-modal .inner .modal-buttons .cancel-delete-comment {
+        background-color: #ce9231;
+    }
+
+    #delete-comment-modal .inner .modal-buttons .cancel-delete-comment:hover {
+        background-color: #9a6105;
+    }
+
+  /* MEDIA QUERIES */
 
   @media screen  and (min-width: 640px){
     .post-image {
