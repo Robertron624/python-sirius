@@ -1,0 +1,1 @@
+console.log('publicacion.js loaded')

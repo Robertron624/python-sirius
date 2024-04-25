@@ -33,6 +33,8 @@
 </header>
 <hr />
 {% endblock %} {% block contenido %}
+<script src="{{ url_for('static', filename='/js/publicacion.js') }}"></script>
+{% block js %} {% endblock %}
 <main class="main">
     <div class="container-full-post">
         <div class="publication-header">
@@ -41,8 +43,8 @@
             </div>
     
             <div class="nom">
-                <p>{{postInfo[0][0]}} {{postInfo[0][1]}}</p>
-                <p style="font-size: 12px" class="time2">{{postInfo[0][2]}}</p>
+                <p>{{postInfo['nombre']}} {{postInfo['apellido']}}</p>
+                <p style="font-size: 12px" class="time">{{postInfo[1]}}</p>
     
                 {% if session['ema'] == owner %}
                 <div id="eli_edit">
@@ -59,11 +61,11 @@
         </div>
 
         <div class="parrafo">
-            <p>{{ postInfo[0][3] }}</p>
+            <p>{{ postInfo['text'] }}</p>
         </div>
         <div class="imagenesfull">
             <figure>
-                <img src="{{url_for('static', filename=postInfo[0][4])}}" alt="publicación " class="post-image" />
+                <img src="{{url_for('static', filename=postInfo['url'])}}" alt="publicación " class="post-image" />
             </figure>
         </div>
 
