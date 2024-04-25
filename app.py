@@ -294,16 +294,22 @@ def publicacion(id=None):
             img_owner = res2[0][0]
             id_img = id
 
-            res_formatted = {tuple[0]: tuple[1:] for tuple in res}
+            res_formatted = {tup[0]: tup[1:] for tup in res}
 
-            res_value = res_formatted['Leonardo']
+            temp_dict = {}
+
+            for key, value in res_formatted.items():  # Iterate over items, not keys
+                temp_dict[key] = value
+
+            first_key = next(iter(temp_dict))  # Get the first key in the dictionary, which is the name of the image owner
+            tuple_values = temp_dict[first_key]
 
             post_data = {
-                'nombre': nombre,  # 'Leonardo
-                'apellido': res_value[0],
-                'datepost': format_datetime(res_value[1]),
-                'text': res_value[2],
-                'url': res_value[3]
+                'nombre': first_key,
+                'apellidos': tuple_values[0],
+                'datepost': tuple_values[1],
+                'text': tuple_values[2],
+                'url': tuple_values[3]
             }
 
             urlava = ''
@@ -320,7 +326,7 @@ def publicacion(id=None):
             formatted_comments_data = [{ 'id': row[0],
                                         'correo': row[1],
                                         'nombre': row[2],
-                                        'apellido': row[3],
+                                        'apellidos': row[3],
                                         'text': row[4],
                                         'datecomment': format_datetime(row[5]),
                                         'urlavatar': row[6] } for row in res3]

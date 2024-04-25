@@ -44,7 +44,7 @@
             </div>
     
             <div class="nom">
-                <p>{{postInfo['nombre']}} {{postInfo['apellido']}}</p>
+                <p>{{postInfo['nombre']}} {{postInfo['apellidos']}}</p>
                 <p style="font-size: 12px" class="time">{{postInfo['datepost']}}</p>
     
                 {% if session['ema'] == owner %}
@@ -97,7 +97,7 @@
                         <img src="{{ url_for('static', filename=comentario['urlavatar'] ) }}" />
                         <div class="name_date">
                             <p>
-                                {{comentario['nombre']}} {{comentario['apellido']}}
+                                {{comentario['nombre']}} {{comentario['apellidos']}}
                             </p>
                             <p>
                                 {{comentario['datecomment']}}
