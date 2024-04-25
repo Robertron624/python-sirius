@@ -44,7 +44,7 @@
     
             <div class="nom">
                 <p>{{postInfo['nombre']}} {{postInfo['apellido']}}</p>
-                <p style="font-size: 12px" class="time">{{postInfo[1]}}</p>
+                <p style="font-size: 12px" class="time">{{postInfo['datepost']}}</p>
     
                 {% if session['ema'] == owner %}
                 <div id="eli_edit">
@@ -93,12 +93,20 @@
                 <div class="main-comment">
                     <!-- avatar del usuario actual -->
                     <div class="comment_user_avatar">
-                        <img src="{{ url_for('static', filename=comentario[6] ) }}" />
+                        <img src="{{ url_for('static', filename=comentario['urlavatar'] ) }}" />
+                        <div class="name_date">
+                            <p>
+                                {{comentario['nombre']}} {{comentario['apellido']}}
+                            </p>
+                            <p>
+                                {{comentario['datecomment']}}
+                            </p>
+                        </div>
                     </div>
                     <!-- Cuerpo del comentario -->
                     <div class="comment_body">
                         <p>
-                            {{comentario[4]}}
+                            {{comentario['text']}}
                         </p>
                     </div>
                 </div>
@@ -106,18 +114,10 @@
                 <div class="comment_toolbar">
                     <!-- fecha y hora -->
                     <div class="comment_details">
-                        <ul>
-                            <li>
-                                <i class="fa fa-pencil"></i>
-                                <a href="#" class="user">{{comentario[2]}} {{comentario[3]}}</a>
-                            </li>
-                            <li><i class="fa fa-clock-o"></i>{{ comentario[5] }}</li>
-                            {% if session['ema'] == comentario[1] %}
-                            <div id="eli_comment">
-                                <a href="/eliminarcomment/{{id_img}}/{{comentario[0]}}" class="hijo3">
-                                    <input type="button" name="elicommentbtn" id="elicommentbtn" value="Borrar" />
+                            {% if session['ema'] == comentario['correo'] %}
+                                <a href="/eliminarcomment/{{id_img}}/{{comentario['id']}}" class="delete-comment">
+                                    Borrar
                                 </a>
-                            </div>
                             {% endif %}
                         </ul>
                     </div>

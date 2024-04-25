@@ -299,8 +299,9 @@ def publicacion(id=None):
             res_value = res_formatted['Leonardo']
 
             post_data = {
+                'nombre': nombre,  # 'Leonardo
                 'apellido': res_value[0],
-                'datepost': res_value[1],
+                'datepost': format_datetime(res_value[1]),
                 'text': res_value[2],
                 'url': res_value[3]
             }
@@ -316,7 +317,15 @@ def publicacion(id=None):
             sql3 = f"SELECT id,correo,nombre, apellidos, text, datecomment, urlavatar FROM comment WHERE idpost='{id_img}'"
             res3 = seleccion(sql3)
 
-            return render_template('publicacion.html', titulo='publicación', postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_busqueda=frm_busqueda, form_comentar=frm_comentar, commentList=res3)
+            formatted_comments_data = [{ 'id': row[0],
+                                        'correo': row[1],
+                                        'nombre': row[2],
+                                        'apellido': row[3],
+                                        'text': row[4],
+                                        'datecomment': format_datetime(row[5]),
+                                        'urlavatar': row[6] } for row in res3]
+
+            return render_template('publicacion.html', titulo='publicación', postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_busqueda=frm_busqueda, form_comentar=frm_comentar, commentList=formatted_comments_data)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')

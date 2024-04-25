@@ -163,7 +163,7 @@ body {
   .main-comment {
     border: 1px solid #e6e6e6;
     padding-inline: 1rem;
-    padding-block: .5rem;
+    padding-block: 1.5rem;
     border-radius: .8rem;
   }
 
@@ -171,81 +171,35 @@ body {
     display: inline-block;
     vertical-align: middle;
     min-height: 65px;
-    padding: 5px 10px;
+    padding-inline: 1rem;
+    padding-block: .5rem;
     font-size: 0.9rem;
     color: #fff;
-    width: 80%;
     border-radius: 10px;
-
   }
   
   .comment_block .new_comment .comment_toolbar {
     width: 100%;
-  }
-
-  .comment_block .new_comment .comment_toolbar ul {
-    list-style-type: none;
-    padding-left: 75px;
-    font-size: 0;
-  }
-
-  .comment_block .new_comment .comment_toolbar ul li {
-    display: flex;
-    font-size: 15px;
-    color: white;
-    text-decoration: none;
-    position: relative;
-    top: -150px;
-    margin: 0;
-    gap: 10px;
-  }
-
-  .comment_block .new_comment .comment_toolbar ul li:hover {
-    cursor: pointer;
+    margin-top: 1.5rem;
   }
 
   .comment_block .new_comment .comment_toolbar .comment_details {
-    display: inline-block;
-    vertical-align: middle;
-    width: 70%;
     text-align: left;
   }
 
-  .comment_block .new_comment .comment_toolbar .comment_tools {
-    display: inline-block;
-    vertical-align: middle;
-    width: 30%;
-    text-align: left;
-  }
-
-  .comment_block .new_comment .comment_toolbar .comment_tools li:hover {
-    color: #ccc;
-  }
-
-  .comment_block .new_comment .user:hover {
-    color: #6495ed;
-    text-decoration: underline;
-  }
-
-  .comment_block .new_comment .love:hover {
-    color: #ff6347;
-  }
-  
-  #elicommentbtn:hover {
-    color: black;
-    background: #c48319;
+  .delete-comment{
+    background-color: #c0330c;
+    color: white;
+    padding: .5rem 1rem .5rem 1rem;
+    border-radius: 10px;
+    font-size: medium;
     cursor: pointer;
-    
+    transition: background 0.3s ease-in-out;
   }
 
-  #elicommentbtn{
-    left: 180px;
-    position: relative;
-    top: 100px;
-    z-index: 700;
-    left: -30px;
-  
-  }
+    .delete-comment:hover {
+        background-color: #922101;
+    }
 
 
   /* -----------------------PAGINA DE ENVIAR MENSAJES------------------------------- */
@@ -310,10 +264,10 @@ body {
   }
 
   .comment_user_avatar {
-    width: 65px;
-    height: 65px;
     vertical-align: middle;
     margin-bottom: 1rem;
+    display: flex;
+    gap: 2rem;
   }
   
   .comment_user_avatar img {
@@ -322,6 +276,13 @@ body {
     border-radius: 50%;
   }
 
+  .comment_user_avatar .name_date {
+    display: flex;
+    gap: .4rem;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+  }
 
   @media screen  and (min-width: 640px){
     .post-image {
