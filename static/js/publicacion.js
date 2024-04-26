@@ -1,3 +1,5 @@
+
+
 const main = () => {
     const Toast = Swal.mixin({
         toast: true,
@@ -18,22 +20,50 @@ const main = () => {
         trigger.addEventListener('click', () => {
             const commentId = trigger.getAttribute('data-comment-id')
             const imageId = trigger.getAttribute('data-image-id')
-            const confirmDeleteButton = deleteCommentModal.querySelector('a.confirm-delete-comment')
+            const confirmDeleteButton = deleteCommentModal.querySelector('.confirm-delete-comment')
             const cancelDeleteButton = deleteCommentModal.querySelector('.cancel-delete-comment')
-
-            confirmDeleteButton.href = `${deleteUrl}${imageId}/${commentId}`
-            deleteCommentModal.classList.add('is-active')
 
             cancelDeleteButton.addEventListener('click', () => {
                 deleteCommentModal.close()
             })
 
             // display toast when deleting comment
-
             confirmDeleteButton.addEventListener('click', () => {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Comentario eliminado'
+                
+                const deleteCommentUrl = `${deleteUrl}${imageId}/${commentId}`
+
+                fetch(deleteCommentUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Comentario eliminado'
+                        })
+
+                        const commentElement = trigger.closest('.comment-container'); // Adjust selector as needed
+                        console.log("commentElement", commentElement)
+                        if (commentElement) {
+                            commentElement.remove();
+                        }
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Error al eliminar comentario'
+                        })
+                    }
+                }).catch(error => {
+                    console.error('Error:', error)
+
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Error al eliminar comentario'
+                    })
+                }).finally(() => {
+                    deleteCommentModal.close()
                 })
             })
 
@@ -54,6 +84,9 @@ const main = () => {
     const deletePostModal = document.getElementById('delete-post-modal')
 
     const deletePostTrigger = document.getElementById('delete-post-trigger')
+
+    if(!deletePostTrigger) return
+
     const confirmDeletePostButton = deletePostModal.querySelector('a.confirm-delete-post')
     const cancelDeletePostButton = deletePostModal.querySelector('.cancel-delete-post')
 

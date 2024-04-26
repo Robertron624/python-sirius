@@ -2,7 +2,7 @@ import os
 import random
 from logging import exception
 import time
-from flask import Flask, render_template, request, session, flash, redirect, url_for
+from flask import Flask, jsonify, render_template, request, session, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 from wtforms.validators import Email
 from formularios import Busqueda, Cambiarpsw, Roles, EditarUsuario, Comentario, Login, Mensaje, Registro, Recuperarpsw, Ayuda, Publicacion, editPublicacion
@@ -374,18 +374,18 @@ def eliminar(id=None):
             return redirect('/feed/')
 
 
-@app.route('/eliminarcomment/<int:id>/<int:idcomment>')
+@app.route('/eliminarcomment/<int:id>/<int:idcomment>', methods=['DELETE'])
 def eliminarcomment(id=None, idcomment=None):
-    if 'id' not in session:
-        return redirect('/')
-    else:
+    try: 
         sql = f"DELETE FROM comment WHERE id IN ({idcomment})"
         resultado = eliminarimg(sql)
         if resultado == 0:
-            flash('Error al eliminar el comentario')
-            return redirect(f'/publicacion/{id}')
+            return jsonify({'error': 'User not logged in'}), 401
         else:
-            return redirect(f'/publicacion/{id}')
+            return jsonify({'message': 'Comment deleted successfully'}), 200
+    except Exception as e:
+        print('Error: ', e)
+        return redirect(f'/publicacion/{id}')
 
 
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])

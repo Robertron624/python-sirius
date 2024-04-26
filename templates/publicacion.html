@@ -88,7 +88,7 @@
 
         {% for comentario in commentList %}
         <!--comentario-->
-        <div class="new_comment">
+        <div class="comment-container" data-comment-id="{{comentario['id']}}">
             <!-- Construir comentario -->
             <div class="user_comment">
                 <div class="main-comment">
@@ -151,9 +151,9 @@
                     <button class="cancel-delete-post">
                         Cancelar
                     </button>
-                    <a class="confirm-delete-post">
+                    <button class="confirm-delete-post">
                         Borrar
-                    </a>
+                    </button>
                 </div>
             </div>
         </dialog>

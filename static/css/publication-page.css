@@ -180,14 +180,14 @@ body {
     border-bottom: 2px solid #e6e6e6;
   }
 
-  .comment_block .new_comment {
+  .comment_block .comment-container {
     width: 100%;
     height: auto;
     padding: 20px 0;
     border-top: 1px solid #e6e6e6;
   }
 
-  .comment_block .new_comment .user_comment {
+  .comment_block .comment-container .user_comment {
     list-style-type: none;
 
   }
@@ -199,7 +199,7 @@ body {
     border-radius: .8rem;
   }
 
-  .comment_block .new_comment .comment_body {
+  .comment_block .comment-container .comment_body {
     display: inline-block;
     vertical-align: middle;
     min-height: 65px;
@@ -210,12 +210,12 @@ body {
     border-radius: 10px;
   }
   
-  .comment_block .new_comment .comment_toolbar {
+  .comment_block .comment-container .comment_toolbar {
     width: 100%;
     margin-top: 1.5rem;
   }
 
-  .comment_block .new_comment .comment_toolbar .comment_details {
+  .comment_block .comment-container .comment_toolbar .comment_details {
     text-align: left;
   }
 
