@@ -48,12 +48,12 @@
                 <p style="font-size: 12px" class="time">{{postInfo['datepost']}}</p>
     
                 {% if session['ema'] == owner %}
-                <div id="eli_edit">
-                    <a href="/eliminar/{{id_img}}" class="hijo3">
-                        <input type="button" name="elibtn" id="elibtn" value="Eliminar" />
-                    </a>
-                    <a href="/editar/{{id_img}}" class="hijo3">
-                        <input type="button" name="editbtn" id="editbtn" value="Editar" />
+                <div class="eli-edit">
+                    <button id="delete-post-trigger">
+                        Borrar publicación
+                    </button>
+                    <a href="/editar/{{id_img}}" id="edit-post">
+                        Editar publicación
                     </a>
                 </div>
                 {% endif %}
@@ -137,6 +137,21 @@
                         Cancelar
                     </button>
                     <a class="confirm-delete-comment">
+                        Borrar
+                    </a>
+                </div>
+            </div>
+        </dialog>
+        <dialog id="delete-post-modal">
+            <div class="inner">
+                <p>
+                    ¿Estás seguro que quieres eliminar esta publicación ?
+                </p>
+                <div class="modal-buttons">
+                    <button class="cancel-delete-post">
+                        Cancelar
+                    </button>
+                    <a class="confirm-delete-post">
                         Borrar
                     </a>
                 </div>

@@ -307,7 +307,7 @@ def publicacion(id=None):
             post_data = {
                 'nombre': first_key,
                 'apellidos': tuple_values[0],
-                'datepost': tuple_values[1],
+                'datepost': format_datetime(tuple_values[1]),
                 'text': tuple_values[2],
                 'url': tuple_values[3]
             }
@@ -320,6 +320,7 @@ def publicacion(id=None):
             elif sex == "P":
                 urlava = "avatares/otro.png"
 
+            # Get comments
             sql3 = f"SELECT id,correo,nombre, apellidos, text, datecomment, urlavatar FROM comment WHERE idpost='{id_img}'"
             res3 = seleccion(sql3)
 
@@ -359,7 +360,7 @@ def publicacion(id=None):
                 return redirect(f'/publicacion/{id}')
 
 
-@app.route('/eliminar/<int:id>')
+@app.route('/eliminarpost/<int:id>')
 def eliminar(id=None):
     if 'id' not in session:
         return redirect('/')

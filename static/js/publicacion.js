@@ -1,6 +1,4 @@
 const main = () => {
-
-
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -9,7 +7,7 @@ const main = () => {
         timerProgressBar: true
     })
 
-    // delete example url "/eliminarcomment/{{id_img}}/{{comentario['id']}}"
+    // Delete comment
     const deleteUrl = "/eliminarcomment/"
 
     const deleteCommentModal = document.getElementById('delete-comment-modal')
@@ -49,6 +47,38 @@ const main = () => {
                 }
             })
         })
+    })
+
+    // Delete post
+    const deletePostUrl = "/eliminarpost/"
+    const deletePostModal = document.getElementById('delete-post-modal')
+
+    const deletePostTrigger = document.getElementById('delete-post-trigger')
+    const confirmDeletePostButton = deletePostModal.querySelector('a.confirm-delete-post')
+    const cancelDeletePostButton = deletePostModal.querySelector('.cancel-delete-post')
+
+    deletePostTrigger.addEventListener('click', () => {
+        const postId = deletePostTrigger.getAttribute('data-post-id')
+        confirmDeletePostButton.href = `${deletePostUrl}${postId}`
+        deletePostModal.showModal()
+    })
+
+    cancelDeletePostButton.addEventListener('click', () => {
+        deletePostModal.close()
+    })
+
+    confirmDeletePostButton.addEventListener('click', () => {
+        Toast.fire({
+            icon: 'success',
+            title: 'Publicación eliminada'
+        })
+    })
+
+    // close modal when clicking outside
+    deletePostModal.addEventListener('click', (e) => {
+        if (e.target === deletePostModal) {
+            deletePostModal.close()
+        }
     })
 
 }

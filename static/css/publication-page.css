@@ -65,6 +65,38 @@ body {
     margin: 0;
   }
 
+  .eli-edit {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .eli-edit a,
+  .eli-edit button{
+    color: white;
+    padding: .5rem 1rem .5rem 1rem;
+    border-radius: 10px;
+    font-size: medium;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    border: none;
+  }
+
+  .eli-edit button#delete-post-trigger {
+    background-color: #c0330c;
+  }
+
+  .eli-edit button#delete-post-trigger:hover {
+    background-color: #922101;
+  }
+
+  .eli-edit a#edit-post {
+    background-color: #ce9231;
+  }
+
+  .eli-edit a#edit-post:hover {
+    background-color: #9a6105;
+  }
+
   .post-image {
     width: 250px;
     height: 200px;
@@ -199,12 +231,11 @@ body {
     box-shadow: 0 0 3px #1b0849;
   }
 
-    .delete-comment-trigger:hover {
+  .delete-comment-trigger:hover {
         background-color: #922101;
-    }
+  }
 
-
-  /* -----------------------PAGINA DE ENVIAR MENSAJES------------------------------- */
+  /* -----------------------SECCIÓN DE ENVIAR MENSAJES------------------------------- */
 
 .nombres {
     position: relative;
@@ -334,6 +365,55 @@ body {
     #delete-comment-modal .inner .modal-buttons .cancel-delete-comment:hover {
         background-color: #9a6105;
     }
+
+
+  /* DELETE POST MODAL */
+
+  #delete-post-modal {
+    background-color: rgba(125, 106, 236, 1);
+    color:antiquewhite;
+    border-radius: 10px;
+  }
+
+  #delete-post-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  #delete-post-modal .inner {
+    padding: 1rem;
+  }
+
+  #delete-post-modal .inner .modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.2rem;
+  }
+
+  #delete-post-modal .inner .modal-buttons .confirm-delete-post,
+  #delete-post-modal .inner .modal-buttons .cancel-delete-post{
+    padding: .4rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    border: none;
+  }
+
+  #delete-post-modal .inner .modal-buttons .confirm-delete-post {
+    background-color: #c0330c;
+  }
+
+  #delete-post-modal .inner .modal-buttons .confirm-delete-post:hover {
+    background-color: #922101;
+  }
+
+  #delete-post-modal .inner .modal-buttons .cancel-delete-post {
+    background-color: #ce9231;
+  }
+
+  #delete-post-modal .inner .modal-buttons .cancel-delete-post:hover {
+    background-color: #9a6105;
+  }
 
   /* MEDIA QUERIES */
 
