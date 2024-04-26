@@ -187,7 +187,6 @@ def home():
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
 
-
 @app.route('/perfil/', methods=['GET', 'POST'])
 def perfil():
     if 'id' not in session:
@@ -236,12 +235,14 @@ def nueva_publi():
                 ape = session["ape"]
                 sex = session["sex"]
                 urlava = session["urlava"]
-                hoy = datetime.today().year
-                hoy1 = datetime.today().month
-                hoy2 = datetime.today().day
-                hoy3 = datetime.today().hour
-                hoy4 = datetime.today().minute
-                fecpost = datetime(hoy, hoy1, hoy2, hoy3, hoy4)
+                
+                today = datetime.today()
+                year = today.year
+                month = today.month
+                day = today.day
+                hour = today.hour
+                minute = today.minute
+                fecpost = datetime(year, month, day, hour, minute)
                 text = escape(request.form['publi'].capitalize())
                 urlimg = f'/uploads/{name+nom2}'
 
@@ -257,12 +258,15 @@ def nueva_publi():
                 urlava = session["urlava"]
                 sex = session["sex"]
                 urlava = session["urlava"]
-                hoy = datetime.today().year
-                hoy1 = datetime.today().month
-                hoy2 = datetime.today().day
-                hoy3 = datetime.today().hour
-                hoy4 = datetime.today().minute
-                fecpost = datetime(hoy, hoy1, hoy2, hoy3, hoy4)
+                
+                today = datetime.today()
+                
+                year = today.year
+                month = today.month
+                day = today.day
+                hour = today.hour
+                minutes = today.minute
+                fecpost = datetime(year, month, day, hour, minutes)
                 text = escape(request.form['publi'])
                 urlimg = f'/uploads/{nom2}'
 
@@ -338,16 +342,19 @@ def publicacion(id=None):
             return redirect(f'/busqueda/{texto}')
         elif request.method == 'POST' and 'comment_btn' in request.form:
             comentario = request.form['comment_text']
-            hoy = datetime.today().year
-            hoy1 = datetime.today().month
-            hoy2 = datetime.today().day
-            hoy3 = datetime.today().hour
-            hoy4 = datetime.today().minute
+            
+            today = datetime.today()
+            
+            year = today.year
+            month = today.month
+            day = today.day
+            hour = today.hour
+            minute = today.minute
             emausuario = session['ema']
             nom = session['nom']
             ape = session['ape']
             urlava = session['urlava']
-            fecpost = datetime(hoy, hoy1, hoy2, hoy3, hoy4)
+            fecpost = datetime(year, month, day, hour, minute)
             idimg = id
 
             sql = 'INSERT into comment(correo, nombre, apellidos, text, datecomment, idpost, urlavatar) VALUES(?,?,?,?,?,?,?)'
