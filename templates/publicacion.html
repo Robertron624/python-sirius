@@ -79,9 +79,9 @@
                 <img src="{{url_for('static', filename=ava )}}" />
             </div>
             <!-- the input field -->
-            <form class="input_comment" method="POST">
-                {{ form_comentar.comment_text(placeholder="Escribe aquí tu comentario")}}
-                {{ form_comentar.comment_btn }}
+            <form class="input_comment" method="POST" id="new-comment-form">
+                {{ form_comentar.new_comment_text(placeholder="Escribe aquí tu comentario")}}
+                {{ form_comentar.new_comment_btn }}
             </form>
         </div>
 
@@ -113,16 +113,11 @@
                 </div>
                 <!-- comentario toolbar -->
                 <div class="comment_toolbar">
-                    <!-- fecha y hora -->
-                    <div class="comment_details">
                             {% if session['ema'] == comentario['correo'] %}
                                 <button class="delete-comment-trigger" data-comment-id="{{comentario['id']}}" data-image-id="{{id_img}}">
                                     Borrar
                                 </button>
                             {% endif %}
-                        </ul>
-                    </div>
-
                 </div>
             </div>
         </div>

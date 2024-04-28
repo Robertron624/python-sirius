@@ -70,8 +70,8 @@ class Busqueda(FlaskForm):
 
 
 class Comentario(FlaskForm):
-    comment_text = TextAreaField()
-    comment_btn = SubmitField('Comentar')
+    new_comment_text = TextAreaField()
+    new_comment_btn = SubmitField('Comentar')
 
 
 class Mensaje(FlaskForm):

@@ -162,7 +162,7 @@ body {
     cursor: pointer;
   }
   
-  .comment_block .create_new_comment .input_comment #comment_text {
+  .comment_block .create_new_comment .input_comment #new_comment_text {
     width: 90%;
     font-family: sans-serif;
     resize: none;
@@ -213,10 +213,6 @@ body {
   .comment_block .comment-container .comment_toolbar {
     width: 100%;
     margin-top: 1.5rem;
-  }
-
-  .comment_block .comment-container .comment_toolbar .comment_details {
-    text-align: left;
   }
 
   .delete-comment-trigger{

@@ -13,4 +13,11 @@ def pass_valido(clave):
 def format_datetime(date) -> str:
     datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
     return datetime_object.strftime('%B %d, %Y')
-    
+
+
+def format_comment_datetime(date) -> str:
+    try:
+        datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
+    return datetime_object.strftime('%B %d, %Y')

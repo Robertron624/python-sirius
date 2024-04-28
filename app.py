@@ -10,7 +10,7 @@ from markupsafe import escape
 import os
 from db import accion, editarimg, seleccion, eliminarimg
 from werkzeug.security import check_password_hash, generate_password_hash
-from utilidades import email_valido, pass_valido, format_datetime
+from utilidades import email_valido, pass_valido, format_datetime, format_comment_datetime
 from datetime import datetime
 
 app = Flask(__name__)
@@ -280,7 +280,7 @@ def nueva_publi():
             return redirect(f'/busqueda/{texto}')
 
 
-@app.route('/publicacion/<int:id>/', methods=['GET', 'POST'])
+@app.route('/publicacion/<int:id>/', methods=['GET'])
 def publicacion(id=None):
     if 'id' not in session:
         return redirect('/')
@@ -327,45 +327,56 @@ def publicacion(id=None):
             # Get comments
             sql3 = f"SELECT id,correo,nombre, apellidos, text, datecomment, urlavatar FROM comment WHERE idpost='{id_img}'"
             res3 = seleccion(sql3)
-
-            formatted_comments_data = [{ 'id': row[0],
-                                        'correo': row[1],
-                                        'nombre': row[2],
-                                        'apellidos': row[3],
-                                        'text': row[4],
-                                        'datecomment': format_datetime(row[5]),
-                                        'urlavatar': row[6] } for row in res3]
+            print('res3 -> ', res3)
+            
+            if len(res3) == 0:
+                formatted_comments_data = []
+            else:
+                formatted_comments_data = [{ 'id': row[0],
+                                            'correo': row[1],
+                                            'nombre': row[2],
+                                            'apellidos': row[3],
+                                            'text': row[4],
+                                            'datecomment': format_comment_datetime(row[5]),
+                                            'urlavatar': row[6] } for row in res3]
 
             return render_template('publicacion.html', titulo='publicación', postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_busqueda=frm_busqueda, form_comentar=frm_comentar, commentList=formatted_comments_data)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
-        elif request.method == 'POST' and 'comment_btn' in request.form:
-            comentario = request.form['comment_text']
-            
-            today = datetime.today()
-            
-            year = today.year
-            month = today.month
-            day = today.day
-            hour = today.hour
-            minute = today.minute
-            emausuario = session['ema']
-            nom = session['nom']
-            ape = session['ape']
-            urlava = session['urlava']
-            fecpost = datetime(year, month, day, hour, minute)
-            idimg = id
 
-            sql = 'INSERT into comment(correo, nombre, apellidos, text, datecomment, idpost, urlavatar) VALUES(?,?,?,?,?,?,?)'
-            res = accion(sql, (emausuario, nom, ape,
-                               comentario, fecpost, idimg, urlava))
-            if res == 0:
-                flash('Error: no se pudo guardar el comentario')
-                print('HUBO UN ERROR AL GUARDAR')
-            else:
-                return redirect(f'/publicacion/{id}')
-
+@app.route('/new-comment/<int:id>/', methods=['POST'])
+def create_comment(id=None):
+    if 'id' not in session:
+        return redirect('/')
+    elif 'new_comment_text' not in request.form:
+        return jsonify({'error-message': 'No comment text provided'}), 400
+    else:
+        print('new_comment_text DOES EXIST!!')
+        comment_text = request.form['new_comment_text']
+        emausuario = session['ema']
+        nom = session['nom']
+        ape = session['ape']
+        urlava = session['urlava']
+        fecpost = datetime.today()
+        
+        sql = 'INSERT INTO comment(correo, nombre, apellidos, text, datecomment, idpost, urlavatar) VALUES(?,?,?,?,?,?,?)'
+        res = accion(sql, (emausuario, nom, ape, comment_text, fecpost, id, urlava))
+        
+        if res == 0:
+            return jsonify({'error': 'Failed to save comment'}), 500
+        else:
+            comment_data = {
+                'commentText': comment_text,
+                'dateComment': fecpost.strftime('%B %d, %Y'),
+                'userName': nom,
+                'userLastName': ape,
+                'userEmail': emausuario,
+                'urlAvatar': urlava
+            }
+            
+            return jsonify({'message': 'Comment saved successfully', 'commentData': comment_data}), 200
+    
 
 @app.route('/eliminarpost/<int:id>')
 def eliminar(id=None):
