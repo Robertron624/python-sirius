@@ -54,3 +54,13 @@ def editarimg(instru):
         res = 0
         print('ESTE ES EL ERROR::   ', ex)
     return res
+
+def get_last_comment_id():
+    try:
+        with sqlite3.connect(URL_DB) as con:
+            cur = con.cursor()
+            res = cur.execute("SELECT MAX(id) FROM comment").fetchone()
+    except Exception as ex:
+        res = None
+        print('ERROR::   ', ex)
+    return res

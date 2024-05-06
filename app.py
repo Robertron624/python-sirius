@@ -8,7 +8,7 @@ from wtforms.validators import Email
 from formularios import Busqueda, Cambiarpsw, Roles, EditarUsuario, Comentario, Login, Mensaje, Registro, Recuperarpsw, Ayuda, Publicacion, editPublicacion
 from markupsafe import escape
 import os
-from db import accion, editarimg, seleccion, eliminarimg
+from db import accion, editarimg, seleccion, eliminarimg, get_last_comment_id
 from werkzeug.security import check_password_hash, generate_password_hash
 from utilidades import email_valido, pass_valido, format_datetime, format_comment_datetime
 from datetime import datetime
@@ -208,7 +208,6 @@ def perfil():
                        'url': row[6],
                         } for row in res]
 
-            print("RESGET -> ",res)
             return render_template('perfilusr.html', titulo='Mi perfil', ava=sex, form=frm, postList=formatted_results)
         else:
             texto = request.form['texto'].capitalize()
@@ -327,7 +326,6 @@ def publicacion(id=None):
             # Get comments
             sql3 = f"SELECT id,correo,nombre, apellidos, text, datecomment, urlavatar FROM comment WHERE idpost='{id_img}'"
             res3 = seleccion(sql3)
-            print('res3 -> ', res3)
             
             if len(res3) == 0:
                 formatted_comments_data = []
@@ -339,8 +337,9 @@ def publicacion(id=None):
                                             'text': row[4],
                                             'datecomment': format_comment_datetime(row[5]),
                                             'urlavatar': row[6] } for row in res3]
+            html_title = f"Publicación de {post_data['nombre']} {post_data['apellidos']}"
 
-            return render_template('publicacion.html', titulo='publicación', postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_busqueda=frm_busqueda, form_comentar=frm_comentar, commentList=formatted_comments_data)
+            return render_template('publicacion.html', titulo=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_busqueda=frm_busqueda, form_comentar=frm_comentar, commentList=formatted_comments_data)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -352,7 +351,6 @@ def create_comment(id=None):
     elif 'new_comment_text' not in request.form:
         return jsonify({'error-message': 'No comment text provided'}), 400
     else:
-        print('new_comment_text DOES EXIST!!')
         comment_text = request.form['new_comment_text']
         emausuario = session['ema']
         nom = session['nom']
@@ -366,13 +364,17 @@ def create_comment(id=None):
         if res == 0:
             return jsonify({'error': 'Failed to save comment'}), 500
         else:
+            
+            new_comment_id = get_last_comment_id()
+            
             comment_data = {
                 'commentText': comment_text,
                 'dateComment': fecpost.strftime('%B %d, %Y'),
                 'userName': nom,
                 'userLastName': ape,
                 'userEmail': emausuario,
-                'urlAvatar': urlava
+                'urlAvatar': urlava,
+                'id': new_comment_id[0]
             }
             
             return jsonify({'message': 'Comment saved successfully', 'commentData': comment_data}), 200
