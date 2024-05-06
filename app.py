@@ -399,13 +399,14 @@ def eliminarcomment(id=None, idcomment=None):
     try: 
         sql = f"DELETE FROM comment WHERE id IN ({idcomment})"
         resultado = eliminarimg(sql)
+        print("RESULT OF DELETE: ", resultado)
         if resultado == 0:
             return jsonify({'error': 'User not logged in'}), 401
         else:
             return jsonify({'message': 'Comment deleted successfully'}), 200
     except Exception as e:
         print('Error: ', e)
-        return redirect(f'/publicacion/{id}')
+        return jsonify({'error': 'Internal server error'}), 500
 
 
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])

@@ -1,5 +1,61 @@
+async function addCommentQuery(data) {
 
+    const { commentText, postId } = data;
 
+    const addCommentUrl = `${window.location.origin}/new-comment/${postId}/`;
+
+    const formData = new URLSearchParams();
+    formData.append("new_comment_text", commentText);
+
+    try {
+
+        const response = await fetch(addCommentUrl, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        });
+
+        if (response.ok) {
+            const parsedResponse = await response.json();
+            return parsedResponse.commentData;
+        }
+
+        throw new Error("Failed to add comment");
+
+    } catch (error) {
+        throw new Error(error.message);
+    }
+
+}
+
+async function deleteCommentQuery(data) {
+
+    const { commentId, postId } = data;
+
+    const deleteCommentUrl = `/eliminarcomment/${postId}/${commentId}`;
+
+    try {
+
+        const response = await fetch(deleteCommentUrl, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.ok) {
+            return;
+        }
+
+        throw new Error("Failed to delete comment");
+
+    } catch (error) {
+        throw new Error(error.message);
+    }
+
+}
 
 function generateNewCommentElement(comment, Toast) {
   const {
@@ -130,15 +186,14 @@ function generateNewCommentElement(comment, Toast) {
   return newCommentElement;
 }
 
-function loadAddCommentEvents(Toast) {
-  // Assuming you have a form with the ID 'commentForm'
+async function loadAddCommentEvents(Toast) {
+
+  const commentsContainer = document.querySelector(".comment_block");
   const commentForm = document.getElementById("new-comment-form");
   const postId = window.location.pathname.split("/")[2];
-
-  const addCommentUrl = `${window.location.origin}/new-comment/${postId}/`;
   const newCommentTextArea = commentForm.querySelector("#new_comment_text");
 
-  commentForm.addEventListener("submit", (event) => {
+  commentForm.addEventListener("submit", async (event) => {
     event.preventDefault(); // Prevent default form submission
 
     const newCommentText = newCommentTextArea.value;
@@ -152,53 +207,33 @@ function loadAddCommentEvents(Toast) {
       return;
     }
 
-    const formData = new URLSearchParams();
-    formData.append("new_comment_text", newCommentText);
+    const data = {
+        commentText: newCommentText,
+        postId,
+    };
 
-    fetch(addCommentUrl, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json(); // Parse response JSON
-        } else {
-          throw new Error("Failed to add comment");
-        }
-      })
-      .then((data) => {
-        const newCommentData = data.commentData;
-
-        console.log(
-          "new comment data returned from backend -> ",
-          newCommentData
-        );
-
-        const commentsSection = document.querySelector(".comment_block");
-
+    try {
+        const newCommentData = await addCommentQuery(data);
         const newCommentElement = generateNewCommentElement(newCommentData, Toast);
 
-        commentsSection.appendChild(newCommentElement); // Append the new comment element to the comments section
-
-        // Clear the comment form after successful submission
+        commentsContainer.appendChild(newCommentElement);
         commentForm.reset();
 
         Toast.fire({
-          icon: "success",
-          title: "Comentario agregado",
+            icon: "success",
+            title: "Comentario agregado",
         });
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+    }
+    catch (error) {
+      console.error("Error:", error);
 
-        Toast.fire({
-          icon: "error",
-          title: "Error al agregar comentario, por favor intente nuevamente",
-        });
+      Toast.fire({
+        icon: "error",
+        title: "Error al agregar comentario",
       });
+    }
+
+    
   });
 }
 
@@ -212,7 +247,7 @@ function loadDeleteCommentEvents(Toast) {
     ".delete-comment-trigger"
   );
 
-  deleteCommentTriggers.forEach((trigger) => {
+  deleteCommentTriggers.forEach(async (trigger) => {
     trigger.addEventListener("click", () => {
       const commentId = trigger.getAttribute("data-comment-id");
       const imageId = trigger.getAttribute("data-image-id");
@@ -228,45 +263,36 @@ function loadDeleteCommentEvents(Toast) {
       });
 
       // display toast when deleting comment
-      confirmDeleteButton.addEventListener("click", () => {
+      confirmDeleteButton.addEventListener("click", async () => {
 
-        const deleteCommentUrl = `${deleteUrl}${imageId}/${commentId}`;
+        try {
 
-        fetch(deleteCommentUrl, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => {
-            if (response.ok) {
-              Toast.fire({
+            const data = {
+                commentId,
+                postId: imageId,
+            };
+    
+            await deleteCommentQuery(data);
+    
+            Toast.fire({
                 icon: "success",
                 title: "Comentario eliminado",
-              });
+            });
 
-              const commentElement = trigger.closest(".comment-container"); // Adjust selector as needed
-              if (commentElement) {
-                commentElement.remove();
-              }
-            } else {
-              Toast.fire({
+            const commentElement = trigger.closest(".comment-container");
+
+            commentElement.remove();
+        }
+        catch (error) {
+            console.error("Error:", error);
+    
+            Toast.fire({
                 icon: "error",
                 title: "Error al eliminar comentario",
-              });
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-
-            Toast.fire({
-              icon: "error",
-              title: "Error al eliminar comentario",
             });
-          })
-          .finally(() => {
+        } finally {
             deleteCommentModal.close();
-          });
+        }
       });
 
       // open modal
