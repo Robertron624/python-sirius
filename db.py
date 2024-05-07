@@ -35,7 +35,7 @@ def eliminarimg(instru):
             cur = con.cursor()
             res = cur.execute(instru).rowcount
             if res != 0:
-                con.commit
+                con.commit()
     except Exception as ex:
         print('ESTE ES EL ERROR DE SELECCION::  ', ex)
         res = 0

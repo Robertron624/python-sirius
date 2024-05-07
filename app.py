@@ -394,14 +394,14 @@ def eliminar(id=None):
             return redirect('/feed/')
 
 
-@app.route('/eliminarcomment/<int:id>/<int:idcomment>', methods=['DELETE'])
-def eliminarcomment(id=None, idcomment=None):
+@app.route('/eliminarcomment/<int:idpost>/<int:idcomment>', methods=['DELETE'])
+def eliminarcomment(idpost=None, idcomment=None):
     try: 
-        sql = f"DELETE FROM comment WHERE id IN ({idcomment})"
+        sql = f"DELETE FROM comment WHERE idpost = {idpost} AND id = {idcomment}"
         resultado = eliminarimg(sql)
         print("RESULT OF DELETE: ", resultado)
         if resultado == 0:
-            return jsonify({'error': 'User not logged in'}), 401
+            return jsonify({'error': 'Comment not found or user not authorized to delete'}), 404
         else:
             return jsonify({'message': 'Comment deleted successfully'}), 200
     except Exception as e:

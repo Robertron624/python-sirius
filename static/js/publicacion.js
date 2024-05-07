@@ -1,3 +1,8 @@
+function getCurrentPostId() {
+    const postId = window.location.pathname.split("/")[2];
+    return postId;
+}
+
 async function addCommentQuery(data) {
 
     const { commentText, postId } = data;
@@ -112,11 +117,11 @@ function generateNewCommentElement(comment, Toast) {
   const commentToolbar = document.createElement("div");
   commentToolbar.classList.add("comment_toolbar");
 
-  const commentDeleteButton = document.createElement("button");
-  commentDeleteButton.classList.add("delete-comment-trigger");
-  commentDeleteButton.textContent = "Borrar";
+  const commentDeleteButtonTrigger = document.createElement("button");
+  commentDeleteButtonTrigger.classList.add("delete-comment-trigger");
+  commentDeleteButtonTrigger.textContent = "Borrar";
 
-  commentDeleteButton.addEventListener("click", () => {
+  commentDeleteButtonTrigger.addEventListener("click", () => {
 
     const deleteCommentModal = document.getElementById("delete-comment-modal");
 
@@ -176,7 +181,7 @@ function generateNewCommentElement(comment, Toast) {
     });
   });
 
-  commentToolbar.appendChild(commentDeleteButton);
+  commentToolbar.appendChild(commentDeleteButtonTrigger);
 
   mainNewComment.appendChild(commentInfoContainer);
   mainNewComment.appendChild(commentToolbar);
@@ -238,8 +243,11 @@ async function loadAddCommentEvents(Toast) {
 }
 
 function loadDeleteCommentEvents(Toast) {
-  // Delete comment
-  const deleteUrl = "/eliminarcomment/";
+
+  // Store current comment id and image id
+
+  let currentCommentId = null;
+  let currentImageId = null;
 
   const deleteCommentModal = document.getElementById("delete-comment-modal");
 
@@ -247,63 +255,83 @@ function loadDeleteCommentEvents(Toast) {
     ".delete-comment-trigger"
   );
 
+  const confirmDeleteButton = deleteCommentModal.querySelector(
+    ".confirm-delete-comment"
+  );
+
+  confirmDeleteButton.addEventListener("click", async () => {
+    
+      if(!currentCommentId || !currentImageId) {
+          console.error("Comment id or image id not found");
+          return;
+      }
+
+      const data = {
+          commentId: currentCommentId,
+          postId: currentImageId,
+      };
+
+      try {
+          await deleteCommentQuery(data);
+
+          Toast.fire({
+              icon: "success",
+              title: "Comentario eliminado",
+          });
+
+          const commentContainer = document.querySelector(
+              `.comment-container[data-comment-id="${currentCommentId}"]`
+          );
+
+          commentContainer.remove();
+
+          // Reset current comment id and image id
+          currentCommentId = null;
+          currentImageId = null;
+      }
+      catch (error) {
+          console.error("Error:", error);
+
+          Toast.fire({
+              icon: "error",
+              title: "Error al eliminar comentario",
+          });
+      }
+      finally {
+          deleteCommentModal.close();
+      }
+  });
+
+  const cancelDeleteButton = deleteCommentModal.querySelector(
+    ".cancel-delete-comment"
+  );
+
+  cancelDeleteButton.addEventListener("click", () => {
+    deleteCommentModal.close();
+  });
+
+  // close modal when clicking outside
+  deleteCommentModal.addEventListener("click", (e) => {
+    if (e.target === deleteCommentModal) {
+      deleteCommentModal.close();
+    }
+  });
+
   deleteCommentTriggers.forEach(async (trigger) => {
     trigger.addEventListener("click", () => {
-      const commentId = trigger.getAttribute("data-comment-id");
-      const imageId = trigger.getAttribute("data-image-id");
-      const confirmDeleteButton = deleteCommentModal.querySelector(
-        ".confirm-delete-comment"
-      );
-      const cancelDeleteButton = deleteCommentModal.querySelector(
-        ".cancel-delete-comment"
-      );
-
-      cancelDeleteButton.addEventListener("click", () => {
-        deleteCommentModal.close();
-      });
-
-      // display toast when deleting comment
-      confirmDeleteButton.addEventListener("click", async () => {
-
-        try {
-
-            const data = {
-                commentId,
-                postId: imageId,
-            };
-    
-            await deleteCommentQuery(data);
-    
-            Toast.fire({
-                icon: "success",
-                title: "Comentario eliminado",
-            });
-
-            const commentElement = trigger.closest(".comment-container");
-
-            commentElement.remove();
-        }
-        catch (error) {
-            console.error("Error:", error);
-    
-            Toast.fire({
-                icon: "error",
-                title: "Error al eliminar comentario",
-            });
-        } finally {
-            deleteCommentModal.close();
-        }
-      });
 
       // open modal
       deleteCommentModal.showModal();
 
-      // close modal when clicking outside
-      deleteCommentModal.addEventListener("click", (e) => {
-        if (e.target === deleteCommentModal) {
-          deleteCommentModal.close();
-        }
-      });
+      const imageId = getCurrentPostId();
+
+      // Get comment id and image id from closest ".comment-container" element
+
+      const commentContainer = trigger.closest(".comment-container");
+      const commentId = commentContainer.getAttribute("data-comment-id");
+    
+      currentCommentId = commentId;
+      currentImageId = imageId;
     });
   });
 }
