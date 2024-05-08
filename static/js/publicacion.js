@@ -1,3 +1,5 @@
+let currentCommentToDeleteId = null;
+
 function getCurrentPostId() {
     const postId = window.location.pathname.split("/")[2];
     return postId;
@@ -37,7 +39,9 @@ async function addCommentQuery(data) {
 
 async function deleteCommentQuery(data) {
 
-    const { commentId, postId } = data;
+    const { commentId } = data;
+
+    const postId = getCurrentPostId();
 
     const deleteCommentUrl = `/eliminarcomment/${postId}/${commentId}`;
 
@@ -62,7 +66,7 @@ async function deleteCommentQuery(data) {
 
 }
 
-function generateNewCommentElement(comment, Toast) {
+async function generateNewCommentElement(comment) {
   const {
     commentText,
     dateComment,
@@ -124,61 +128,8 @@ function generateNewCommentElement(comment, Toast) {
   commentDeleteButtonTrigger.addEventListener("click", () => {
 
     const deleteCommentModal = document.getElementById("delete-comment-modal");
-
-
     deleteCommentModal.showModal();
-
-
-    const confirmDeleteButton = deleteCommentModal.querySelector(
-      ".confirm-delete-comment"
-    );
-    const cancelDeleteButton = deleteCommentModal.querySelector(
-      ".cancel-delete-comment"
-    );
-
-    cancelDeleteButton.addEventListener("click", () => {
-      deleteCommentModal.close();
-    });
-
-    confirmDeleteButton.addEventListener("click", () => {
-
-        const deleteUrl = "/eliminarcomment/";
-        const imageId = window.location.pathname.split("/")[2];
-        const deleteCommentUrl = `${deleteUrl}${imageId}/${id}`;
-
-      fetch(deleteCommentUrl, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            Toast.fire({
-              icon: "success",
-              title: "Comentario eliminado",
-            });
-
-            newCommentElement.remove();
-          } else {
-            Toast.fire({
-              icon: "error",
-              title: "Error al eliminar comentario",
-            });
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-
-          Toast.fire({
-            icon: "error",
-            title: "Error al eliminar comentario",
-          });
-        })
-        .finally(() => {
-          deleteCommentModal.close();
-        });
-    });
+    currentCommentToDeleteId = id;
   });
 
   commentToolbar.appendChild(commentDeleteButtonTrigger);
@@ -219,7 +170,7 @@ async function loadAddCommentEvents(Toast) {
 
     try {
         const newCommentData = await addCommentQuery(data);
-        const newCommentElement = generateNewCommentElement(newCommentData, Toast);
+        const newCommentElement = await generateNewCommentElement(newCommentData);
 
         commentsContainer.appendChild(newCommentElement);
         commentForm.reset();
@@ -244,11 +195,6 @@ async function loadAddCommentEvents(Toast) {
 
 function loadDeleteCommentEvents(Toast) {
 
-  // Store current comment id and image id
-
-  let currentCommentId = null;
-  let currentImageId = null;
-
   const deleteCommentModal = document.getElementById("delete-comment-modal");
 
   const deleteCommentTriggers = document.querySelectorAll(
@@ -260,15 +206,14 @@ function loadDeleteCommentEvents(Toast) {
   );
 
   confirmDeleteButton.addEventListener("click", async () => {
-    
-      if(!currentCommentId || !currentImageId) {
-          console.error("Comment id or image id not found");
+
+      if(!currentCommentToDeleteId) {
+          console.error("Comment id not found");
           return;
       }
 
       const data = {
-          commentId: currentCommentId,
-          postId: currentImageId,
+          commentId: currentCommentToDeleteId,
       };
 
       try {
@@ -280,14 +225,13 @@ function loadDeleteCommentEvents(Toast) {
           });
 
           const commentContainer = document.querySelector(
-              `.comment-container[data-comment-id="${currentCommentId}"]`
+              `.comment-container[data-comment-id="${currentCommentToDeleteId}"]`
           );
 
           commentContainer.remove();
 
           // Reset current comment id and image id
-          currentCommentId = null;
-          currentImageId = null;
+          currentCommentToDeleteId = null;
       }
       catch (error) {
           console.error("Error:", error);
@@ -323,15 +267,12 @@ function loadDeleteCommentEvents(Toast) {
       // open modal
       deleteCommentModal.showModal();
 
-      const imageId = getCurrentPostId();
-
       // Get comment id and image id from closest ".comment-container" element
 
       const commentContainer = trigger.closest(".comment-container");
       const commentId = commentContainer.getAttribute("data-comment-id");
     
-      currentCommentId = commentId;
-      currentImageId = imageId;
+      currentCommentToDeleteId = commentId;
     });
   });
 }
@@ -377,6 +318,9 @@ function loadDeletePostEvents(Toast) {
   });
 }
 
+
+
+
 const main = () => {
 
     const Toast = Swal.mixin({
@@ -387,8 +331,10 @@ const main = () => {
         timerProgressBar: true,
         });
 
-  loadAddCommentEvents(Toast);
+
+
   loadDeleteCommentEvents(Toast);
+  loadAddCommentEvents(Toast);
   loadDeletePostEvents(Toast);
 };
 
