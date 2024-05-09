@@ -60,7 +60,7 @@ class Publicacion(FlaskForm):
     publish = SubmitField('Publicar')
 
 
-class editPublicacion(FlaskForm):
+class EditPublicacion(FlaskForm):
     publi = TextAreaField()
     save = SubmitField('Guardar cambios')
 
