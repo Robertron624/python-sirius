@@ -1,40 +1,9 @@
 {% extends 'base.html' %} {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css') }}" />
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/publication-page.css' ) }}" />
-{% endblock %} {% block nav %}
-<header class="container2">
-    <!-- Navigation -->
-    <nav class="nav-main">
-        <!-- Left Nav -->
-        <ul class="nav-menu">
-            <li>
-                <a href="/feed/">Inicio</a>
-            </li>
-            <li>
-                <a href="/perfil/">Perfil</a>
-            </li>
-            <li>
-                <a href="/nueva_publicacion/">Crear publicación</a>
-            </li>
-            <li>
-                <a href="/ayuda/">Ayuda</a>
-            </li>
-            <li>
-                <a href="/salir/">Cerrar Sesion</a>
-            </li>
-            <li>
-                <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
-            </li>
-            <form class="search-area" method="POST">
-                <div class="search-box">{{form_busqueda.texto(placeholder="Buscar...")}}</div>
-            </form>
-        </ul>
-    </nav>
-</header>
-<hr />
-{% endblock %} {% block contenido %}
-<script src="{{ url_for('static', filename='/js/publicacion.js') }}"></script>
-<script src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
+{% endblock %}  {% block contenido %}
+<script defer src="{{ url_for('static', filename='/js/publicacion.js') }}"></script>
+<script defer src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
 {% block js %} {% endblock %}
 <main class="main">
     <div class="container-full-post">

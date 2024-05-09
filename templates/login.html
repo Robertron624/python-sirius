@@ -12,16 +12,16 @@
         <!--nombre de usuario-->
         <label for="Nombre de usuario">Nombre de usuario</label>
         <!--<input type="email" placeholder="Correo electronico" required>-->
-        <div>{{form.usr}}</div>
+        <div>{{form_login.usr}}</div>
 
         <!--contraseña-->
         <label for="Contraseña">Contraseña</label>
         <!--<input type="password" placeholder="Contraseña" required>-->
-        <div>{{form.pwd}}</div>
+        <div>{{form_login.pwd}}</div>
 
         <!--btn login-->
         <!--<input type="submit" value="Iniciar Sesión">-->
-        <div class="submit">{{form.btn()}}</div>
+        <div class="submit">{{form_login.btn()}}</div>
         {% for msg in get_flashed_messages() %}
         <div id="fila">{{msg}}</div>
         {% endfor %}

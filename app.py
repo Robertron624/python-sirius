@@ -41,9 +41,9 @@ def busqueda(texto=None):
 
             try:
                 msg_receptor = res[0][0]
-                return render_template('result-busqueda.html', titulo='Resultados de la búsqueda', userList=res, imglist=res2, ava=sex, form=frm, idreceptor=msg_receptor)
+                return render_template('search-result.html', titulo='Resultados de la búsqueda', userList=res, imglist=res2, ava=sex, form=frm, idreceptor=msg_receptor)
             except Exception:
-                return render_template('result-busqueda.html', titulo='Resultados de la búsqueda', userList=res, imglist=res2, ava=sex, form=frm)
+                return render_template('search-result.html', titulo='Resultados de la búsqueda', userList=res, imglist=res2, ava=sex, form=frm)
 
         else:
             texto = request.form['texto'].capitalize()
@@ -52,7 +52,7 @@ def busqueda(texto=None):
 @app.route('/ayuda/')
 def ayuda():
     frm = Ayuda()
-    return render_template("ayuda.html", form=frm, titulo="Ayuda")
+    return render_template("help.html", form=frm, titulo="Ayuda")
 
 @app.route('/roles/<int:iduser>/', methods=['GET', 'POST'])
 def asigroles(iduser=None):

@@ -11,13 +11,12 @@ from utilidades import format_datetime, format_comment_datetime
 #create a Blueprint for post-related routes
 
 post_blueprint = Blueprint('post', __name__)
-
 @post_blueprint.route('/publicacion/<int:id>/', methods=['GET'])
 def publicacion(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_busqueda = Busqueda()
+        frm_search = Busqueda()
         frm_comentar = Comentario()
         if request.method == 'GET':
             sql = f"SELECT nombre, apellido, datepost, text, url FROM post WHERE id='{id}'"
@@ -72,7 +71,7 @@ def publicacion(id=None):
                                             'urlavatar': row[6] } for row in res3]
             html_title = f"Publicación de {post_data['nombre']} {post_data['apellidos']}"
 
-            return render_template('publicacion.html', titulo=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_busqueda=frm_busqueda, form_comentar=frm_comentar, commentList=formatted_comments_data)
+            return render_template('publicacion.html', titulo=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_search=frm_search, form_comentar=frm_comentar, commentList=formatted_comments_data, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -82,11 +81,11 @@ def nueva_publi():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm = Publicacion()
-        frm_busqueda = Busqueda()
+        frm_new_post = Publicacion()
+        frm_search = Busqueda()
         if request.method == 'GET':
             sex = session["urlava"]
-            return render_template('nueva_publicacion.html', titulo='Subir publicación', form=frm, ava=sex, form_busqueda=frm_busqueda)
+            return render_template('nueva_publicacion.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'publish' in request.form:
             f = request.files['adj']
             nom2 = secure_filename(f.filename)
@@ -112,7 +111,7 @@ def nueva_publi():
                 sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url,sexo,urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
                 res = accion(sql, (usr, nom, ape, fecpost,
                                    text, urlimg, sex, urlava))
-                return render_template('nueva_publicacion.html', titulo='Subir publicación', form=frm, ava=urlava, form_busqueda=frm_busqueda)
+                return render_template('nueva_publicacion.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
             else:
                 usr = session['ema']
                 nom = session["nom"]
@@ -138,7 +137,7 @@ def nueva_publi():
                                    text, urlimg, sex, urlava))
                 
                 print(res)
-                return render_template('nueva_publicacion.html', titulo='Subir publicación', form=frm, ava=urlava, form_busqueda=frm_busqueda)
+                return render_template('nueva_publicacion.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -148,15 +147,15 @@ def editar(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm = EditPublicacion()
-        frm_busqueda = Busqueda()
+        frm_edit_post = EditPublicacion()
+        frm_search = Busqueda()
         if request.method == 'GET':
             idImg = id
             sex = session["urlava"]
             sql_url = f"SELECT url from post WHERE id='{id}'"
             res = seleccion(sql_url)
             url_img = res[0][0]
-            return render_template('editar_publicacion.html', titulo='Editar publicación', form=frm, ava=sex, id_img=idImg, ruta=url_img, form_busqueda=frm_busqueda)
+            return render_template('editar_publicacion.html', titulo='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, ruta=url_img, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -171,7 +170,7 @@ def editar(id=None):
             else:
                 return redirect('/feed/')
 
-@post_blueprint.route('/eliminarpost/<int:id>')
+@post_blueprint.route('/eliminarpost/<int:id>', methods=['DELETE'])
 def eliminar(id=None):
     if 'id' not in session:
         return redirect('/')

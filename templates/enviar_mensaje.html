@@ -1,43 +1,9 @@
 {% extends 'base.html' %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/navegacion.css') }}" />
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css' ) }}" />
 {% endblock %}
-
-{% block nav %}
-<div class="container2">
-    <!-- Navigation -->
-    <nav class="nav-main">
-        <!-- Left Nav -->
-        <ul class="nav-menu">
-            <li>
-                <a href="/feed/">Inicio</a>
-            </li>
-            <li>
-                <a href="/perfil/">Perfil</a>
-            </li>
-            <li>
-                <a href="/nueva_publicacion/">Crear publicación</a>
-            </li>
-            <li>
-                <a href="/ayuda/">Ayuda</a>
-            </li>
-            <li>
-                <a href="/salir/">Cerrar Sesion</a>
-            </li>
-            <li>
-                <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
-            </li>
-            <form class="search-area" method="POST">
-                <div class="search-box">{{form_busqueda.texto(placeholder="Buscar...")}}</div>
-            </form>
-        </ul>
-    </nav>
-</div>
-<hr />
-{% endblock %}
-
 
 {% block contenido %}
 

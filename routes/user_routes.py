@@ -10,13 +10,12 @@ from datetime import datetime
 #create a Blueprint for user-related routes
 
 user_blueprint = Blueprint('user', __name__)
-
 @user_blueprint.route('/perfil/', methods=['GET', 'POST'])
 def perfil():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm = Busqueda()
+        frm_search = Busqueda()
         if request.method == 'GET':
             usr = session['ema']
             sex = session["urlava"]
@@ -32,7 +31,7 @@ def perfil():
                        'url': row[6],
                         } for row in res]
 
-            return render_template('perfilusr.html', titulo='Mi perfil', ava=sex, form=frm, postList=formatted_results)
+            return render_template('perfilusr.html', titulo='Mi perfil', ava=sex, form_search=frm_search, postList=formatted_results, include_header=True)
         else:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -42,7 +41,7 @@ def home():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm = Busqueda()
+        frm_search = Busqueda()
         if request.method == 'GET':
             sql = f"SELECT id, correo,nombre,apellido, datepost, text, url, sexo, urlavatar FROM post"
             resget = seleccion(sql)
@@ -57,7 +56,7 @@ def home():
                        'sexo': row[7], 
                        'urlavatar': row[8] } for row in resget]
 
-            return render_template('feed.html', titulo='Feed', imglist=formatted_results, form=frm)
+            return render_template('feed.html', titulo='Feed', imglist=formatted_results, form_search=frm_search, include_header=True)
         else:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -67,16 +66,16 @@ def editarusuario():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm = EditarUsuario()
+        frm_edit_user = EditarUsuario()
         if request.method == 'GET':
-            return render_template('editarusuario.html', form=frm, titulo='Editar usuario')
+            return render_template('editarusuario.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
         else:
             # Recuperar los datos del formulario
             nom = escape(request.form['nom']).capitalize()
             ape = escape(request.form['ape']).capitalize()
             cla = escape(request.form['cla']).strip()
             fnac = escape(request.form['fnac'])
-            sex = escape(frm.sex.data)
+            sex = escape(frm_edit_user.sex.data)
             fnac2 = str(fnac)
             ffinal = datetime.strptime(fnac2, "%Y-%m-%d")
             hoy = datetime.today()
@@ -112,7 +111,7 @@ def editarusuario():
             if fnac == None or len(fnac) == 0 or nacerror == False:
                 flash('ERROR: Debes tener +18 para registarte.')
                 swerror = True
-            pwd = escape(frm.cla.data.strip())
+            pwd = escape(frm_edit_user.cla.data.strip())
             sql = f"SELECT contraseña FROM usuarios WHERE correo='{ema}'"
             res2 = seleccion(sql)
             cbd = res2[0][0]
@@ -128,20 +127,21 @@ def editarusuario():
                     flash(
                         'ERROR: No se pudieron registrar los datos, intente nuevamente')
 
-                    return render_template('editarusuario.html', form=frm, titulo='Editar usuario')
+                    return render_template('editarusuario.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
                 else:
                     flash('Cambios efectuados correctamente.')
 
-            return render_template('editarusuario.html', form=frm, titulo='Editar usuario')
+            return render_template('editarusuario.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
         
 @user_blueprint.route('/cambiarpsw/', methods=['POST', 'GET'])
 def cambiarpsw():
     if 'id' not in session:
         return redirect('/')
     else:
-        recu = Cambiarpsw()
+        frm_change_password = Cambiarpsw()
+        frm_search = Busqueda()
         if request.method == 'GET':
-            return render_template('cambiarpsw.html', form=recu, titulo='Cambiar contraseña')
+            return render_template('cambiarpsw.html', form_change_password=frm_change_password, form_search=frm_search, titulo='Cambiar contraseña', include_header=True)
         else:
             pwdan = escape(request.form['claan']).strip()
             pwdn = escape(request.form['clanue']).strip()
@@ -173,16 +173,19 @@ def cambiarpsw():
                 res = editarimg(sql)
             if res == 0:
                 flash('ERROR: No se pudo registrar el cambio.')
-                return render_template('cambiarpsw.html', form=recu, titulo='Cambiar contraseña')
+                return render_template('cambiarpsw.html', form_change_password=frm_change_password, form_search=frm_search, titulo='Cambiar contraseña', include_header=True)
             else:
-                return render_template('login.html', form=recu, titulo='Cambiar contraseña')
+                # make the user log in again with the new password
+                session.clear()
+                return redirect('/')
+
             
 @user_blueprint.route('/mensajes/<int:id>', methods=['GET', 'POST'])
 def mostrarmsj(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_busqueda = Busqueda()
+        frm_search = Busqueda()
         if request.method == 'GET':
             userid = id
 
@@ -190,7 +193,7 @@ def mostrarmsj(id=None):
             res = seleccion(sql)
 
             return render_template('mensajes_privados.html',
-                                   form_busqueda=frm_busqueda, msgList=res)
+                                   form_search=frm_search, msgList=res, titulo='Mensajes privados', include_header=True)
         else:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -201,14 +204,14 @@ def enviarmsj(idremitente=None, idreceptor=None):
         return redirect('/')
     else:
         frm_mensaje = Mensaje()
-        frm_busqueda = Busqueda()
+        frm_search = Busqueda()
 
         if request.method == 'GET':
             receptor = idreceptor
             sex = session['urlava']
             sql2 = f"SELECT nombre, apellidos FROM usuarios WHERE id='{receptor}'"
             res2 = seleccion(sql2)
-            return render_template('enviar_mensaje.html', form_mensaje=frm_mensaje, form_busqueda=frm_busqueda, receptor=res2, ava=sex)
+            return render_template('enviar_mensaje.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
         elif request.method == 'POST' and ('btn_mensaje' or 'texto_mensaje'):
             remitente = idremitente
             receptor = idreceptor
@@ -226,10 +229,10 @@ def enviarmsj(idremitente=None, idreceptor=None):
 
             if res == 0:
                 flash('Mensaje enviado correctamente')
-                return render_template('enviar_mensaje.html', form_mensaje=frm_mensaje, form_busqueda=frm_busqueda, receptor=res2, ava=sex)
+                return render_template('enviar_mensaje.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
             else:
                 flash('Error: no se pudo enviar el mensaje')
-                return render_template('enviar_mensaje.html', form_mensaje=frm_mensaje, form_busqueda=frm_busqueda, receptor=res2, ava=sex)
+                return render_template('enviar_mensaje.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')

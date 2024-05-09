@@ -5,7 +5,6 @@ from datetime import datetime
 #create a Blueprint for comment-related routes
 
 comment_blueprint = Blueprint('comment', __name__)
-
 @comment_blueprint.route('/new-comment/<int:id>/', methods=['POST'])
 def create_comment(id=None):
     if 'id' not in session:

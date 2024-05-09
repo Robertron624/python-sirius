@@ -1,6 +1,5 @@
-from flask import Blueprint, redirect, render_template, request, session, jsonify, flash
+from flask import Blueprint, redirect, render_template, request, session, flash
 from db import seleccion, accion
-from utilidades import format_datetime
 from formularios import Login, Registro, Recuperarpsw
 from utilidades import pass_valido, email_valido
 from markupsafe import escape
@@ -16,13 +15,13 @@ auth_blueprint = Blueprint('auth', __name__)
 @auth_blueprint.route('/', methods=['GET', 'POST'])
 @auth_blueprint.route('/login/', methods=['POST', 'GET'])
 def login():
-    frm = Login()
+    frm_login = Login()
     if request.method == 'GET':
-        return render_template('login.html', form=frm, titulo='Login de usuario')
+        return render_template('login.html', form_login=frm_login, titulo='Login de usuario')
     else:
         # Recuperar datos del formulario
-        usr = escape(frm.usr.data.strip()).lower()
-        pwd = escape(frm.pwd.data.strip())
+        usr = escape(frm_login.usr.data.strip()).lower()
+        pwd = escape(frm_login.pwd.data.strip())
         # Preparacion de consulta no parametrica
         sql = f"SELECT id, nombre, apellidos, fnac, contraseña,sexo,rol_id,urlavatar FROM usuarios WHERE correo='{usr}'"
         # Ejecutar la consulta
@@ -53,13 +52,13 @@ def login():
             # Informar de clave incorrecta y refrescar la pagina
             else:
                 flash('ERROR: Usuario o contraseña no válida')
-                return render_template('login.html', form=frm, titulo='Login de usuario')
+                return render_template('login.html', form_login=frm_login, titulo='Login de usuario')
             
 @auth_blueprint.route('/registro/', methods=['POST', 'GET'])
 def registro():
-    frm = Registro()
+    frm_register = Registro()
     if request.method == 'GET':
-        return render_template('registro.html', form=frm, titulo='Registro de usuario')
+        return render_template('registro.html', form=frm_register, titulo='Registro de usuario')
     else:
         # Recuperar los datos del formulario
         nom = escape(request.form['nom']).capitalize()
@@ -69,7 +68,7 @@ def registro():
         cla = escape(request.form['cla'])
         ver = escape(request.form['ver'])
         fnac = escape(request.form['fnac'])
-        sex = escape(frm.sex.data)
+        sex = escape(frm_register.sex.data)
 
         fnac2 = str(fnac)
         ffinal = datetime.strptime(fnac2, "%Y-%m-%d")
@@ -139,7 +138,7 @@ def registro():
             if res == 0:
                 flash('ERROR: No se pudieron registrar los datos, intente nuevamente')
 
-                return render_template('registro.html', form=frm, titulo='Rereturn rendergistro de usuario')
+                return render_template('registro.html', form_register=frm_register, titulo='Registro de usuario')
             else:
                 flash('Usuario correctamente registrado')
                 
@@ -147,7 +146,7 @@ def registro():
                 time.sleep(3)
                 return redirect('/login/')
 
-        return render_template('registro.html', form=frm, titulo='Rereturn rendergistro de usuario')
+        return render_template('registro.html', form_register=frm_register, titulo='Registro de usuario')
 
 @auth_blueprint.route('/salir/', methods=['GET'])
 def salir():
@@ -160,5 +159,5 @@ def salir():
 
 @auth_blueprint.route('/recuperarcontraseña/', methods=['POST', 'GET'])
 def recuperarpsw():
-    recu = Recuperarpsw()
-    return render_template('recuperarpsw.html', form=recu, titulo='Recuperar contraseña')
+    frm_recover_password = Recuperarpsw()
+    return render_template('recuperarpsw.html', form_recover_password=frm_recover_password, titulo='Recuperar contraseña')

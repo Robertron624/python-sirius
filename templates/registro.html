@@ -6,35 +6,35 @@
     <!--nombre y apellido-->
     <!--<input type="text" placeholder="Nombres">-->
     <div>
-        {{form.nom(placeholder="Nombres")}} {{form.ape(placeholder="Apellidos")}}
+        {{form_register.nom(placeholder="Nombres")}} {{form_register.ape(placeholder="Apellidos")}}
     </div>
     <!--correo-->
     <!--<input type="email" placeholder="Correo electronico">-->
-    <div>{{form.ema(placeholder="Email")}}</div>
+    <div>{{form_register.ema(placeholder="Email")}}</div>
     <!--confirmar correo-->
     <!--<input type="email" placeholder="Confirmar correo electronico">-->
-    <div>{{form.cema(placeholder="Confirmar email")}}</div>
+    <div>{{form_register.cema(placeholder="Confirmar email")}}</div>
     <!--contraseña-->
     <!--<input type="password" placeholder="Contraseña">-->
-    <div>{{form.cla(placeholder="Contraseña")}}</div>
+    <div>{{form_register.cla(placeholder="Contraseña")}}</div>
     <!--confirmar contraseña-->
     <!--<input type="password" placeholder="Confirmar contraseña">-->
-    <div class="confirm-container">{{form.ver(placeholder="Confirmar contraseña")}}</div>
+    <div class="confirm-container">{{form_register.ver(placeholder="Confirmar contraseña")}}</div>
     <!--Fecha de nacimiento-->
     <div class="fnac">
         <label for="Fecha de nacimiento">Fecha de nacimiento</label>
     </div>
-    <div class="date-container">{{form.fnac}}</div>
+    <div class="date-container">{{form_register.fnac}}</div>
 
     <div class="sexo">
         <label for="Sexo">Sexo</label>
     </div>
     <div>
-        <div class="sexo2">{{form.sex}}</div>
+        <div class="sexo2">{{form_register.sex}}</div>
         
     </div>
     <div class="submit-container">
-        <div>{{form.btn}}</div>
+        <div>{{form_register.btn}}</div>
     </div>
 
     <div class="terminos">

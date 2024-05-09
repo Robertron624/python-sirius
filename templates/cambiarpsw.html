@@ -1,10 +1,11 @@
 {% extends 'base.html' %} {% block css %}
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
 {% endblock %} {% block contenido %}
 <h3 class="nombre">Python Regius</h3>
 <h2>Comparte tus mejores momentos.</h2>
 <div class="login-box">
-    <img class="avatar" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="logopython" />
+    <img class="avatar" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="logo python regius" />
     <h1>Cambiar contraseña</h1>
     <form name="frecu" id="frecu"  method="POST">
         <!--nombre de usuario-->
