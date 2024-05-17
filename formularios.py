@@ -80,17 +80,16 @@ class Mensaje(FlaskForm):
 
 
 class EditarUsuario(FlaskForm):
-    nom = StringField('Nombre *', validators=[Length(
+    edit_first_name = StringField('Nombre *', validators=[Length(
         min=1, max=100, message='Longitud fuera de rango'), InputRequired(message='Nombre es requerido')])
-    ape = StringField('Apellido *', validators=[Length(
+    edit_last_name = StringField('Apellido *', validators=[Length(
         min=1, max=100, message='Longitud fuera de rango'), InputRequired(message='Apellido es requerido')])
-    cla = PasswordField('Clave *', validators=[Length(
-        min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerido')])
-    fnac = DateField(
+    edit_password = PasswordField('Clave *', validators=[Length( min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerida')])
+    edit_birth_date = DateField(
         format="%d-%m-%y", validators=[DataRequired(message='Fecha de nacimiento requerida.')])
-    sex = RadioField('Label', choices=[
+    edit_sex = RadioField('Label', choices=[
                      ('M', 'Mujer'), ('H', 'Hombre'), ('P', 'Otro')], default="P")
-    btn = SubmitField('Guardar cambios')
+    edit_submit = SubmitField('Guardar cambios')
 
 class Cambiarpsw(FlaskForm):
     claan = PasswordField('Clave *', validators=[Length(

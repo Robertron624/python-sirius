@@ -50,7 +50,7 @@ def busqueda(texto=None):
             return redirect(f'/busqueda/{texto}')
 
 @app.route('/ayuda/')
-def ayuda():
+def help():
     frm = Ayuda()
     return render_template("help.html", form=frm, titulo="Ayuda")
 

@@ -61,14 +61,15 @@ def home():
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
         
-@user_blueprint.route('/editarusuario/', methods=['POST', 'GET'])
-def editarusuario():
+@user_blueprint.route('/editar-usuario/', methods=['POST', 'GET'])
+def edit_user():
     if 'id' not in session:
         return redirect('/')
     else:
         frm_edit_user = EditarUsuario()
+        frm_search = Busqueda()
         if request.method == 'GET':
-            return render_template('editarusuario.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
+            return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', form_search=frm_search, include_header=True)
         else:
             # Recuperar los datos del formulario
             nom = escape(request.form['nom']).capitalize()
@@ -127,11 +128,11 @@ def editarusuario():
                     flash(
                         'ERROR: No se pudieron registrar los datos, intente nuevamente')
 
-                    return render_template('editarusuario.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
+                    return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
                 else:
                     flash('Cambios efectuados correctamente.')
 
-            return render_template('editarusuario.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
+            return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
         
 @user_blueprint.route('/cambiarpsw/', methods=['POST', 'GET'])
 def cambiarpsw():

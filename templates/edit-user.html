@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/edit-user.css' ) }}" />
+{% endblock %} {% block contenido %}
+<form class="edit-user" name="edit-user" id="edit-user" action="/editar-usuario/" method="POST">
+    <h1>Editar Usuario</h1>
+
+    <div class="name-lastname">
+        {{form_edit_user.edit_first_name(placeholder="Nombres")}} 
+        {{form_edit_user.edit_last_name(placeholder="Apellidos")}}
+    </div>
+    
+    {{form_edit_user.edit_password(placeholder="Tu contraseña actual")}}
+
+    <div class="birth-date">
+        <label for="birth-date">Fecha de nacimiento</label>
+        {{form_edit_user.edit_birth_date}}
+    </div>
+
+    <div class="sex-container">
+        <p>Sexo</p>
+        {{form_edit_user.edit_sex}}
+    </div>
+
+    <div class="submit-container">
+        {{form_edit_user.edit_submit}}
+    </div>
+
+
+    {% for msg in get_flashed_messages() %}
+        <div class="error-message">{{msg}}</div>
+    {% endfor %}
+</form>
+<a class="go-back" href="/perfil/">Volver</a>
+{% endblock %}
