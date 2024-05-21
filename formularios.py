@@ -85,7 +85,7 @@ class EditarUsuario(FlaskForm):
     edit_last_name = StringField('Apellido *', validators=[Length(
         min=1, max=100, message='Longitud fuera de rango'), InputRequired(message='Apellido es requerido')])
     edit_password = PasswordField('Clave *', validators=[Length( min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerida')])
-    edit_birth_date = DateField(
+    edit_birthdate = DateField(
         format="%d-%m-%y", validators=[DataRequired(message='Fecha de nacimiento requerida.')])
     edit_sex = RadioField('Label', choices=[
                      ('M', 'Mujer'), ('H', 'Hombre'), ('P', 'Otro')], default="P")

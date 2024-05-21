@@ -21,3 +21,9 @@ def format_comment_datetime(date) -> str:
     except ValueError:
         datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
     return datetime_object.strftime('%B %d, %Y')
+
+# receives a datetime and returns whether the user is an adult or not
+def is_adult(birthdate: datetime) -> bool:
+    current_date = datetime.now()
+    age = current_date.year - birthdate.year - ((current_date.month, current_date.day) < (birthdate.month, birthdate.day))
+    return age >= 18

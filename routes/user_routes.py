@@ -2,7 +2,7 @@ from flask import Blueprint, redirect, render_template, request, session, flash
 from db import seleccion, accion, editarimg
 from utilidades import format_datetime
 from formularios import EditarUsuario, Busqueda, Cambiarpsw, Mensaje
-from utilidades import pass_valido
+from utilidades import pass_valido, is_adult
 from markupsafe import escape
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
@@ -72,26 +72,17 @@ def edit_user():
             return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', form_search=frm_search, include_header=True)
         else:
             # Recuperar los datos del formulario
-            nom = escape(request.form['nom']).capitalize()
-            ape = escape(request.form['ape']).capitalize()
-            cla = escape(request.form['cla']).strip()
-            fnac = escape(request.form['fnac'])
-            sex = escape(frm_edit_user.sex.data)
-            fnac2 = str(fnac)
-            ffinal = datetime.strptime(fnac2, "%Y-%m-%d")
-            hoy = datetime.today()
-            ema = session["ema"]
-            nacerror = False
-            if (ffinal.year + 18) < hoy.year:
-                nacerror = True
-            elif (ffinal.year + 18) == hoy.year:
-                if (ffinal.month > hoy.month):
-                    nacerror = True
-                elif (ffinal.month == hoy.month):
-                    if (ffinal.day >= hoy.day):
-                        nacerror = True
-                    else:
-                        nacerror = False
+            first_name = escape(request.form['edit_first_name']).capitalize()
+            last_name = escape(request.form['edit_last_name']).capitalize()
+            password = escape(request.form['edit_password']).strip()
+            birthdate_str = escape(request.form['edit_birthdate'])
+            sex = escape(frm_edit_user.edit_sex.data)
+            
+            birthdate_object = datetime.strptime(birthdate_str, '%Y-%m-%d')
+            is_new_adult = is_adult(birthdate_object)
+            
+            email = session['ema']
+            
             if sex == "H":
                 urlava = "avatares/hombre-barba.jpg"
             elif sex == "M":
@@ -100,20 +91,20 @@ def edit_user():
                 urlava = "avatares/otro.png"
 
             swerror = False
-            if nom == None or len(nom) == 0:
+            if first_name == None or len(first_name) == 0:
                 flash('ERROR: Debe suministrar un nombre.')
                 swerror = True
-            if ape == None or len(ape) == 0:
+            if last_name == None or len(last_name) == 0:
                 flash('ERROR: Debe suministrar sus apellidos.')
                 swerror = True
-            if cla == None or len(cla) == 0 or not pass_valido(cla):
+            if password == None or len(password) == 0 or not pass_valido(password):
                 flash('ERROR: Debe suministrar una contraseña valida.')
                 swerror = True
-            if fnac == None or len(fnac) == 0 or nacerror == False:
-                flash('ERROR: Debes tener +18 para registarte.')
+            if birthdate_str == None or len(birthdate_str) == 0 or is_new_adult == False:
+                flash('ERROR: Debes tener +18 para registrarte.')
                 swerror = True
-            pwd = escape(frm_edit_user.cla.data.strip())
-            sql = f"SELECT contraseña FROM usuarios WHERE correo='{ema}'"
+            pwd = escape(frm_edit_user.edit_password.data.strip())
+            sql = f"SELECT contraseña FROM usuarios WHERE correo='{email}'"
             res2 = seleccion(sql)
             cbd = res2[0][0]
 
@@ -121,18 +112,18 @@ def edit_user():
                 flash('ERROR: La contraseña no coincide.')
                 swerror = True
             if not swerror:
-                sql = f"UPDATE usuarios SET nombre='{nom}',apellidos='{ape}',fnac='{fnac}',sexo='{sex}',urlavatar='{urlava}' WHERE correo='{ema}'"
+                sql = f"UPDATE usuarios SET nombre='{first_name}',apellidos='{last_name}',fnac='{birthdate_object}',sexo='{sex}',urlavatar='{urlava}' WHERE correo='{email}'"
                 res = editarimg(sql)
                 # Proceso los resultados
                 if res == 0:
                     flash(
                         'ERROR: No se pudieron registrar los datos, intente nuevamente')
 
-                    return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
+                    return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario')
                 else:
                     flash('Cambios efectuados correctamente.')
 
-            return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', include_header=True)
+            return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario')
         
 @user_blueprint.route('/cambiarpsw/', methods=['POST', 'GET'])
 def cambiarpsw():

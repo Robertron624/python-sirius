@@ -12,9 +12,9 @@
     
     {{form_edit_user.edit_password(placeholder="Tu contraseña actual")}}
 
-    <div class="birth-date">
-        <label for="birth-date">Fecha de nacimiento</label>
-        {{form_edit_user.edit_birth_date}}
+    <div class="birthdate">
+        <label for="birthdate">Fecha de nacimiento</label>
+        {{form_edit_user.edit_birthdate}}
     </div>
 
     <div class="sex-container">
@@ -26,10 +26,11 @@
         {{form_edit_user.edit_submit}}
     </div>
 
-
-    {% for msg in get_flashed_messages() %}
-        <div class="error-message">{{msg}}</div>
-    {% endfor %}
+    <div class="errors-containers">
+        {% for error in form_edit_user.errors %}
+            <div class="error-message">{{error}}</div>
+        {% endfor %}
+    </div>
 </form>
 <a class="go-back" href="/perfil/">Volver</a>
 {% endblock %}

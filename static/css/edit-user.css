@@ -1,24 +1,16 @@
 
 form.edit-user {
   margin: 0px auto;
-  top: 3%;
   width: 450px;
-  height: 400px;
   background: #342a7d;
   color: white;
-  padding: 70px 30px;
+  padding: 1.5rem 2rem 3rem;
   border-radius: 5%;
   box-shadow: 3px 3px 50px 7px black;
-  position: relative;
 }
 
 h1 {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  bottom: 40px;
   font-size: 25px;
-  font-weight: bold;
 }
 
 form.edit-user input[type="text"] {
@@ -48,10 +40,6 @@ form.edit-user ::placeholder {
   color: gray;
 }
 
-div.birth-date {
-  font-size: 20px;
-}
-
 #sex {
   list-style: none;
   display: inline-flex;
@@ -61,11 +49,12 @@ div.sex {
   font-size: 20px;
 }
 
-.birth-date {
+.birthdate {
   margin-block-start: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  font-size: 1.4rem;
 }
 
 form.edit-user input[type="date"] {
@@ -149,3 +138,9 @@ form.edit-user input[type="submit"]:hover {
   width: 100%;
 }
 
+.errors-container {
+  margin-block-start: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

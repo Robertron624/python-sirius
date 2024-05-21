@@ -22,9 +22,12 @@
         <!--btn login-->
         <!--<input type="submit" value="Iniciar Sesión">-->
         <div class="submit">{{form_login.btn()}}</div>
-        {% for msg in get_flashed_messages() %}
-        <div id="fila">{{msg}}</div>
-        {% endfor %}
+
+        <div class="errors-container">
+            {% for error in form_login.errors %}
+            <div class="error-message">{{error}}</div>
+            {% endfor %}
+        </div>
 
         <a href="/recuperarcontraseña/">¿Olvidaste tu contraseña?</a><br />
         <a href="/registro/">Crear cuenta nueva</a>
