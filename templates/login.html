@@ -1,7 +1,14 @@
 {% extends 'base.html' %} {% block css %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
-{% endblock %} {% block contenido %}
+{% endblock %} 
+
+{% block contenido %}
+<script src="{{ url_for('static', filename='/js/login.js' ) }}"></script>
+
+
+
+
 <div class="title-subtitle">
     <h1 class="name">Python Regius</h1>
     <p class="subtitle">Comparte tus mejores momentos.</p>
@@ -11,21 +18,25 @@
     <h3>Inicia sesión</h3>
     <form name="login-form" id="login-form" action="/login/" method="POST">
         <div class="user-container">
-            <label for="Nombre de usuario">Nombre de usuario</label>
-            {{form_login.usr}}
+            <label for="login_user">Nombre de usuario</label>
+            {{form_login.login_user}}
         </div>
 
         <div class="password-container">
-            <label for="Contraseña">Contraseña</label>
-            {{form_login.pwd}}
+            <label for="login_password">Contraseña</label>
+            {{form_login.login_password}}
         </div>
 
-        <div class="submit">{{form_login.btn()}}</div>
+        <div class="submit">{{form_login.enter()}}</div>
 
         <div class="errors-container">
-            {% for error in form_login.errors %}
-            <div class="error-message">{{error}}</div>
-            {% endfor %}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="error-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
 
     </form>

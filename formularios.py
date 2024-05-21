@@ -9,11 +9,11 @@ from wtforms.validators import DataRequired, InputRequired, Length, EqualTo
 
 
 class Login(FlaskForm):
-    usr = EmailField('Usuario *', validators=[Length(
+    login_user = EmailField('Usuario *', validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Usuario es requerido')])
-    pwd = PasswordField('Clave *', validators=[Length(
+    login_password = PasswordField('Clave *', validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerido')])
-    btn = SubmitField('Ingresar')
+    enter = SubmitField('Ingresar')
 
 
 class Registro(FlaskForm):

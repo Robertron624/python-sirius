@@ -68,7 +68,7 @@
   background: #342a7d;
   color: white;
   box-sizing: border-box;
-  padding: 2rem 1rem 4rem;
+  padding: 2rem 1rem 3rem;
   border-radius: 1rem;
   box-shadow: 3px 3px 50px 7px black;
 }
@@ -104,8 +104,12 @@
 
 .login-box input {
   width: 100%;
-  margin-bottom: 20%;
   color: white;
+}
+
+.user-container,
+.password-container {
+  margin-bottom: 2rem;
 }
 
 h3 {
@@ -136,19 +140,7 @@ h3 {
   font-size: 19px;
   border-radius: 20px;
   font-weight: bold;
-}
-
-#btncla {
-  border: none;
-  outline: none;
-  height: 40px;
-  background: gold;
-  color: black;
-  font-size: 19px;
-  border-radius: 20px;
-  font-weight: bold;
-  bottom: 35px;
-  position: relative;
+  transition: all 0.5s ease-in-out;
 }
 
 .login-box input[type="submit"]:hover {

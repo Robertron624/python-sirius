@@ -25,10 +25,10 @@ def login():
             return render_template('login.html', form_login=frm_login, titulo='Login de usuario')
     else:
         # Recuperar datos del formulario
-        usr = escape(frm_login.usr.data.strip()).lower()
-        pwd = escape(frm_login.pwd.data.strip())
-        # Preparacion de consulta no parametrica
-        sql = f"SELECT id, nombre, apellidos, fnac, contraseña,sexo,rol_id,urlavatar FROM usuarios WHERE correo='{usr}'"
+        login_user = escape(frm_login.login_user.data.strip()).lower()
+        login_password = escape(frm_login.login_password.data.strip())
+
+        sql = f"SELECT id, nombre, apellidos, fnac, contraseña,sexo,rol_id,urlavatar FROM usuarios WHERE correo='{login_user}'"
         # Ejecutar la consulta
         res = seleccion(sql)
 
@@ -41,14 +41,14 @@ def login():
             cbd = res[0][4]
 
             # Comparo la clave cifrada con la proporcianada en el formulario
-            if check_password_hash(cbd, pwd):
+            if check_password_hash(cbd, login_password):
                 # Guardar los datos en una variable de sesion
                 session.clear()
                 session['id'] = res[0][0]
                 session['nom'] = res[0][1]
                 session['ape'] = res[0][2]
-                session['ema'] = usr
-                session['con'] = pwd
+                session['ema'] = login_user
+                session['con'] = login_password
                 session['fna'] = res[0][3]
                 session['sex'] = res[0][5]
                 session['rolid'] = res[0][6]
