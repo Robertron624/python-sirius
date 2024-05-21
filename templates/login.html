@@ -1,26 +1,25 @@
 {% extends 'base.html' %} {% block css %}
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
 {% endblock %} {% block contenido %}
 <div class="title-subtitle">
-    <h1 class="nombre">Python Regius</h1>
-    <h2 class="subtitle">Comparte tus mejores momentos.</h2>
+    <h1 class="name">Python Regius</h1>
+    <p class="subtitle">Comparte tus mejores momentos.</p>
 </div>
 <div class="login-box">
-    <img class="avatar" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="logopython" />
+    <img class="avatar" loading="lazy" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="company logo" />
     <h3>Inicia sesión</h3>
-    <form name="login" id="flogin" action="/login/" method="POST">
-        <!--nombre de usuario-->
-        <label for="Nombre de usuario">Nombre de usuario</label>
-        <!--<input type="email" placeholder="Correo electronico" required>-->
-        <div>{{form_login.usr}}</div>
+    <form name="login-form" id="login-form" action="/login/" method="POST">
+        <div class="user-container">
+            <label for="Nombre de usuario">Nombre de usuario</label>
+            {{form_login.usr}}
+        </div>
 
-        <!--contraseña-->
-        <label for="Contraseña">Contraseña</label>
-        <!--<input type="password" placeholder="Contraseña" required>-->
-        <div>{{form_login.pwd}}</div>
+        <div class="password-container">
+            <label for="Contraseña">Contraseña</label>
+            {{form_login.pwd}}
+        </div>
 
-        <!--btn login-->
-        <!--<input type="submit" value="Iniciar Sesión">-->
         <div class="submit">{{form_login.btn()}}</div>
 
         <div class="errors-container">
@@ -29,9 +28,11 @@
             {% endfor %}
         </div>
 
-        <a href="/recuperarcontraseña/">¿Olvidaste tu contraseña?</a><br />
-        <a href="/registro/">Crear cuenta nueva</a>
     </form>
+    <div class="links">
+        <a href="/recuperarcontraseña/">¿Olvidaste tu contraseña?</a>
+        <a href="/registro/">Crear cuenta nueva</a>
+    </div>
 </div>
 
 {% endblock %}

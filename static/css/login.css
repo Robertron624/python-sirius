@@ -1,32 +1,10 @@
-h1, h2, h3, h4 {
-  margin: 0;
-  padding: 0;
-}
-
-@font-face {
-  font-family: Dark;
-  src: url(../fonts/Dark.otf);
-  font-style: normal;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  background: url(../img/fondo.png) center center/cover /*#2A2740*/;
-  background-size: cover;
-  font-family: sans-serif;
-  height: 100vh;
-  background-repeat: no-repeat;
-
-  display: flex;
-  align-items: center;
-}
 
 .cuerpo {
   max-width: 700px;
   margin-inline: auto;
   display: flex;
-  gap: 3rem
+  flex-direction: column;
+  gap: 6rem
 }
 
 #volver {
@@ -66,8 +44,8 @@ body {
   justify-content: center;
 }
 
-.nombre {
-  margin: 0 0 2rem 0;
+.name {
+  margin: 0 0 2rem;
   padding: 0;
   font-family: 'Dark', sans-serif;
   font-size: 70px;
@@ -85,15 +63,14 @@ body {
 
 
 .login-box {
-  width: 320px;
-  height: 480px;
+  width: 100%;
+  max-width: 320px;
   background: #342a7d;
   color: white;
   box-sizing: border-box;
-  padding: 70px 30px;
-  border-radius: 5%;
+  padding: 2rem 1rem 4rem;
+  border-radius: 1rem;
   box-shadow: 3px 3px 50px 7px black;
-  position: relative;
 }
 
 .login-box h3 {
@@ -106,10 +83,8 @@ body {
   width: 125px;
   height: 125px;
   border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  top: -50px;
-  transform: translate(-50%, -10%);
+  margin-inline: auto;
+  margin-block-start: -6rem;
 }
 
 .login-box h1 {
@@ -131,6 +106,10 @@ body {
   width: 100%;
   margin-bottom: 20%;
   color: white;
+}
+
+h3 {
+  padding-block-start: 2rem;
 }
 
 .login-box input[type="email"],
@@ -178,18 +157,14 @@ body {
   cursor: pointer;
 }
 
-.login-box a {
-  text-decoration: none;
-  font-size: 13px;
-  line-height: 15px;
-  color: white;
-  text-align: center;
-  position: relative;
-  bottom: 20px;
+.login-box .links {
+  display: grid;
+  gap: .6rem;
+  margin-block-start: 1rem;
 }
 
-.login-box a:hover {
-  color: gold;
+.login-box .links a {
+  font-size: .75rem;
 }
 
 textarea {
@@ -200,4 +175,10 @@ textarea {
   width: 252px;
   height: 159px;
   resize: none;
+}
+
+@media screen and (min-width: 640px){
+  .cuerpo {
+    flex-direction: row;
+  }
 }

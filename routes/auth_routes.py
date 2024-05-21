@@ -17,7 +17,12 @@ auth_blueprint = Blueprint('auth', __name__)
 def login():
     frm_login = Login()
     if request.method == 'GET':
-        return render_template('login.html', form_login=frm_login, titulo='Login de usuario')
+        
+        # If the user is already logged in, redirect to the feed
+        if 'id' in session:
+            return redirect('/feed/')
+        else:
+            return render_template('login.html', form_login=frm_login, titulo='Login de usuario')
     else:
         # Recuperar datos del formulario
         usr = escape(frm_login.usr.data.strip()).lower()
