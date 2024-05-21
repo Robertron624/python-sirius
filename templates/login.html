@@ -5,9 +5,7 @@
 
 {% block contenido %}
 <script src="{{ url_for('static', filename='/js/login.js' ) }}"></script>
-
-
-
+<script defer src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
 
 <div class="title-subtitle">
     <h1 class="name">Python Regius</h1>
@@ -16,7 +14,7 @@
 <div class="login-box">
     <img class="avatar" loading="lazy" src="{{ url_for('static', filename='img/Logo2.png' ) }}" alt="company logo" />
     <h3>Inicia sesión</h3>
-    <form name="login-form" id="login-form" action="/login/" method="POST">
+    <form name="login-form" id="login-form" >
         <div class="user-container">
             <label for="login_user">Nombre de usuario</label>
             {{form_login.login_user}}
@@ -28,17 +26,6 @@
         </div>
 
         <div class="submit">{{form_login.enter()}}</div>
-
-        <div class="errors-container">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="error-message">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-        </div>
-
     </form>
     <div class="links">
         <a href="/recuperarcontraseña/">¿Olvidaste tu contraseña?</a>

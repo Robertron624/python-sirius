@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, session, flash
+from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
 from db import seleccion, accion
 from formularios import Login, Registro, Recuperarpsw
 from utilidades import pass_valido, email_valido
@@ -34,8 +34,7 @@ def login():
 
         # Procesar los resultados
         if len(res) == 0:
-            flash('ERROR: Usuario o contraseña no valido')
-            return redirect('/login/')
+            return jsonify({'error': 'Usuario o contraseña no valido'}), 401
         else:
             # Recuperar la clave almacenada en la base datos (cifrada)
             cbd = res[0][4]
@@ -53,11 +52,11 @@ def login():
                 session['sex'] = res[0][5]
                 session['rolid'] = res[0][6]
                 session['urlava'] = res[0][7]
-                return redirect('/feed/')
+                
+                return jsonify({'success': True}), 200
             # Informar de clave incorrecta y refrescar la pagina
             else:
-                flash('ERROR: Usuario o contraseña no válida')
-                return render_template('login.html', form_login=frm_login, titulo='Login de usuario')
+                return jsonify({'error': 'Usuario o contraseña no valido'}), 401
             
 @auth_blueprint.route('/registro/', methods=['POST', 'GET'])
 def registro():
