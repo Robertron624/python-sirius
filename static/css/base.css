@@ -3,10 +3,10 @@
   src: url(../fonts/Dark.otf) format("opentype");
 }
 
-
 a {
   color: #ffffff;
   text-decoration: none;
+  transition: all 0.3s ease-in-out;
 }
 
 ul {
@@ -26,12 +26,21 @@ img {
   display: block;
 }
 
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+
 body {
   display: flex;
   flex-direction: column;
   margin: 0;
-  background-image: url(../img/fondo.png) /*#2A2740*/;
+  background-image: url(../img/fondo.png);
   background-size: 100%;
+  background-repeat: no-repeat;
   font-family: sans-serif;
   height: 100vh;
   overflow-y: scroll;

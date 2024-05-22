@@ -157,16 +157,11 @@ h3 {
 
 .login-box .links a {
   font-size: .75rem;
+  text-decoration: underline;
 }
 
-textarea {
-  border: none;
-  text-decoration: none;
-  margin: 5px 3px;
-  padding: 2px;
-  width: 252px;
-  height: 159px;
-  resize: none;
+.login-box .links a:hover {
+  color: #c48319;
 }
 
 @media screen and (min-width: 640px){

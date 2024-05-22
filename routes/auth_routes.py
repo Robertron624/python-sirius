@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
 from db import seleccion, accion
-from formularios import Login, Registro, Recuperarpsw
-from utilidades import pass_valido, email_valido
+from formularios import Login, Signup, Recuperarpsw
+from utilidades import pass_valido, email_valido, is_adult
 from markupsafe import escape
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
@@ -60,67 +60,54 @@ def login():
             
 @auth_blueprint.route('/registro/', methods=['POST', 'GET'])
 def registro():
-    frm_register = Registro()
+    frm_register = Signup()
     if request.method == 'GET':
-        return render_template('registro.html', form=frm_register, titulo='Registro de usuario')
+        return render_template('registro.html', form_register=frm_register, titulo='Registro de usuario')
     else:
         # Recuperar los datos del formulario
-        nom = escape(request.form['nom']).capitalize()
-        ape = escape(request.form['ape']).capitalize()
-        ema = escape(request.form['ema']).lower()
-        cema = escape(request.form['cema']).lower()
-        cla = escape(request.form['cla'])
-        ver = escape(request.form['ver'])
-        fnac = escape(request.form['fnac'])
-        sex = escape(frm_register.sex.data)
+        first_name = escape(request.form['signup_first_name']).capitalize()
+        last_name = escape(request.form['signup_last_name']).capitalize()
+        email = escape(request.form['signup_email']).lower()
+        confirm_email = escape(request.form['signup_confirm_email']).lower()
+        password = escape(request.form['signup_password'])
+        confirm_password = escape(request.form['signup_confirm_password'])
+        birthdate = escape(request.form['signup_birthdate'])
+        sex = escape(frm_register.signup_sex.data)
 
-        fnac2 = str(fnac)
-        ffinal = datetime.strptime(fnac2, "%Y-%m-%d")
-        hoy = datetime.today()
-
-        nacerror = False
-        if (ffinal.year + 18) < hoy.year:
-            nacerror = True
-        elif (ffinal.year + 18) == hoy.year:
-            if (ffinal.month > hoy.month):
-                nacerror = True
-            elif (ffinal.month == hoy.month):
-                if (ffinal.day >= hoy.day):
-                    nacerror = True
-                else:
-                    nacerror = False
+        birthdate_obj = datetime.strptime(birthdate, '%Y-%m-%d')
+        is_user_adult = is_adult(birthdate_obj)
 
         # Preparacion de consulta no parametrica
-        sql = f"SELECT id, nombre, apellidos, fnac, contraseña, sexo FROM usuarios WHERE correo='{ema}'"
+        sql = f"SELECT id, nombre, apellidos, fnac, contraseña, sexo FROM usuarios WHERE correo='{email}'"
         # Ejecutar la consulta
         res = seleccion(sql)
 
         swerror = False
-        if nom == None or len(nom) == 0:
+        if first_name == None or len(first_name) == 0:
             flash('ERROR: Debe suministrar un nombre.')
             swerror = True
-        if ape == None or len(ape) == 0:
+        if last_name == None or len(last_name) == 0:
             flash('ERROR: Debe suministrar sus apellidos.')
             swerror = True
-        if ema == None or len(ema) == 0 or not email_valido(ema):
-            flash('ERROR: Debe suministrar un correo electronico válido.')
+        if email == None or len(email) == 0 or not email_valido(email):
+            flash('ERROR: Debe suministrar un correo electrónico válido.')
             swerror = True
-        if cema == None or len(ema) == 0 or not email_valido(ema):
+        if confirm_email == None or len(confirm_email) == 0 or not email_valido(confirm_email):
             flash('ERROR: Debe suministrar un correo electronico de verificación válido.')
             swerror = True
-        if cla == None or len(cla) == 0 or not pass_valido(cla):
+        if password == None or len(password) == 0 or not pass_valido(password):
             flash('ERROR: Debe suministrar una contraseña válida.')
             swerror = True
-        if ver == None or len(ver) == 0 or not pass_valido(ver):
+        if confirm_password == None or len(confirm_password) == 0 or not pass_valido(confirm_password):
             flash('ERROR: Debe suministrar una contraseña válida.')
             swerror = True
-        if fnac == None or len(fnac) == 0 or nacerror == False:
+        if birthdate == None or len(birthdate) == 0 or is_user_adult == False:
             flash('ERROR: Debes tener +18 para registrarte.')
             swerror = True
-        if ema != cema:
+        if email != confirm_email:
             flash('ERRROR: el correo electronico y su verificación no coinciden.')
             swerror = True
-        if cla != ver:
+        if password != confirm_password:
             flash('ERRROR: la contraseña y su verificación no coinciden')
             swerror = True
         if len(res) != 0:
@@ -136,8 +123,8 @@ def registro():
                 urlava = "avatares/otro.png"
             sql = 'INSERT INTO usuarios(nombre, apellidos, correo, contraseña, fnac, sexo, urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?)'
             # Ejecutar la consulta
-            pwd = generate_password_hash(cla)
-            res = accion(sql, (nom, ape, ema, pwd, fnac, sex, urlava))
+            hashed_password = generate_password_hash(password)
+            res = accion(sql, (first_name, last_name, email, hashed_password, birthdate, sex, urlava))
             # Proceso los resultados
             if res == 0:
                 flash('ERROR: No se pudieron registrar los datos, intente nuevamente')
@@ -161,7 +148,7 @@ def salir():
         session.pop("id", None)
         return redirect('/')
 
-@auth_blueprint.route('/recuperarcontraseña/', methods=['POST', 'GET'])
-def recuperarpsw():
+@auth_blueprint.route('/recuperar-contraseña/', methods=['POST', 'GET'])
+def password_recovery():
     frm_recover_password = Recuperarpsw()
     return render_template('recuperarpsw.html', form_recover_password=frm_recover_password, titulo='Recuperar contraseña')

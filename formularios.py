@@ -16,25 +16,25 @@ class Login(FlaskForm):
     enter = SubmitField('Ingresar')
 
 
-class Registro(FlaskForm):
-    nom = StringField('Nombre *', validators=[Length(
+class Signup(FlaskForm):
+    signup_first_name = StringField('Nombre *', validators=[Length(
         min=1, max=100, message='Longitud fuera de rango'), InputRequired(message='Nombre es requerido')])
-    ape = StringField('Apellido *', validators=[Length(
+    signup_last_name = StringField('Apellido *', validators=[Length(
         min=1, max=100, message='Longitud fuera de rango'), InputRequired(message='Apellido es requerido')])
-    ema = EmailField('Email *', validators=[Length(
+    signup_email = EmailField('Email *', validators=[Length(
         min=3, max=100, message='Longitud fuera de rango'), InputRequired(message='Email es requerido')])
-    cema = EmailField('Confirmar email *', validators=[Length(
+    signup_confirm_email = EmailField('Confirmar email *', validators=[Length(
         min=3, max=100, message='Longitud fuera de rango'), InputRequired(message='Email es requerido'),
-        EqualTo(ema, message='Email y su verificación no corresponden')])
-    cla = PasswordField('Clave *', validators=[Length(
+        EqualTo(signup_email, message='Email y su verificación no corresponden')])
+    signup_password = PasswordField('Clave *', validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerida')])
-    ver = PasswordField('Verificación *', validators=[Length(min=5, max=40, message='Longitud fuera de rango'), InputRequired(
-        message='Clave es requerido'), EqualTo(cla, message='La clave y su verificación no corresponden')])
-    fnac = DateField(
+    signup_confirm_password = PasswordField('Verificación *', validators=[Length(min=5, max=40, message='Longitud fuera de rango'), InputRequired(
+        message='Clave es requerido'), EqualTo(signup_password, message='La clave y su verificación no corresponden')])
+    signup_birthdate = DateField(
         format="%d-%m-%y", validators=[DataRequired(message='Fecha de nacimiento requerida.')])
-    sex = RadioField('Label', choices=[
+    signup_sex = RadioField('Label', choices=[
                      ('M', 'Mujer'), ('H', 'Hombre'), ('P', 'Otro')], default="P")
-    btn = SubmitField('Registrar')
+    signup_submit = SubmitField('Registrar')
 
 
 class Recuperarpsw(FlaskForm):

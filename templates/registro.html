@@ -1,55 +1,44 @@
 {% extends 'base.html' %} {% block css %}
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/registro.css' ) }}" />
 {% endblock %} {% block contenido %}
-<form class="registro" name="fregistro" id="fregistro" action="/registro/" method="POST">
-    <div class="registrate">Registrate</div>
-    <!--nombre y apellido-->
-    <!--<input type="text" placeholder="Nombres">-->
-    <div>
-        {{form_register.nom(placeholder="Nombres")}} {{form_register.ape(placeholder="Apellidos")}}
-    </div>
-    <!--correo-->
-    <!--<input type="email" placeholder="Correo electronico">-->
-    <div>{{form_register.ema(placeholder="Email")}}</div>
-    <!--confirmar correo-->
-    <!--<input type="email" placeholder="Confirmar correo electronico">-->
-    <div>{{form_register.cema(placeholder="Confirmar email")}}</div>
-    <!--contraseña-->
-    <!--<input type="password" placeholder="Contraseña">-->
-    <div>{{form_register.cla(placeholder="Contraseña")}}</div>
-    <!--confirmar contraseña-->
-    <!--<input type="password" placeholder="Confirmar contraseña">-->
-    <div class="confirm-container">{{form_register.ver(placeholder="Confirmar contraseña")}}</div>
-    <!--Fecha de nacimiento-->
-    <div class="fnac">
-        <label for="Fecha de nacimiento">Fecha de nacimiento</label>
-    </div>
-    <div class="date-container">{{form_register.fnac}}</div>
+<form class="signup-form" name="signup-form" id="signup-form" action="/registro/" method="POST">
+    <h1 class="title">Registrate</h1>
 
-    <div class="sexo">
-        <label for="Sexo">Sexo</label>
-    </div>
-    <div>
-        <div class="sexo2">{{form_register.sex}}</div>
-        
-    </div>
-    <div class="submit-container">
-        <div>{{form_register.btn}}</div>
+    <div class="fullname  form-group">
+        {{form_register.signup_first_name(placeholder="Nombres")}} {{form_register.signup_last_name(placeholder="Apellidos")}}
     </div>
 
-    <div class="terminos">
-        <a id="yatuc" href="/login/"> Ya tengo una cuenta</a>
-        <p class="">
+    <div class="emails-container form-group">
+        {{form_register.signup_email(placeholder="Email")}} {{form_register.signup_confirm_email(placeholder="Confirmar email")}}
+    </div>
+
+    <div class="passwords-container form-group">{{form_register.signup_password(placeholder="Contraseña")}} {{form_register.signup_confirm_password(placeholder="Confirmar contraseña")}}</div>
+    <div class="birthdate-container">
+        <label for="signup_birthdate">Fecha de nacimiento</label>
+        {{form_register.signup_birthdate}}
+    </div>
+
+    <div class="sex-container">
+        <label for="signup_sex">Sexo</label>
+        {{form_register.signup_sex}}
+    </div>
+        {{form_register.signup_submit(class="btn btn-primary")}}
+    <div class="form-footer">
+        <a class="go-to-login" href="/login/"> Ya tengo una cuenta</a>
+        <p class="terms">
             Al hacer clic en "Registrar", aceptas nuestras
-            <a href="#" id="terms-link" target="_blank" rel="nofollow">Condiciones</a>, la
-            <a href="#" id="privacy-link" target="_blank" rel="nofollow">Política de datos</a>
-            y la
-            <a href="#" id="cookie-use-link" target="_blank" rel="nofollow">Política de cookies</a>.
+            <a href="/terms-and-conditions" id="terms-link" target="_blank" rel="nofollow">Condiciones</a>,
+            <a href="/privacy" id="privacy-link" target="_blank" rel="nofollow">Política de datos</a>
+            y
+            <a href="/cookies-policy" id="cookie-use-link" target="_blank" rel="nofollow">Política de cookies</a>.
         </p>
     </div>
-    {% for msg in get_flashed_messages() %}
-    <div class="error-message">{{msg}}</div>
-    {% endfor %}
+    <div class="errors-contianer">
+        {% for msg in get_flashed_messages() %}
+            <div class="error-message">{{msg}}</div>
+        {% endfor %}
+    </div>
 </form>
 
 {% endblock %}
