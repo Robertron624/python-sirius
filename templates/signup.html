@@ -1,11 +1,15 @@
 {% extends 'base.html' %} {% block css %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/registro.css' ) }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/signup.css' ) }}" />
 {% endblock %} {% block contenido %}
-<form class="signup-form" name="signup-form" id="signup-form" action="/registro/" method="POST">
-    <h1 class="title">Registrate</h1>
 
-    <div class="fullname  form-group">
+<script defer src="{{ url_for('static', filename='/js/signup.js' ) }}"></script>
+<script defer src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
+
+<form class="signup-form" name="signup-form" id="signup-form" action="/registro/" method="POST">
+    <h1 class="title">Regístrate</h1>
+
+    <div class="fullname form-group">
         {{form_register.signup_first_name(placeholder="Nombres")}} {{form_register.signup_last_name(placeholder="Apellidos")}}
     </div>
 

@@ -62,7 +62,7 @@ def login():
 def registro():
     frm_register = Signup()
     if request.method == 'GET':
-        return render_template('registro.html', form_register=frm_register, titulo='Registro de usuario')
+        return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')
     else:
         # Recuperar los datos del formulario
         first_name = escape(request.form['signup_first_name']).capitalize()
@@ -129,7 +129,7 @@ def registro():
             if res == 0:
                 flash('ERROR: No se pudieron registrar los datos, intente nuevamente')
 
-                return render_template('registro.html', form_register=frm_register, titulo='Registro de usuario')
+                return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')
             else:
                 flash('Usuario correctamente registrado')
                 
@@ -137,7 +137,7 @@ def registro():
                 time.sleep(3)
                 return redirect('/login/')
 
-        return render_template('registro.html', form_register=frm_register, titulo='Registro de usuario')
+        return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')
 
 @auth_blueprint.route('/salir/', methods=['GET'])
 def salir():

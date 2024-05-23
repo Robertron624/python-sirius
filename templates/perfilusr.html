@@ -2,6 +2,7 @@
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/verpublicaciones.css' ) }}" />
 {% endblock %} {% block contenido %}
+
 <div class="profile-header">
   <img src="{{url_for('static', filename=ava)}}" id="avatar" alt="avatar" />
   <div class="links">
@@ -17,19 +18,32 @@
 
 
 <div id="results">
-  {% for post in postList %}
-  <div class="post-container">
-    <div class="post-user">
-      <img src="{{url_for('static', filename=post['urlavatar'])}}" />
-      <a href="/perfilusr/{{post['id']}}">{{post['nombre']}} {{post['apellido']}}</a>
-    </div>
-    <a class="image-container" href="/publicacion/{{post['id']}}">
-      <img src="{{url_for('static', filename=post['url'])}}" />
-    </a>
-    <div class="post-text">
-      <p>{{post['text']}}</p>
-    </div>
+
+  {% if postList|length == 0 %}
+  <div class="no-posts">
+    <p>
+      Todavía no has publicado nada.
+    </p>
+    <p>
+      Publica tu primer post haciendo clic <a href="/nueva_publicacion">Aquí</a>
+    </p>
   </div>
-  {% endfor %}
+
+  {% else %}
+    {% for post in postList %}
+    <div class="post-container">
+      <div class="post-user">
+        <img src="{{url_for('static', filename=post['urlavatar'])}}" />
+        <a href="/perfilusr/{{post['id']}}">{{post['nombre']}} {{post['apellido']}}</a>
+      </div>
+      <a class="image-container" href="/publicacion/{{post['id']}}">
+        <img src="{{url_for('static', filename=post['url'])}}" />
+      </a>
+      <div class="post-text">
+        <p>{{post['text']}}</p>
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
 </div>
 {% endblock %}

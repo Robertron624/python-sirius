@@ -13,7 +13,7 @@
 
 <body>
     {% if include_header %}
-    <header class="container2">
+    <header>
         <!-- Navigation -->
         <nav class="nav-main">
           <!-- Left Nav -->
@@ -31,10 +31,10 @@
               <a href="/ayuda/">Ayuda</a>
             </li>
             <li>
-              <a href="/salir/">Cerrar Sesion</a>
+              <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
             </li>
             <li>
-              <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
+              <a href="/salir/">Cerrar Sesion</a>
             </li>
             
           </ul>
