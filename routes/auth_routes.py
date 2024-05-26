@@ -64,80 +64,72 @@ def registro():
     if request.method == 'GET':
         return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')
     else:
+        
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({'error': 'No se han suministrado datos'}), 400
+        
         # Recuperar los datos del formulario
-        first_name = escape(request.form['signup_first_name']).capitalize()
-        last_name = escape(request.form['signup_last_name']).capitalize()
-        email = escape(request.form['signup_email']).lower()
-        confirm_email = escape(request.form['signup_confirm_email']).lower()
-        password = escape(request.form['signup_password'])
-        confirm_password = escape(request.form['signup_confirm_password'])
-        birthdate = escape(request.form['signup_birthdate'])
-        sex = escape(frm_register.signup_sex.data)
+        first_name = escape(data.get('signup_first_name')).capitalize()
+        last_name = escape(data.get('signup_last_name')).capitalize()
+        email = escape(data.get('signup_email')).lower()
+        confirm_email = escape(data.get('signup_confirm_email')).lower()
+        password = escape(data.get('signup_password'))
+        confirm_password = escape(data.get('signup_confirm_password'))
+        birthdate = escape(data.get('signup_birthdate'))
+        sex = escape(data.get('signup_sex'))
 
         birthdate_obj = datetime.strptime(birthdate, '%Y-%m-%d')
         is_user_adult = is_adult(birthdate_obj)
 
-        # Preparacion de consulta no parametrica
         sql = f"SELECT id, nombre, apellidos, fnac, contraseña, sexo FROM usuarios WHERE correo='{email}'"
-        # Ejecutar la consulta
+
         res = seleccion(sql)
+        
+        if len(res) != 0:
+            return jsonify({'error': 'El correo electrónico ya está registrado'}), 401
 
         swerror = False
         if first_name == None or len(first_name) == 0:
-            flash('ERROR: Debe suministrar un nombre.')
-            swerror = True
+            return jsonify({'error': 'Debe suministrar su nombre'}), 401
         if last_name == None or len(last_name) == 0:
-            flash('ERROR: Debe suministrar sus apellidos.')
-            swerror = True
+            return jsonify({'error': 'Debe suministrar su apellido'}), 401
         if email == None or len(email) == 0 or not email_valido(email):
-            flash('ERROR: Debe suministrar un correo electrónico válido.')
-            swerror = True
+            return jsonify({'error': 'Debe suministrar un correo electrónico válido'}), 401
         if confirm_email == None or len(confirm_email) == 0 or not email_valido(confirm_email):
-            flash('ERROR: Debe suministrar un correo electronico de verificación válido.')
-            swerror = True
-        if password == None or len(password) == 0 or not pass_valido(password):
-            flash('ERROR: Debe suministrar una contraseña válida.')
-            swerror = True
-        if confirm_password == None or len(confirm_password) == 0 or not pass_valido(confirm_password):
-            flash('ERROR: Debe suministrar una contraseña válida.')
-            swerror = True
-        if birthdate == None or len(birthdate) == 0 or is_user_adult == False:
-            flash('ERROR: Debes tener +18 para registrarte.')
-            swerror = True
+            return jsonify({'error': 'Debe suministrar un correo electrónico de confirmación válido'}), 401
         if email != confirm_email:
-            flash('ERRROR: el correo electronico y su verificación no coinciden.')
-            swerror = True
+            return jsonify({'error': 'Los correos electrónicos no coinciden'}), 401
+        if password == None or len(password) == 0 or not pass_valido(password):
+            return jsonify({'error': 'Debe suministrar una contraseña válida'}), 401
+        if confirm_password == None or len(confirm_password) == 0 or not pass_valido(confirm_password):
+            return jsonify({'error': 'Debe suministrar una contraseña de confirmación válida'}), 401
         if password != confirm_password:
-            flash('ERRROR: la contraseña y su verificación no coinciden')
-            swerror = True
-        if len(res) != 0:
-            flash('ERRROR: Ya existe una cuenta registrada con este correo.')
-            swerror = True
-        if not swerror:
-            # Preparar el query
-            if sex == "H":
-                urlava = "avatares/hombre-barba.jpg"
-            elif sex == "M":
-                urlava = "avatares/mujer1.jpg"
-            elif sex == "P":
-                urlava = "avatares/otro.png"
-            sql = 'INSERT INTO usuarios(nombre, apellidos, correo, contraseña, fnac, sexo, urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?)'
+            return jsonify({'error': 'Las contraseñas no coinciden'}), 401
+        if birthdate == None or len(birthdate) == 0 or is_user_adult == False:
+            return jsonify({'error': 'Debe ser mayor de edad para registrarse'}),
+        if sex == None or len(sex) == 0:
+            return jsonify({'error': 'Debe seleccionar un género'}), 401
+
+
+        # Preparar el query
+        if sex == "H":
+            urlava = "avatares/hombre-barba.jpg"
+        elif sex == "M":
+            urlava = "avatares/mujer1.jpg"
+        elif sex == "P":
+            urlava = "avatares/otro.png"
+            
+        sql = 'INSERT INTO usuarios(nombre, apellidos, correo, contraseña, fnac, sexo, urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?)'
             # Ejecutar la consulta
-            hashed_password = generate_password_hash(password)
-            res = accion(sql, (first_name, last_name, email, hashed_password, birthdate, sex, urlava))
-            # Proceso los resultados
-            if res == 0:
-                flash('ERROR: No se pudieron registrar los datos, intente nuevamente')
-
-                return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')
-            else:
-                flash('Usuario correctamente registrado')
-                
-                # esperar 3 segundos antes de redirigir
-                time.sleep(3)
-                return redirect('/login/')
-
-        return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')
+        hashed_password = generate_password_hash(password)
+        res = accion(sql, (first_name, last_name, email, hashed_password, birthdate, sex, urlava))
+        # Proceso los resultados
+        if res == 0:
+            return jsonify({'error': 'Error al registrar el usuario'}), 500
+        else:
+            return jsonify({'success': True}), 200
 
 @auth_blueprint.route('/salir/', methods=['GET'])
 def salir():
