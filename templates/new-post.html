@@ -4,6 +4,10 @@
 {% endblock %}
 
 {% block contenido %}
+  {% block js %}
+    <script src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/newPost.js') }}"></script>
+  {% endblock %}
 <div class="container">
   <form class="new-post-form" id="new-post-form" action="/nueva-publicacion/" method="POST" enctype="multipart/form-data">
     <div class="user">
@@ -17,14 +21,14 @@
 
     <div class="upload-container">
       <figure>
-        <img src="{{ url_for('static', filename='img/cargar.jpg') }}" alt="Cargar Imagen" id="carg" />
+        <img src="{{ url_for('static', filename='img/cargar.jpg') }}" alt="Cargar Imagen placeholder" id="image-placeholder" />
       </figure>
     </div>
     <div class="textarea-container">
-      {{form_new_post.publi(placeholder="¿Que estas pensando?")}}
+      {{form_new_post.post_text(placeholder="¿Que estas pensando?")}}
     </div>
     <div class="new-post-buttons">
-      {{form_new_post.adj()}}
+      {{form_new_post.post_file()}}
 
       {{form_new_post.publish()}}
     </div>

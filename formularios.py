@@ -37,7 +37,7 @@ class Signup(FlaskForm):
     signup_submit = SubmitField('Registrar')
 
 
-class Recuperarpsw(FlaskForm):
+class Password_Recovery(FlaskForm):
     usr = EmailField('Usuario *', validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Usuario es requerido')])
     cema = EmailField('Confirmar email *', validators=[Length(
@@ -54,13 +54,13 @@ class Help(FlaskForm):
     btn = SubmitField('Enviar')
 
 
-class Publicacion(FlaskForm):
-    post_text = TextAreaField()
-    post_file = FileField('Seleccionar archivo')
+class New_Post(FlaskForm):
+    post_text = TextAreaField('Texto')
+    post_file = FileField('Seleccionar archivo', validators=[InputRequired(message='Archivo es requerido')])
     publish = SubmitField('Publicar')
 
 
-class EditPublicacion(FlaskForm):
+class Edit_Post(FlaskForm):
     edited_text = TextAreaField()
     save_edit = SubmitField('Guardar cambios')
 
@@ -69,7 +69,7 @@ class Busqueda(FlaskForm):
     texto = SearchField()
 
 
-class Comentario(FlaskForm):
+class New_Comment(FlaskForm):
     new_comment_text = TextAreaField()
     new_comment_btn = SubmitField('Comentar')
 

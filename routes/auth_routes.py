@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
 from db import seleccion, accion
-from formularios import Login, Signup, Recuperarpsw
+from formularios import Login, Signup, Password_Recovery
 from utilidades import pass_valido, email_valido, is_adult
 from markupsafe import escape
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -142,5 +142,5 @@ def salir():
 
 @auth_blueprint.route('/recuperar-contraseña/', methods=['POST', 'GET'])
 def password_recovery():
-    frm_recover_password = Recuperarpsw()
+    frm_recover_password = Password_Recovery()
     return render_template('password-recovery.html', form_recover_password=frm_recover_password, titulo='Recuperar contraseña')

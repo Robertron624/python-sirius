@@ -1,10 +1,10 @@
 import os
-from flask import Blueprint, redirect, render_template, request, session, flash
+from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
 from db import eliminarimg, accion, seleccion, editarimg
 from werkzeug.utils import secure_filename
 from markupsafe import escape
 from datetime import datetime
-from formularios import Publicacion, Busqueda, Comentario, EditPublicacion
+from formularios import New_Post, Busqueda, New_Comment, Edit_Post
 from random import randint
 from utilidades import format_datetime, format_comment_datetime
 
@@ -17,7 +17,7 @@ def post_page(id=None):
         return redirect('/')
     else:
         frm_search = Busqueda()
-        frm_comentar = Comentario()
+        frm_comentar = New_Comment()
         if request.method == 'GET':
             sql = f"SELECT nombre, apellido, datepost, text, url FROM post WHERE id='{id}'"
             res = seleccion(sql)
@@ -81,63 +81,48 @@ def new_post():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_new_post = Publicacion()
+        frm_new_post = New_Post()
         frm_search = Busqueda()
         if request.method == 'GET':
             sex = session["urlava"]
             return render_template('new-post.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
-        elif request.method == 'POST' and 'publish' in request.form:
-            file = request.files['post_file']
+        elif request.method == 'POST':
+
+            file = request.files.get('post_file')
+            text = escape(request.form.get('post_text', '')).capitalize()
+            
+            if not file:
+                return jsonify({'error': 'No se ha seleccionado un archivo'})
+            
             parsed_filename = secure_filename(file.filename)
-            if os.path.isfile(f'uploads/{parsed_filename}'):
+            
+            if os.path.isfile(f"static/uploads/{parsed_filename}"):
                 random_name = str(randint(1, 5000))
-                usr = session['ema']
-                nom = session["nom"]
-                ape = session["ape"]
-                sex = session["sex"]
-                urlava = session["urlava"]
-                
-                today = datetime.today()
-                year = today.year
-                month = today.month
-                day = today.day
-                hour = today.hour
-                minute = today.minute
-                fecpost = datetime(year, month, day, hour, minute)
-                text = escape(request.form['post_text'].capitalize())
-                urlimg = f'/uploads/{random_name+parsed_filename}'
-
-                file.save(f'static/uploads/{random_name+parsed_filename}')
-                sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url,sexo,urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
-                res = accion(sql, (usr, nom, ape, fecpost,
-                                   text, urlimg, sex, urlava))
-                return render_template('new-post.html', titulo='Crear nueva publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
+                final_filename = random_name + parsed_filename
             else:
-                usr = session['ema']
-                nom = session["nom"]
-                ape = session["ape"]
-                urlava = session["urlava"]
-                sex = session["sex"]
-                urlava = session["urlava"]
+                final_filename = parsed_filename
                 
-                today = datetime.today()
-                
-                year = today.year
-                month = today.month
-                day = today.day
-                hour = today.hour
-                minutes = today.minute
-                fecpost = datetime(year, month, day, hour, minutes)
-                text = escape(request.form['post_text'])
-                urlimg = f'/uploads/{parsed_filename}'
-
-                file.save(f'static/uploads/{parsed_filename}')
-                sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url,sexo,urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
-                res = accion(sql, (usr, nom, ape, fecpost,
-                                   text, urlimg, sex, urlava))
-                
-                print(res)
-                return render_template('new-post.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
+            url_img = f"/uploads/{final_filename}"
+            
+            try:
+                file.save(f"static{url_img}")
+            except Exception as e:
+                return jsonify({'error': 'Error al tratar de guardar la imagen, intente de nuevo'}), 500
+            
+            user = session['ema']
+            first_name = session['nom']
+            last_name = session['ape']
+            sex = session['sex']
+            url_avatar = session['urlava']
+            today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+            
+            sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url, sexo, urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
+            resultado = accion(sql, (user, first_name, last_name, today, text, url_img, sex, url_avatar))
+            
+            if(resultado == 0):
+                return jsonify({'error': 'Error al guardar la publicación, intente de nuevo'}), 500
+            
+            return jsonify({'success': 'Publicación guardada correctamente', 'url': url_img}), 200
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
@@ -147,7 +132,7 @@ def edit_post(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_edit_post = EditPublicacion()
+        frm_edit_post = Edit_Post()
         frm_search = Busqueda()
         if request.method == 'GET':
             idImg = id
