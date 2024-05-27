@@ -140,26 +140,6 @@ p.username {
   color: white;
 }
 
-.fila {
-  height                    : 35px;
-}
-
-
-.c6 {
-  width                     : 60%;
-  display                   : inline;
-  float                     : left;
-  overflow-x                : hidden;
-}
-
-.c2 {
-  width                     : 20%;
-  display                   : inline;
-  float                     : left;
-  overflow-x                : hidden;
-  color: white;
-}
-
 .username {
   font-size: 1.5rem;
   font-weight: bold;

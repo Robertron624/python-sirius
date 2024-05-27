@@ -143,4 +143,4 @@ def salir():
 @auth_blueprint.route('/recuperar-contraseña/', methods=['POST', 'GET'])
 def password_recovery():
     frm_recover_password = Recuperarpsw()
-    return render_template('recuperarpsw.html', form_recover_password=frm_recover_password, titulo='Recuperar contraseña')
+    return render_template('password-recovery.html', form_recover_password=frm_recover_password, titulo='Recuperar contraseña')

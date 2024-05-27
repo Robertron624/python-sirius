@@ -1,31 +1,11 @@
-body {
-    margin: 0;
-    padding: 0;
-    background: url(../img/fondo.png) repeat center top /*#2A2740*/;
-    background-size: cover;
-    font-family: sans-serif;
-    height: 100vh;
-}
-
-img {
-    display: block;
-    max-width: 100%;
-}
-
-.cuerpo {
-    height: 100%;
-    display: grid;
-    place-items: center;
-}
-  
-  .container {
+.container {
     max-width: 500px;
     padding: 16px;
     border-radius: 10px;
     background-color: #ccc;
-  }
+}
 
-.fila {
+.row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;

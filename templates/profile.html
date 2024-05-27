@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block css %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/verpublicaciones.css' ) }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/profile.css' ) }}" />
 {% endblock %} {% block contenido %}
 
 <div class="profile-header">
@@ -10,7 +10,7 @@
     <a href="/editar-usuario/" class="profile-link">
       Editar Perfil
     </a>
-    <a href="/cambiarpsw/" class="profile-link">
+    <a href="/cambiar-contraseña/" class="profile-link">
       Cambiar Contraseña
     </a>
   </div>
@@ -34,7 +34,7 @@
     <div class="post-container">
       <div class="post-user">
         <img src="{{url_for('static', filename=post['urlavatar'])}}" />
-        <a href="/perfilusr/{{post['id']}}">{{post['nombre']}} {{post['apellido']}}</a>
+        <a href="/profile/{{post['id']}}">{{post['nombre']}} {{post['apellido']}}</a>
       </div>
       <a class="image-container" href="/publicacion/{{post['id']}}">
         <img src="{{url_for('static', filename=post['url'])}}" />

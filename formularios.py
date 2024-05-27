@@ -55,14 +55,14 @@ class Ayuda(FlaskForm):
 
 
 class Publicacion(FlaskForm):
-    publi = TextAreaField()
-    adj = FileField('Seleccionar archivo')
+    post_text = TextAreaField()
+    post_file = FileField('Seleccionar archivo')
     publish = SubmitField('Publicar')
 
 
 class EditPublicacion(FlaskForm):
-    publi = TextAreaField()
-    save = SubmitField('Guardar cambios')
+    edited_text = TextAreaField()
+    save_edit = SubmitField('Guardar cambios')
 
 
 class Busqueda(FlaskForm):

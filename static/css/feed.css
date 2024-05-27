@@ -10,41 +10,11 @@
   height: 10px;
 }
 
-.nom{
-  width: 30vw;
-}
-
-h2 {
-  position: relative;
-  width: 9cm;
-  font-size: 10px;
-  left: 100px;
-  top: -40px;
-  color: white;
-}
-
-.login-box {
-  position: relative;
-  width: 500%;
-  height: 20px;
-  background: #342a7d;
-  color: white;
-  top: -12%;
-  left: 1px;
-  box-sizing: border-box;
-  padding: 70px 30px;
-  box-shadow: 3px 3px 50px 7px black;
-  position: fixed;
-}
-
-.login-box .avatar {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  position: relative;
-  left: 1%;
-  top: 25px;
-  transform: translate(-50%, -10%);
+.post-user-info {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .container {
@@ -116,15 +86,7 @@ h2 {
   border-radius: 1rem;
 }
 
-.publicar {
-  background-color: #342a7df8;
-  max-width: 400px;
-  min-height: 450px;
-  border-radius: 20px;
-  margin-inline: auto;
-  padding-inline: 1rem;
-  padding-block: 1rem;
-}
+
 
 .opci {
   width: 50px;
@@ -155,13 +117,6 @@ h2 {
   /*visibility: hidden;                         ocultar pestaña de editar */
 }
 
-.publication-buttons {
-  margin-top: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 #editar,
 #eliminado {
   background-color: gold;
@@ -175,42 +130,12 @@ h2 {
   cursor: pointer;
 }
 
-#publish,
-#adj {
-  background-color: gold;
-  font-size: medium;
-  left: 2px;
-  border: none;
-  padding-block: .5rem;
-  padding-inline: .8rem;
-  border-radius: 7px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-
 #publish {
   width: 10rem;
 }
 
 #publi::placeholder {
   color: white;
-}
-
-#publi {
-  margin: 0;
-  padding-inline: .5rem;
-  padding-block-start: .7rem;
-  height: 90px;
-  min-width: 90%;
-  border: none;
-  font-family: inherit;
-  background-color: transparent;
-  letter-spacing: 1px;
-  outline: none;
-  color: white;
-  border: 1px #fff solid;
-  border-radius: 10px;
-  display: block;
 }
 
 input[type="button"] {
@@ -327,42 +252,6 @@ input[type="button"] {
   border-radius: 35%;
   left: 0px;
   color: white;
-}
-
-#logo {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  padding: 10px;
-}
-
-.nom {
-  font-family: Arial;
-  color: white;
-  display: flex;
-  gap: .5rem;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.textarea-container {
-  width: 100%;
-}
-
-#carga {
-  width: 406px;
-  height: 180px;
-  cursor: pointer;
-}
-
-#carg {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  right: 40px;
-  align-content: center;
-  left: 80px;
-  border-radius: 25px;
 }
 
 #carga_edit {

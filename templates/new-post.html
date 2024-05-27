@@ -1,0 +1,34 @@
+{% extends 'base.html' %} {% block css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/new-post.css' ) }}" />
+{% endblock %}
+
+{% block contenido %}
+<div class="container">
+  <form class="new-post-form" id="new-post-form" action="/nueva-publicacion/" method="POST" enctype="multipart/form-data">
+    <div class="user">
+      <figure>
+        <img src="{{url_for('static', filename=ava)}}" class="user-avatar" alt="avatar del usuario" />
+      </figure>
+        <div class="user-full-name">
+          <p>{{session['nom']}} {{session['ape']}}</p>
+        </div>
+    </div>
+
+    <div class="upload-container">
+      <figure>
+        <img src="{{ url_for('static', filename='img/cargar.jpg') }}" alt="Cargar Imagen" id="carg" />
+      </figure>
+    </div>
+    <div class="textarea-container">
+      {{form_new_post.publi(placeholder="¿Que estas pensando?")}}
+    </div>
+    <div class="new-post-buttons">
+      {{form_new_post.adj()}}
+
+      {{form_new_post.publish()}}
+    </div>
+  </form>
+</div>
+
+{% endblock %}

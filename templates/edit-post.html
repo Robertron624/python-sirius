@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css' ) }}" />
+{% endblock %}  {% block contenido %}
+
+<div class="publicacion">
+    <form class="edit-post-form" action="/editar/{{id_img}}" method="PUT" enctype="multipart/form-data">
+        <img src="{{url_for('static', filename=ava)}}" class="edit-post" alt="avatar" />
+        <div class="user-full-name">
+            <p>{{session['nom']}} {{session['ape']}}</p>
+        </div>
+        <div class="textarea-container">
+            {{form_edit_post.edited_text(placeholder="¿Que estas pensando?")}}
+        </div>
+        <div class="submit-container">
+            {{form_edit_post.save_edit()}}
+        </div>
+    </form>
+</div>
+{% endblock %}

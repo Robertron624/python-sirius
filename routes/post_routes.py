@@ -12,7 +12,7 @@ from utilidades import format_datetime, format_comment_datetime
 
 post_blueprint = Blueprint('post', __name__)
 @post_blueprint.route('/publicacion/<int:id>/', methods=['GET'])
-def publicacion(id=None):
+def post_page(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
@@ -71,13 +71,13 @@ def publicacion(id=None):
                                             'urlavatar': row[6] } for row in res3]
             html_title = f"Publicación de {post_data['nombre']} {post_data['apellidos']}"
 
-            return render_template('publicacion.html', titulo=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_search=frm_search, form_comentar=frm_comentar, commentList=formatted_comments_data, include_header=True)
+            return render_template('post-page.html', titulo=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_search=frm_search, form_comentar=frm_comentar, commentList=formatted_comments_data, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
 
-@post_blueprint.route('/nueva_publicacion/', methods=['POST', 'GET'])
-def nueva_publi():
+@post_blueprint.route('/nueva-publicacion/', methods=['POST', 'GET'])
+def new_post():
     if 'id' not in session:
         return redirect('/')
     else:
@@ -85,12 +85,12 @@ def nueva_publi():
         frm_search = Busqueda()
         if request.method == 'GET':
             sex = session["urlava"]
-            return render_template('nueva_publicacion.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
+            return render_template('new-post.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'publish' in request.form:
-            f = request.files['adj']
-            nom2 = secure_filename(f.filename)
-            if os.path.isfile(f'uploads/{nom2}'):
-                name = str(randint(1, 5000))
+            file = request.files['post_file']
+            parsed_filename = secure_filename(file.filename)
+            if os.path.isfile(f'uploads/{parsed_filename}'):
+                random_name = str(randint(1, 5000))
                 usr = session['ema']
                 nom = session["nom"]
                 ape = session["ape"]
@@ -104,14 +104,14 @@ def nueva_publi():
                 hour = today.hour
                 minute = today.minute
                 fecpost = datetime(year, month, day, hour, minute)
-                text = escape(request.form['publi'].capitalize())
-                urlimg = f'/uploads/{name+nom2}'
+                text = escape(request.form['post_text'].capitalize())
+                urlimg = f'/uploads/{random_name+parsed_filename}'
 
-                f.save(f'static/uploads/{name+nom2}')
+                file.save(f'static/uploads/{random_name+parsed_filename}')
                 sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url,sexo,urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
                 res = accion(sql, (usr, nom, ape, fecpost,
                                    text, urlimg, sex, urlava))
-                return render_template('nueva_publicacion.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
+                return render_template('new-post.html', titulo='Crear nueva publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
             else:
                 usr = session['ema']
                 nom = session["nom"]
@@ -128,22 +128,22 @@ def nueva_publi():
                 hour = today.hour
                 minutes = today.minute
                 fecpost = datetime(year, month, day, hour, minutes)
-                text = escape(request.form['publi'])
-                urlimg = f'/uploads/{nom2}'
+                text = escape(request.form['post_text'])
+                urlimg = f'/uploads/{parsed_filename}'
 
-                f.save(f'static/uploads/{nom2}')
+                file.save(f'static/uploads/{parsed_filename}')
                 sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url,sexo,urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
                 res = accion(sql, (usr, nom, ape, fecpost,
                                    text, urlimg, sex, urlava))
                 
                 print(res)
-                return render_template('nueva_publicacion.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
+                return render_template('new-post.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=urlava, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
 
 @post_blueprint.route('/editar/<int:id>', methods=['GET', 'POST'])
-def editar(id=None):
+def edit_post(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
@@ -155,18 +155,18 @@ def editar(id=None):
             sql_url = f"SELECT url from post WHERE id='{id}'"
             res = seleccion(sql_url)
             url_img = res[0][0]
-            return render_template('editar_publicacion.html', titulo='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, ruta=url_img, form_search=frm_search, include_header=True)
+            return render_template('edit-post.html', titulo='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, ruta=url_img, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
         else:
-            text = escape(request.form['publi']).capitalize()
+            text = escape(request.form['edited_text']).capitalize()
             sql = f"UPDATE post SET text='{text}' WHERE id='{id}'"
             resultado = editarimg(sql)
 
             if resultado == 0:
                 flash('Error al guardar los cambios')
-                return redirect('/editar_publicacion/')
+                return redirect(f'/editar/{id}')
             else:
                 return redirect('/feed/')
 

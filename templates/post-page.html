@@ -1,8 +1,8 @@
 {% extends 'base.html' %} {% block css %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/publication-page.css' ) }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/post-page.css' ) }}" />
 {% endblock %}  {% block contenido %}
-<script defer src="{{ url_for('static', filename='/js/publicacion.js') }}"></script>
+<script defer src="{{ url_for('static', filename='/js/post-page.js') }}"></script>
 <script defer src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
 {% block js %} {% endblock %}
 <main class="main">
