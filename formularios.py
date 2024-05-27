@@ -46,7 +46,7 @@ class Recuperarpsw(FlaskForm):
     btn = SubmitField('Recuperar')
 
 
-class Ayuda(FlaskForm):
+class Help(FlaskForm):
     usr = EmailField('Usuario *', validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Usuario es requerido')])
     duda = TextAreaField(
@@ -74,12 +74,12 @@ class Comentario(FlaskForm):
     new_comment_btn = SubmitField('Comentar')
 
 
-class Mensaje(FlaskForm):
+class Message(FlaskForm):
     texto_mensaje = TextAreaField()
     btn_mensaje = SubmitField('Enviar')
 
 
-class EditarUsuario(FlaskForm):
+class Edit_user(FlaskForm):
     edit_first_name = StringField('Nombre *', validators=[Length(
         min=1, max=100, message='Longitud fuera de rango'), InputRequired(message='Nombre es requerido')])
     edit_last_name = StringField('Apellido *', validators=[Length(
@@ -91,14 +91,14 @@ class EditarUsuario(FlaskForm):
                      ('M', 'Mujer'), ('H', 'Hombre'), ('P', 'Otro')], default="P")
     edit_submit = SubmitField('Guardar cambios')
 
-class Cambiarpsw(FlaskForm):
-    claan = PasswordField('Clave *', validators=[Length(
+class Change_password(FlaskForm):
+    previous_password = PasswordField(None, validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerido')])
-    clanue = PasswordField('Clave *', validators=[Length(
+    new_password = PasswordField(None, validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerido')])
-    comclanue = PasswordField('Clave *', validators=[Length(
+    new_password_confirm = PasswordField(None, validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerido')])
-    btncla = SubmitField('Cambiar')
+    submit_new_password = SubmitField('Cambiar')
 
 class Roles(FlaskForm):
     btn_admin = SubmitField('Administrador')

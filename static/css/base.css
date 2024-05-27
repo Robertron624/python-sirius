@@ -26,12 +26,14 @@ img {
   display: block;
 }
 
+input[type="submit"],
 button {
   cursor: pointer;
   border: none;
   background: none;
   color: inherit;
   font: inherit;
+  transition: all 0.3s ease-in-out;
 }
 
 body {

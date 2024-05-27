@@ -8,22 +8,6 @@ main {
   padding-block: 1.5rem;
 }
 
-
-
-#volver2 {
-  text-align: center;
-  left: 105px;
-  font-size: 20px;
-  bottom: 70px;
-}
-
-#volver3 {
-  text-align: center;
-  left: 105px;
-  font-size: 20px;
-  bottom: 50px;
-}
-
 #duda {
   position: relative;
   bottom: 35px;
@@ -36,7 +20,7 @@ main {
   justify-content: center;
 }
 
-.name {
+.app-name {
   margin: 0 0 2rem;
   padding: 0;
   font-family: 'Dark', sans-serif;
@@ -46,7 +30,7 @@ main {
   position: relative;
 }
 
-.subtitle {
+.slogan {
   font-size: 19px;
   color: white;
   text-align: center;

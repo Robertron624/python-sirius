@@ -1,7 +1,7 @@
-from flask import Blueprint, redirect, render_template, request, session, flash
+from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
 from db import seleccion, accion, editarimg
 from utilidades import format_datetime
-from formularios import EditarUsuario, Busqueda, Cambiarpsw, Mensaje
+from formularios import Edit_user, Busqueda, Change_password, Message
 from utilidades import pass_valido, is_adult
 from markupsafe import escape
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -66,7 +66,7 @@ def edit_user():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_edit_user = EditarUsuario()
+        frm_edit_user = Edit_user()
         frm_search = Busqueda()
         if request.method == 'GET':
             return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', form_search=frm_search, include_header=True)
@@ -125,51 +125,52 @@ def edit_user():
 
             return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario')
         
-@user_blueprint.route('/cambiar-contraseña/', methods=['POST', 'GET'])
+@user_blueprint.route('/cambiar-contraseña/', methods=['PUT', 'GET'])
 def change_password():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_change_password = Cambiarpsw()
+        frm_change_password = Change_password()
         frm_search = Busqueda()
         if request.method == 'GET':
             return render_template('change-password.html', form_change_password=frm_change_password, form_search=frm_search, titulo='Cambiar contraseña', include_header=True)
         else:
-            pwdan = escape(request.form['claan']).strip()
-            pwdn = escape(request.form['clanue']).strip()
-            pwdcn = escape(request.form['comclanue']).strip()
+            
+            data = request.get_json()
+            
+            if(not data):
+                return jsonify({'error': 'No se han suministrado datos'}), 400
+            
+            previous_password = escape(data.get('previous_password')).strip()
+            new_password = escape(data.get('new_password')).strip()
+            new_password_confirm = escape(data.get('new_password_confirm')).strip()
             usr = session['ema']
             sql = f"SELECT contraseña FROM usuarios WHERE correo='{usr}'"
             res = seleccion(sql)
-            cbd = res[0][0]
+            current_password = res[0][0]
 
-            swerror = False
-            if check_password_hash(cbd, pwdan) == False:
-                flash('ERROR: La contraseña no coincide.')
-                swerror = True
-            if pwdan == None or len(pwdan) == 0 or not pass_valido(pwdan):
-                flash('ERROR: Debe suministrar una contraseña válida.')
-            if pwdn == None or len(pwdn) == 0 or not pass_valido(pwdn):
-                flash('ERROR: Debe suministrar una contraseña válida.')
-                swerror = True
-            if pwdcn == None or len(pwdcn) == 0 or not pass_valido(pwdcn):
-                flash('ERROR: Debe suministrar una contraseña válida.')
-                swerror = True
-            if pwdn != pwdcn:
-                flash('ERRROR: la contraseña y su verificación no coinciden')
-                swerror = True
-            if not swerror:
-                newcla = generate_password_hash(pwdn)
+            if check_password_hash(current_password, previous_password) == False:
+                return jsonify({'error': 'La contraseña actual es incorrecta.'}), 400
+            if previous_password == None or len(previous_password) == 0 or not pass_valido(previous_password):
+                return jsonify({'error': 'Debe suministrar la actual contraseña válida.'}), 400
+            if new_password == None or len(new_password) == 0 or not pass_valido(new_password):
+                return jsonify({'error': 'La nueva contraseña es inválida.'}), 400
+            if new_password_confirm == None or len(new_password_confirm) == 0 or not pass_valido(new_password_confirm):
+                return jsonify({'error': 'La confirmación de la nueva contraseña es inválida.'}), 400
+            if new_password != new_password_confirm:
+                return jsonify({'error': 'La nueva contraseña y su confirmación no coinciden.'}), 400
+            
+            new_password_hashed = generate_password_hash(new_password)
 
-                sql = f"UPDATE usuarios SET contraseña='{newcla}' WHERE correo='{usr}'"
-                res = editarimg(sql)
+            sql = f"UPDATE usuarios SET contraseña='{new_password_hashed}' WHERE correo='{usr}'"
+            res = editarimg(sql)
+            
             if res == 0:
-                flash('ERROR: No se pudo registrar el cambio.')
-                return render_template('change-password.html', form_change_password=frm_change_password, form_search=frm_search, titulo='Cambiar contraseña', include_header=True)
+                print('No se pudo cambiar la contraseña.')
+                return jsonify({'error': 'No se pudo cambiar la contraseña.'}), 400
             else:
-                # make the user log in again with the new password
                 session.clear()
-                return redirect('/')
+                return jsonify({'message': 'Contraseña cambiada correctamente.'}), 200
 
             
 @user_blueprint.route('/mensajes/<int:id>', methods=['GET', 'POST'])
@@ -195,7 +196,7 @@ def send_message(idremitente=None, idreceptor=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_mensaje = Mensaje()
+        frm_mensaje = Message()
         frm_search = Busqueda()
 
         if request.method == 'GET':

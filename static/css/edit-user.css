@@ -106,11 +106,11 @@ form.edit-user input[type="submit"]:hover {
 }
 
 .go-back {
-  text-decoration: none;
   color: white;
   font-size: 20px;
   font-weight: bold;
   transition: all 0.3s ease-in-out;
+  margin-block-start: 1.2rem;
 }
 
 .go-back::before {

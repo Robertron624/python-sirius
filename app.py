@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, session, flash, redirect
 
-from formularios import Busqueda, Roles, Mensaje, Ayuda
+from formularios import Busqueda, Roles, Help
 from db import accion, editarimg, seleccion
 
 from routes.user_routes import user_blueprint
@@ -51,7 +51,7 @@ def busqueda(texto=None):
 
 @app.route('/ayuda/')
 def help():
-    frm = Ayuda()
+    frm = Help()
     return render_template("help.html", form=frm, titulo="Ayuda")
 
 @app.route('/roles/<int:iduser>/', methods=['GET', 'POST'])
