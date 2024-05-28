@@ -47,11 +47,11 @@ class Password_Recovery(FlaskForm):
 
 
 class Help(FlaskForm):
-    usr = EmailField('Usuario *', validators=[Length(
+    help_username = EmailField('Usuario *', validators=[Length(
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Usuario es requerido')])
-    duda = TextAreaField(
+    help_doubt = TextAreaField(
         validators=[Length(min=3), InputRequired(message='Usuario es requerido')])
-    btn = SubmitField('Enviar')
+    help_submit = SubmitField('Enviar')
 
 
 class New_Post(FlaskForm):

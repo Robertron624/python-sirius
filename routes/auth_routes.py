@@ -1,11 +1,10 @@
-from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
+from flask import Blueprint, redirect, render_template, request, session, jsonify
 from db import seleccion, accion
 from formularios import Login, Signup, Password_Recovery
 from utilidades import pass_valido, email_valido, is_adult
 from markupsafe import escape
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
-import time
 
 #create a Blueprint for auth-related routes
 auth_blueprint = Blueprint('auth', __name__)

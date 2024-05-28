@@ -1,4 +1,5 @@
 {% extends "base.html" %} {% block css %}
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/404.css' ) }}" />
 {% endblock %} {% block contenido %}
 <div class="container">
@@ -6,7 +7,6 @@
         <div class="left">
             <h1>Ooops algo salió mal</h1>
             <p>Esta página no existe...</p>
-
         </div>
         <div class="right">
             <img src='{{ url_for("static", filename="img/404.png") }}' alt="a man an a woman separated by 404 cartel in the middle" />

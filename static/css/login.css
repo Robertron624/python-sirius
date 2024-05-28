@@ -8,11 +8,6 @@ main {
   padding-block: 1.5rem;
 }
 
-#duda {
-  position: relative;
-  bottom: 35px;
-}
-
 .title-subtitle {
   display: flex;
   flex-direction: column;
@@ -63,13 +58,13 @@ main {
   margin-block-start: -6rem;
 }
 
-.login-box h1 {
-  margin: 0;
-  padding: 0 0 20px;
-  text-align: center;
-  display: block;
-  font-size: 22px;
-}
+  .login-box h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    display: block;
+    font-size: 22px;
+  }
 
 .login-box label {
   margin: 0;

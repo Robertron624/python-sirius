@@ -1,8 +1,8 @@
 import os
-from flask import Flask, render_template, request, session, flash, redirect
+from flask import Flask, render_template, request, session, flash, redirect, jsonify
 
 from formularios import Busqueda, Roles, Help
-from db import accion, editarimg, seleccion
+from db import editarimg, seleccion
 
 from routes.user_routes import user_blueprint
 from routes.comment_routes import comment_blueprint
@@ -49,9 +49,21 @@ def busqueda(texto=None):
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
 
-@app.route('/ayuda/')
+@app.route('/ayuda/', methods=['GET', 'POST'])
 def help():
     frm = Help()
+    if request.method == 'POST':
+        help_username = request.form.get('help_username')
+        help_doubt = request.form.get('help_doubt')
+        
+        is_data_valid = (help_username != "") and (help_doubt != "")
+        
+        if not is_data_valid:
+            return jsonify({"message": "El usuario y el mensaje son obligatorios"}), 400
+        else:
+            print(f"Ayuda enviada por {help_username} con el mensaje: {help_doubt}")
+            
+            return jsonify({"message": "Ayuda enviada correctamente"}), 200
     return render_template("help.html", form=frm, titulo="Ayuda")
 
 @app.route('/roles/<int:iduser>/', methods=['GET', 'POST'])
