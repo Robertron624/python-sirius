@@ -21,6 +21,11 @@ def post_page(id=None):
         if request.method == 'GET':
             sql = f"SELECT nombre, apellido, datepost, text, url FROM post WHERE id='{id}'"
             res = seleccion(sql)
+            
+            # If the post does not exist, redirect to 404 page
+            if len(res) == 0:
+                return render_template('404.html'), 404
+            
             nombre = res[0][0]
             apellidos = res[0][1]
             sql2 = f"SELECT correo,sexo FROM usuarios WHERE nombre='{nombre}' AND apellidos='{apellidos}'"

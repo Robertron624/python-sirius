@@ -279,35 +279,86 @@ function loadDeleteCommentEvents(Toast) {
 
 function loadDeletePostEvents(Toast) {
   // Delete post
-  const deletePostUrl = "/eliminarpost/";
+  const deletePostBaseUrl = "/eliminarpost/";
   const deletePostModal = document.getElementById("delete-post-modal");
+  const postId = getCurrentPostId();
 
   const deletePostTrigger = document.getElementById("delete-post-trigger");
 
   if (!deletePostTrigger) return;
 
   const confirmDeletePostButton = deletePostModal.querySelector(
-    "a.confirm-delete-post"
+    ".confirm-delete-post"
   );
   const cancelDeletePostButton = deletePostModal.querySelector(
     ".cancel-delete-post"
   );
 
   deletePostTrigger.addEventListener("click", () => {
-    const postId = deletePostTrigger.getAttribute("data-post-id");
-    confirmDeletePostButton.href = `${deletePostUrl}${postId}`;
     deletePostModal.showModal();
+
+    confirmDeletePostButton.addEventListener("click", async () => {
+      const url = `${deletePostBaseUrl}${postId}`;
+
+      console.log("URL to delete post:", url);
+      try {
+        const response = await fetch(url, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+
+          console.log("Response is ok :)", response)
+
+          const parsedResponse = await response.json();
+          if (parsedResponse.success) {
+
+            console.log("Response is success :)", parsedResponse)
+
+            Toast.fire({
+              icon: "success",
+              title: "Publicación eliminada con éxito, redirigiendo...",
+            });
+
+            setTimeout(() => {
+              window.location.href = "/feed";
+            }, 3000);
+
+            return;
+          } else {
+            console.log("Response is not success :(", parsedResponse)
+
+            Toast.fire({
+              icon: "error",
+              title: "Error al eliminar publicación",
+            });
+          }
+        } else {
+          
+          Toast.fire({
+            icon: "error",
+            title: "Error al eliminar publicación, por favor intente de nuevo",
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+
+        Toast.fire({
+          icon: "error",
+          title: "Error al eliminar publicación",
+        });
+      } finally {
+        deletePostModal.close();
+      }
+    });
+
   });
 
   cancelDeletePostButton.addEventListener("click", () => {
     deletePostModal.close();
-  });
-
-  confirmDeletePostButton.addEventListener("click", () => {
-    Toast.fire({
-      icon: "success",
-      title: "Publicación eliminada",
-    });
   });
 
   // close modal when clicking outside
