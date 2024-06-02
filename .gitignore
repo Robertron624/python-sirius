@@ -18,10 +18,23 @@ venv*/
 
 # Environment variables file
 .env
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+env.bak/
+venv.bak/
+
+# Environment config files
+Lib/
+Scripts/
+pyvenv.cfg
 
 # Other project-specific files
 instance/
 *.swp
 
+# Static files and database
 uploads
 database.db
