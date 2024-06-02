@@ -6,6 +6,21 @@ function main() {
         timer: 3000,
     });
 
+    const fileInputEl = document.getElementById('post_file');
+
+    fileInputEl.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const imagePlaceholder = document.getElementById('image-placeholder');
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            imagePlaceholder.src = e.target.result;
+        }
+
+        reader.readAsDataURL(file);
+        
+    });
+
     const newPostForm = document.getElementById('new-post-form');
 
     newPostForm.addEventListener('submit', async (event) => {
