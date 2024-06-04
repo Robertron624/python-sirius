@@ -101,7 +101,6 @@ header {
 }
 
 .nav-main ul li a:hover::after{
-  border-bottom: 1.5px solid #fff;
   width: 100%;
 }
 

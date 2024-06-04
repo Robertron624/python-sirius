@@ -7,10 +7,21 @@ function main() {
     });
 
     const fileInputEl = document.getElementById('post_file');
+    const imagePlaceholder = document.getElementById('image-placeholder');
+    const originalImagePlaceholder = imagePlaceholder.src;
+
+    imagePlaceholder.addEventListener('click', () => {
+        fileInputEl.click();
+    });
 
     fileInputEl.addEventListener('change', (event) => {
         const file = event.target.files[0];
-        const imagePlaceholder = document.getElementById('image-placeholder');
+
+        if (!file) {
+            imagePlaceholder.src = originalImagePlaceholder;    
+            return;
+        }
+
         const reader = new FileReader();
 
         reader.onload = (e) => {
