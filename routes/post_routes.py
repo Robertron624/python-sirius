@@ -132,7 +132,7 @@ def new_post():
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
 
-@post_blueprint.route('/editar/<int:id>', methods=['GET', 'POST'])
+@post_blueprint.route('/editar/<int:id>', methods=['GET', 'POST', 'PUT'])
 def edit_post(id=None):
     if 'id' not in session:
         return redirect('/')
@@ -142,23 +142,36 @@ def edit_post(id=None):
         if request.method == 'GET':
             idImg = id
             sex = session["urlava"]
-            sql_url = f"SELECT url from post WHERE id='{id}'"
+            sql_url = f"SELECT text from post WHERE id='{id}'"
             res = seleccion(sql_url)
-            url_img = res[0][0]
-            return render_template('edit-post.html', titulo='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, ruta=url_img, form_search=frm_search, include_header=True)
+            
+            if len(res) != 0:
+                frm_edit_post.edited_text.data = res[0][0]
+            
+            return render_template('edit-post.html', titulo='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')
-        else:
-            text = escape(request.form['edited_text']).capitalize()
+        elif request.method == 'PUT':
+            
+            data = request.get_json()
+            text = escape(data.get('edited_text', '')).capitalize()
             sql = f"UPDATE post SET text='{text}' WHERE id='{id}'"
-            resultado = editarimg(sql)
+            
+            try:
+                res = editarimg(sql)
+                
+                if res == 0:
+                    print('Error while trying to save: ', res)
+                    return jsonify({'error': 'Error al editar la publicación, intente de nuevo'}), 500
+                      
+                return jsonify({'success': 'Publicación editada correctamente'}), 200
+                
+            except Exception as e:
+                return jsonify({'error': 'Error al editar la publicación, intente de nuevo'}), 500
+            
 
-            if resultado == 0:
-                flash('Error al guardar los cambios')
-                return redirect(f'/editar/{id}')
-            else:
-                return redirect('/feed/')
+            
 
 @post_blueprint.route('/eliminarpost/<int:id>', methods=['DELETE'])
 def eliminar(id=None):

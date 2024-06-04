@@ -1,8 +1,22 @@
+.edit-post-form {
+    width: 40rem;
+    background-color: #342a7d;
+    box-shadow: 0 0 3px #51319e;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.user-info {
+    display: flex;
+    gap: 1.1rem;
+}
+
 .user-avatar {
     width: 65px;
     height: 65px;
     display: inline-block;
     vertical-align: middle;
+    border-radius: 50%;
 }
 
 
@@ -11,8 +25,37 @@
     font-family: dark;
     color: white;
     font-weight: lighter;
-    left: 100px;
-    bottom: 50px;
-    width: 100%;
-    height: 10px;
+    font-size: 2rem;
+}
+
+.textarea-container {
+    margin-top: 2rem;
+}
+
+.textarea-container textarea {
+    width: -webkit-fill-available;
+    height: 10rem;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f0edf7;
+    color: #000;
+    font-size: 1rem;
+    border: none;
+}
+
+.submit-container {
+    margin-top: 1rem;
+}
+
+.submit-container input[type="submit"] {
+    background-color: gold;
+    color: #000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.submit-container input[type="submit"]:hover {
+    background-color: #b8ac0d;
 }

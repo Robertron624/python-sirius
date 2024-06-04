@@ -61,7 +61,7 @@ class New_Post(FlaskForm):
 
 
 class Edit_Post(FlaskForm):
-    edited_text = TextAreaField()
+    edited_text = TextAreaField('Texto')
     save_edit = SubmitField('Guardar cambios')
 
 
