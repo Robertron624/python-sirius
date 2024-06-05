@@ -93,41 +93,45 @@ def new_post():
             return render_template('new-post.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
         elif request.method == 'POST':
 
-            file = request.files.get('post_file')
-            text = escape(request.form.get('post_text', '')).capitalize()
-            
-            if not file:
-                return jsonify({'error': 'No se ha seleccionado un archivo'})
-            
-            parsed_filename = secure_filename(file.filename)
-            
-            if os.path.isfile(f"static/uploads/{parsed_filename}"):
-                random_name = str(randint(1, 5000))
-                final_filename = random_name + parsed_filename
-            else:
-                final_filename = parsed_filename
+            if frm_new_post.validate_on_submit():
+                file = frm_new_post.post_file.data
+                text = escape(frm_new_post.post_text.data).capitalize()
                 
-            url_img = f"/uploads/{final_filename}"
-            
-            try:
-                file.save(f"static{url_img}")
-            except Exception as e:
-                return jsonify({'error': 'Error al tratar de guardar la imagen, intente de nuevo'}), 500
-            
-            user = session['ema']
-            first_name = session['nom']
-            last_name = session['ape']
-            sex = session['sex']
-            url_avatar = session['urlava']
-            today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-            
-            sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url, sexo, urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
-            resultado = accion(sql, (user, first_name, last_name, today, text, url_img, sex, url_avatar))
-            
-            if(resultado == 0):
-                return jsonify({'error': 'Error al guardar la publicación, intente de nuevo'}), 500
-            
-            return jsonify({'success': 'Publicación guardada correctamente', 'url': url_img}), 200
+                parsed_filename = secure_filename(file.filename)
+                
+                if os.path.isfile(f"static/uploads/{parsed_filename}"):
+                    random_name = str(randint(1, 5000))
+                    final_filename = random_name + parsed_filename
+                else:
+                    final_filename = parsed_filename
+                    
+                url_img = f"/uploads/{final_filename}"
+                
+                try:
+                    file.save(f"static{url_img}")
+                except Exception as e:
+                    return jsonify({'error': 'Error al tratar de guardar la imagen, intente de nuevo'}), 500
+                
+                user = session['ema']
+                first_name = session['nom']
+                last_name = session['ape']
+                sex = session['sex']
+                url_avatar = session['urlava']
+                today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+                
+                sql = 'INSERT INTO post(correo, nombre, apellido, datepost, text, url, sexo, urlavatar) VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
+                resultado = accion(sql, (user, first_name, last_name, today, text, url_img, sex, url_avatar))
+                
+                print("resultado -> ", resultado)
+                
+                if resultado == 0:
+                    return jsonify({'error': 'Error al guardar la publicación, intente de nuevo'}), 500
+                
+                return jsonify({'success': 'Publicación guardada correctamente', 'url': url_img}), 200
+            else:
+                errors = frm_new_post.errors
+                print("errors -> ", errors)
+                return jsonify({'error': 'Formulario inválido', 'errors': errors}), 400
         elif request.method == 'POST' and 'texto' in request.form:
             texto = request.form['texto'].capitalize()
             return redirect(f'/busqueda/{texto}')

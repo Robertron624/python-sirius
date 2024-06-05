@@ -1,5 +1,6 @@
 from typing import ValuesView
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileRequired
 from wtforms import StringField
 from wtforms import validators
 from wtforms.fields.choices import RadioField
@@ -56,7 +57,10 @@ class Help(FlaskForm):
 
 class New_Post(FlaskForm):
     post_text = TextAreaField('Texto')
-    post_file = FileField('Seleccionar archivo', validators=[InputRequired(message='Archivo es requerido')])
+    post_file = FileField('Seleccionar archivo', validators=[
+        FileRequired(message='Archivo es requerido'),
+        FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Solo se permiten imágenes!')
+    ])
     publish = SubmitField('Publicar')
 
 

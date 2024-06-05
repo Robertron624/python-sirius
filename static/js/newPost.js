@@ -9,6 +9,7 @@ function main() {
     const fileInputEl = document.getElementById('post_file');
     const imagePlaceholder = document.getElementById('image-placeholder');
     const originalImagePlaceholder = imagePlaceholder.src;
+    const allowedExtensions = ['image/jpeg', 'image/png', 'image/gif'];
 
     imagePlaceholder.addEventListener('click', () => {
         fileInputEl.click();
@@ -19,6 +20,17 @@ function main() {
 
         if (!file) {
             imagePlaceholder.src = originalImagePlaceholder;    
+            return;
+        }
+
+        if (!allowedExtensions.includes(file.type)) {
+            Toast.fire({
+                icon: 'error',
+                title: 'Solo se permiten imágenes en formato JPG, PNG o GIF.',
+            });
+
+            fileInputEl.value = ''; // Clear the file input
+            imagePlaceholder.src = originalImagePlaceholder;
             return;
         }
 
@@ -39,6 +51,10 @@ function main() {
 
         const formData = new FormData(newPostForm);
 
+        // Include CSRF token
+        const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+        formData.append('csrf_token', csrfToken);
+
         try {
 
             const response = await fetch('/nueva-publicacion', {
@@ -56,6 +72,7 @@ function main() {
 
                 // Clear the form
                 newPostForm.reset();
+                imagePlaceholder.src = originalImagePlaceholder;
 
                 setTimeout(() => {
                     window.location.href = '/feed';

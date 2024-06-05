@@ -25,10 +25,11 @@
       </figure>
     </div>
     <div class="textarea-container">
+      {{ form_new_post.hidden_tag() }}
       {{form_new_post.post_text(placeholder="¿Que estas pensando?")}}
     </div>
     <div class="new-post-buttons">
-      {{form_new_post.post_file()}}
+      {{form_new_post.post_file(accept="image/*")}}
 
       {{form_new_post.publish()}}
     </div>
