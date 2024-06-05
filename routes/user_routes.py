@@ -10,32 +10,79 @@ from datetime import datetime
 #create a Blueprint for user-related routes
 
 user_blueprint = Blueprint('user', __name__)
-@user_blueprint.route('/perfil/', methods=['GET', 'POST'])
-def profile():
+@user_blueprint.route('/perfil/', methods=['GET'])
+@user_blueprint.route('/perfil/<int:id>', methods=['GET'])
+def profile(id=None):
     if 'id' not in session:
         return redirect('/')
+    
+    frm_search = Busqueda()
+    user_id = session['id']  # ID del usuario logueado
+
+    if id is None:
+        # Mostramos el perfil del usuario logueado
+        id = user_id
+
+    if id != user_id:
+        # Mostrar perfil de otro usuario
+        
+        sql = f"SELECT nombre, apellidos, correo, urlavatar FROM usuarios WHERE id='{id}'"
+        res = seleccion(sql)
+        
+        if not res:
+            return render_template('404.html'), 404
+        
+        user_personal_info = res[0]
+        user_personal_info_formatted = {
+            'id': id, # 'id' es el 'id' del usuario
+            'name': user_personal_info[0],
+            'lastname': user_personal_info[1],
+            'email': user_personal_info[2], # 'correo' es el 'email' del usuario
+            'url_avatar': user_personal_info[3]
+        }
+        
+        print("user personal info raw -> ",user_personal_info)
+
+        
+        sql2 = f"SELECT id, nombre, apellido, datepost, text, urlavatar, url FROM post WHERE correo='{user_personal_info[2]}'"
+        res2 = seleccion(sql2)
+        
+        
+        formatted_results = [{
+            'id': row[0], 
+            'nombre': row[1], 
+            'apellido': row[2], 
+            'datepost': format_datetime(row[3]),
+            'text': row[4],
+            'urlavatar': row[5],
+            'url': row[6]
+        } for row in res2]
+
+        return render_template('profile.html', titulo='Perfil', postList=formatted_results, form_search=frm_search, include_header=True, is_this_third_party_profile=True, user_personal_info=user_personal_info_formatted)
+    
     else:
-        frm_search = Busqueda()
-        if request.method == 'GET':
-            usr = session['ema']
-            sex = session["urlava"]
+        # Mostrar perfil del usuario logueado
+        usr = session['ema']
+        sex = session["urlava"]
+        try:
             sql = f"SELECT id, nombre, apellido, datepost, text, urlavatar, url FROM post WHERE correo='{usr}'"
             res = seleccion(sql)
+        except Exception as e:
+            print("Error fetching user posts, error:", e)
+            return render_template('404.html'), 404
 
-            formatted_results = [{ 'id': row[0], 
-                       'nombre': row[1], 
-                       'apellido': row[2], 
-                       'datepost': format_datetime(row[3]),
-                       'text': row[4],
-                       'urlavatar': row[5],
-                       'url': row[6],
-                        } for row in res]
+        formatted_results = [{
+            'id': row[0], 
+            'nombre': row[1], 
+            'apellido': row[2], 
+            'datepost': format_datetime(row[3]),
+            'text': row[4],
+            'urlavatar': row[5],
+            'url': row[6]
+        } for row in res]
 
-            return render_template('profile.html', titulo='Mi perfil', ava=sex, form_search=frm_search, postList=formatted_results, include_header=True)
-        else:
-            texto = request.form['texto'].capitalize()
-            return redirect(f'/busqueda/{texto}')
-
+        return render_template('profile.html', titulo='Mi perfil', ava=sex, form_search=frm_search, postList=formatted_results, include_header=True, is_this_third_party_profile=False)
+    
 @user_blueprint.route('/feed/', methods=['POST', 'GET'])
 def home():
     if 'id' not in session:

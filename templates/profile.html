@@ -4,15 +4,26 @@
 {% endblock %} {% block contenido %}
 
 <div class="profile-header">
-  <img src="{{url_for('static', filename=ava)}}" id="avatar" alt="avatar" />
+  {% if is_this_third_party_profile %}
+    <img src="{{url_for('static', filename=user_personal_info.url_avatar)}}" id="avatar" alt="avatar" />
+  {% else %}
+    <img src="{{url_for('static', filename=ava)}}" id="avatar" alt="avatar" />
+  {% endif %}
   <div class="links">
-    <p class="username">{{session['nom']}} {{session['ape']}}</p>
-    <a href="/editar-usuario/" class="profile-link">
-      Editar Perfil
-    </a>
-    <a href="/cambiar-contraseña/" class="profile-link">
-      Cambiar Contraseña
-    </a>
+    {% if is_this_third_party_profile %}
+      <p class="username">{{user_personal_info.name}} {{user_personal_info.lastname}}</p>
+      <a href="/seguir/{{user_personal_info.id}}" class="profile-link">
+        Seguir
+      </a>
+    {% else %}
+      <p class="username">{{session['nom']}} {{session['ape']}}</p>
+      <a href="/editar-usuario/" class="profile-link">
+        Editar Perfil
+      </a>
+      <a href="/cambiar-contraseña/" class="profile-link">
+        Cambiar Contraseña
+      </a>
+    {% endif %}
   </div>
 </div>
 
@@ -34,7 +45,11 @@
     <div class="post-container">
       <div class="post-user">
         <img src="{{url_for('static', filename=post['urlavatar'])}}" />
-        <a href="/profile/{{post['id']}}">{{post['nombre']}} {{post['apellido']}}</a>
+        {% if is_this_third_party_profile %}
+          <a href="/perfil/{{user_personal_info.id}}">{{post['nombre']}} {{post['apellido']}}</a>
+        {% else %}
+          <a href="/perfil/{{session['id']}}">{{post['nombre']}} {{post['apellido']}}</a>
+        {% endif %}
       </div>
       <a class="image-container" href="/publicacion/{{post['id']}}">
         <img src="{{url_for('static', filename=post['url'])}}" />
