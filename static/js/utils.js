@@ -70,3 +70,4 @@ function checkSignupData(signupData) {
 
     return { hasError: false, message: "" };
 }
+

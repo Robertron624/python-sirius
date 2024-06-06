@@ -12,6 +12,7 @@
   defer
   src="{{ url_for('static', filename='/js/sweetalert.js') }}"
 ></script>
+
 {% block js %} {% endblock %}
 
 <div class="container-full-post">
@@ -89,10 +90,16 @@
         {% if session['ema'] == comentario['correo'] %}
         <button
           class="delete-comment-trigger"
-          data-comment-id="{{comentario['id']}}"
-          data-image-id="{{id_img}}"
+
         >
           Borrar
+        </button>
+
+        {# TODO: implementar edicion de comentarios #}
+        <button
+          class="edit-comment-trigger"
+        >
+          Editar
         </button>
         {% endif %}
       </div>
@@ -114,6 +121,23 @@
       <div class="modal-buttons">
         <button class="cancel-delete-post">Cancelar</button>
         <button class="confirm-delete-post"> Borrar </button>
+      </div>
+    </div>
+  </dialog>
+  <dialog id="edit-comment-modal">
+    <div class="inner">
+      <p>Editar comentario</p>
+      <form id="edit-comment-form">
+        <textarea
+          name="edit-comment-text"
+          id="edit-comment-text"
+          cols="30"
+          rows="10"
+        ></textarea>
+      </form>
+      <div class="modal-buttons">
+        <button class="cancel-edit-comment">Cancelar</button>
+        <button type="submit" class="confirm-edit-comment"> Guardar </button>
       </div>
     </div>
   </dialog>

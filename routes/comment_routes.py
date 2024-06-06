@@ -39,11 +39,9 @@ def create_comment(id=None):
             }
             
             return jsonify({'message': 'Comment saved successfully', 'commentData': comment_data}), 200
-        
-
-    
-@comment_blueprint.route('/eliminarcomment/<int:idpost>/<int:idcomment>', methods=['DELETE'])
-def eliminarcomment(idpost=None, idcomment=None):
+            
+@comment_blueprint.route('/eliminar-comentario/<int:idpost>/<int:idcomment>', methods=['DELETE'])
+def delete_comment(idpost=None, idcomment=None):
     try: 
         sql = f"DELETE FROM comment WHERE idpost = {idpost} AND id = {idcomment}"
         resultado = eliminarimg(sql)
@@ -55,3 +53,34 @@ def eliminarcomment(idpost=None, idcomment=None):
     except Exception as e:
         print('Error: ', e)
         return jsonify({'error': 'Internal server error'}), 500
+    
+    
+@comment_blueprint.route('/editar-comentario/<int:idpost>/<int:idcomment>', methods=['PUT'])
+def edit_comment(idpost=None, idcomment=None):    
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({'error': 'Invalid request'}), 400
+
+    new_comment_text = data.get('commentText')
+    
+    if not new_comment_text:
+        return jsonify({'error': 'No text was submitted'}), 400
+    
+    try:
+        # paramaterized query to prevent SQL injection
+        sql = "UPDATE comment SET text = ? WHERE idpost = ? AND id = ?"
+        response = accion(sql, (new_comment_text, idpost, idcomment))
+        if response == 0:
+            return jsonify({'error': 'Comment not found or user not authorized to edit'}), 404
+    except Exception as e:
+        print('Error: ', e)
+        return jsonify({'error': 'Internal server error'}), 500
+    
+    
+    commentData = {
+        'commentText': new_comment_text,
+        'id': idcomment
+    }
+    
+    return jsonify({'message': 'Comment edited successfully', 'commentData': commentData}), 200

@@ -193,14 +193,24 @@
   padding: 0.5rem 1rem 0.5rem 1rem;
   border-radius: 10px;
   font-size: medium;
-  cursor: pointer;
-  transition: background 0.3s ease-in-out;
-  border: none;
   box-shadow: 0 0 3px #1b0849;
 }
 
 .delete-comment-trigger:hover {
   background-color: #922101;
+}
+
+.edit-comment-trigger {
+  background-color: #ce9231;
+  color: white;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: medium;
+  box-shadow: 0 0 3px #1b0849;
+}
+
+.edit-comment-trigger:hover {
+  background-color: #9a6105;
 }
 
 /* -----------------------SECCIÓN DE ENVIAR MENSAJES------------------------------- */
@@ -356,6 +366,58 @@
 #delete-post-modal .inner .modal-buttons .cancel-delete-post:hover {
   background-color: #9a6105;
 }
+
+/* EDIT COMMENT MODAL */
+
+#edit-comment-modal {
+  background-color: rgba(125, 106, 236, 1);
+  color: antiquewhite;
+  border-radius: 10px;
+  border: none;
+}
+
+#edit-comment-modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#edit-comment-modal p {
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+#edit-comment-modal .inner {
+  padding: 1rem;
+}
+
+#edit-comment-modal .inner .modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+#edit-comment-modal .inner .modal-buttons .confirm-edit-comment,
+#edit-comment-modal .inner .modal-buttons .cancel-edit-comment {
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
+}
+
+#edit-comment-modal .inner .modal-buttons .confirm-edit-comment {
+  background-color: #c0330c;
+}
+
+#edit-comment-modal .inner .modal-buttons .confirm-edit-comment:hover {
+  background-color: #922101;
+}
+
+#edit-comment-modal .inner .modal-buttons .cancel-edit-comment {
+  background-color: #ce9231;
+}
+
+#edit-comment-modal .inner .modal-buttons .cancel-edit-comment:hover {
+  background-color: #9a6105;
+}
+
 
 /* MEDIA QUERIES */
 

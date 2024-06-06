@@ -174,9 +174,6 @@ def edit_post(id=None):
             except Exception as e:
                 return jsonify({'error': 'Error al editar la publicación, intente de nuevo'}), 500
             
-
-            
-
 @post_blueprint.route('/eliminarpost/<int:id>', methods=['DELETE'])
 def eliminar(id=None):
     if 'id' not in session:

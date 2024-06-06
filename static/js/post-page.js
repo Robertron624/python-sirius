@@ -1,69 +1,98 @@
+
 let currentCommentToDeleteId = null;
+let currentCommentToEditId = null;
+
+// sanitize text to prevent XSS attacks 
+function sanitizeText(text) {
+  return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
 function getCurrentPostId() {
-    const postId = window.location.pathname.split("/")[2];
-    return postId;
+  const postId = window.location.pathname.split("/")[2];
+  return postId;
 }
 
 async function addCommentQuery(data) {
+  const { commentText, postId } = data;
 
-    const { commentText, postId } = data;
+  const addCommentUrl = `${window.location.origin}/new-comment/${postId}/`;
 
-    const addCommentUrl = `${window.location.origin}/new-comment/${postId}/`;
+  const formData = new URLSearchParams();
+  formData.append("new_comment_text", commentText);
 
-    const formData = new URLSearchParams();
-    formData.append("new_comment_text", commentText);
+  try {
+    const response = await fetch(addCommentUrl, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
 
-    try {
-
-        const response = await fetch(addCommentUrl, {
-            method: "POST",
-            body: formData,
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        });
-
-        if (response.ok) {
-            const parsedResponse = await response.json();
-            return parsedResponse.commentData;
-        }
-
-        throw new Error("Failed to add comment");
-
-    } catch (error) {
-        throw new Error(error.message);
+    if (response.ok) {
+      const parsedResponse = await response.json();
+      return parsedResponse.commentData;
     }
 
+    throw new Error("Failed to add comment");
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 async function deleteCommentQuery(data) {
+  const { commentId } = data;
 
-    const { commentId } = data;
+  const postId = getCurrentPostId();
 
-    const postId = getCurrentPostId();
+  const deleteCommentUrl = `/eliminar-comentario/${postId}/${commentId}`;
 
-    const deleteCommentUrl = `/eliminarcomment/${postId}/${commentId}`;
+  try {
+    const response = await fetch(deleteCommentUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    try {
-
-        const response = await fetch(deleteCommentUrl, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (response.ok) {
-            return;
-        }
-
-        throw new Error("Failed to delete comment");
-
-    } catch (error) {
-        throw new Error(error.message);
+    if (response.ok) {
+      return;
     }
 
+    throw new Error("Failed to delete comment");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function editCommentQuery(data) {
+  const { commentId, commentText } = data;
+
+  const postId = getCurrentPostId();
+
+  const editCommentUrl = `/editar-comentario/${postId}/${commentId}`;
+
+  const sanitizedText = sanitizeText(commentText);
+
+  try {
+    const response = await fetch(editCommentUrl, {
+      method: "PUT",
+      body: JSON.stringify({ commentText: sanitizedText }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const parsedResponse = await response.json();
+
+      return parsedResponse.commentData;
+    }
+
+    throw new Error("Failed to edit comment");
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 async function generateNewCommentElement(comment) {
@@ -126,7 +155,6 @@ async function generateNewCommentElement(comment) {
   commentDeleteButtonTrigger.textContent = "Borrar";
 
   commentDeleteButtonTrigger.addEventListener("click", () => {
-
     const deleteCommentModal = document.getElementById("delete-comment-modal");
     deleteCommentModal.showModal();
     currentCommentToDeleteId = id;
@@ -142,8 +170,104 @@ async function generateNewCommentElement(comment) {
   return newCommentElement;
 }
 
-async function loadAddCommentEvents(Toast) {
+async function loadEditCommentEvents(Toast) {
 
+  const editCommentModal = document.getElementById("edit-comment-modal");
+  const editCommentForm = document.getElementById("edit-comment-form");
+  const editCommentTextArea = editCommentForm.querySelector("#edit-comment-text");
+
+  const editCommentTriggers = document.querySelectorAll(".edit-comment-trigger");
+
+  const confirmEditButton = editCommentModal.querySelector(".confirm-edit-comment");
+  const cancelEditButton = editCommentModal.querySelector(".cancel-edit-comment");
+
+
+  cancelEditButton.addEventListener("click", () => {
+    editCommentModal.close();
+  });
+
+  // close modal when clicking outside
+  editCommentModal.addEventListener("click", (e) => {
+    if (e.target === editCommentModal) {
+      editCommentModal.close();
+    }
+  });
+
+  confirmEditButton.addEventListener("click", async () => {
+    const commentId = currentCommentToEditId;
+    const commentText = editCommentTextArea.value;
+
+    if (!commentText) {
+      Toast.fire({
+        icon: "error",
+        title: "El comentario no puede estar vacío",
+      });
+
+      return;
+    }
+
+    const data = {
+      commentId,
+      commentText,
+    };
+
+    try {
+      const editedCommentData = await editCommentQuery(data);
+
+      Toast.fire({
+        icon: "success",
+        title: "Comentario editado",
+      });
+
+      const { commentText } = editedCommentData;
+
+      // find the comment container and update the text
+      const commentContainer = document.querySelector(
+        `.comment-container[data-comment-id="${commentId}"]`
+      );
+
+      if(!commentContainer) {
+        console.error("Comment container not found");
+        return;
+      }
+
+      const commentTextElement = commentContainer.querySelector(".comment_body p");
+
+      commentTextElement.textContent = commentText;
+
+    } catch (error) {
+      console.error("Error:", error);
+
+      Toast.fire({
+        icon: "error",
+        title: "Error al editar comentario",
+      });
+    } finally {
+      editCommentModal.close();
+    }
+  });
+
+  editCommentTriggers.forEach(async (trigger) => {
+    trigger.addEventListener("click", () => {
+      // open modal
+      editCommentModal.showModal();
+
+      const commentContainer = trigger.closest(".comment-container");
+
+      // Set the current comment text in the edit textarea
+      const commentTextElement = commentContainer.querySelector(".comment_body p");
+      editCommentTextArea.value = commentTextElement.textContent;
+
+      // Get comment id and image id from closest ".comment-container" element
+      const commentId = commentContainer.getAttribute("data-comment-id");
+
+      currentCommentToEditId = commentId;
+    });
+  });
+
+}
+
+async function loadAddCommentEvents(Toast) {
   const commentsContainer = document.querySelector(".comment_block");
   const commentForm = document.getElementById("new-comment-form");
   const postId = window.location.pathname.split("/")[2];
@@ -164,23 +288,22 @@ async function loadAddCommentEvents(Toast) {
     }
 
     const data = {
-        commentText: newCommentText,
-        postId,
+      commentText: newCommentText,
+      postId,
     };
 
     try {
-        const newCommentData = await addCommentQuery(data);
-        const newCommentElement = await generateNewCommentElement(newCommentData);
+      const newCommentData = await addCommentQuery(data);
+      const newCommentElement = await generateNewCommentElement(newCommentData);
 
-        commentsContainer.appendChild(newCommentElement);
-        commentForm.reset();
+      commentsContainer.appendChild(newCommentElement);
+      commentForm.reset();
 
-        Toast.fire({
-            icon: "success",
-            title: "Comentario agregado",
-        });
-    }
-    catch (error) {
+      Toast.fire({
+        icon: "success",
+        title: "Comentario agregado",
+      });
+    } catch (error) {
       console.error("Error:", error);
 
       Toast.fire({
@@ -188,13 +311,10 @@ async function loadAddCommentEvents(Toast) {
         title: "Error al agregar comentario",
       });
     }
-
-    
   });
 }
 
 function loadDeleteCommentEvents(Toast) {
-
   const deleteCommentModal = document.getElementById("delete-comment-modal");
 
   const deleteCommentTriggers = document.querySelectorAll(
@@ -206,44 +326,41 @@ function loadDeleteCommentEvents(Toast) {
   );
 
   confirmDeleteButton.addEventListener("click", async () => {
+    if (!currentCommentToDeleteId) {
+      console.error("Comment id not found");
+      return;
+    }
 
-      if(!currentCommentToDeleteId) {
-          console.error("Comment id not found");
-          return;
-      }
+    const data = {
+      commentId: currentCommentToDeleteId,
+    };
 
-      const data = {
-          commentId: currentCommentToDeleteId,
-      };
+    try {
+      await deleteCommentQuery(data);
 
-      try {
-          await deleteCommentQuery(data);
+      Toast.fire({
+        icon: "success",
+        title: "Comentario eliminado",
+      });
 
-          Toast.fire({
-              icon: "success",
-              title: "Comentario eliminado",
-          });
+      const commentContainer = document.querySelector(
+        `.comment-container[data-comment-id="${currentCommentToDeleteId}"]`
+      );
 
-          const commentContainer = document.querySelector(
-              `.comment-container[data-comment-id="${currentCommentToDeleteId}"]`
-          );
+      commentContainer.remove();
 
-          commentContainer.remove();
+      // Reset current comment id and image id
+      currentCommentToDeleteId = null;
+    } catch (error) {
+      console.error("Error:", error);
 
-          // Reset current comment id and image id
-          currentCommentToDeleteId = null;
-      }
-      catch (error) {
-          console.error("Error:", error);
-
-          Toast.fire({
-              icon: "error",
-              title: "Error al eliminar comentario",
-          });
-      }
-      finally {
-          deleteCommentModal.close();
-      }
+      Toast.fire({
+        icon: "error",
+        title: "Error al eliminar comentario",
+      });
+    } finally {
+      deleteCommentModal.close();
+    }
   });
 
   const cancelDeleteButton = deleteCommentModal.querySelector(
@@ -263,7 +380,6 @@ function loadDeleteCommentEvents(Toast) {
 
   deleteCommentTriggers.forEach(async (trigger) => {
     trigger.addEventListener("click", () => {
-
       // open modal
       deleteCommentModal.showModal();
 
@@ -271,7 +387,7 @@ function loadDeleteCommentEvents(Toast) {
 
       const commentContainer = trigger.closest(".comment-container");
       const commentId = commentContainer.getAttribute("data-comment-id");
-    
+
       currentCommentToDeleteId = commentId;
     });
   });
@@ -310,13 +426,11 @@ function loadDeletePostEvents(Toast) {
         });
 
         if (response.ok) {
-
-          console.log("Response is ok :)", response)
+          console.log("Response is ok :)", response);
 
           const parsedResponse = await response.json();
           if (parsedResponse.success) {
-
-            console.log("Response is success :)", parsedResponse)
+            console.log("Response is success :)", parsedResponse);
 
             Toast.fire({
               icon: "success",
@@ -329,7 +443,7 @@ function loadDeletePostEvents(Toast) {
 
             return;
           } else {
-            console.log("Response is not success :(", parsedResponse)
+            console.log("Response is not success :(", parsedResponse);
 
             Toast.fire({
               icon: "error",
@@ -337,7 +451,6 @@ function loadDeletePostEvents(Toast) {
             });
           }
         } else {
-          
           Toast.fire({
             icon: "error",
             title: "Error al eliminar publicación, por favor intente de nuevo",
@@ -354,7 +467,6 @@ function loadDeletePostEvents(Toast) {
         deletePostModal.close();
       }
     });
-
   });
 
   cancelDeletePostButton.addEventListener("click", () => {
@@ -369,23 +481,18 @@ function loadDeletePostEvents(Toast) {
   });
 }
 
-
-
-
 const main = () => {
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        });
-
-
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  });
 
   loadDeleteCommentEvents(Toast);
   loadAddCommentEvents(Toast);
+  loadEditCommentEvents(Toast);
   loadDeletePostEvents(Toast);
 };
 
