@@ -98,6 +98,29 @@ async function editCommentQuery(data) {
   }
 }
 
+async function deletePostQuery(data) {
+  const { postId } = data;
+
+  const deletePostUrl = `/eliminar-post/${postId}`;
+
+  try {
+    const response = await fetch(deletePostUrl, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      return;
+    }
+
+    throw new Error("Failed to delete post");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 async function generateNewCommentElement(comment) {
   const {
     commentText,
@@ -261,7 +284,7 @@ async function loadEditCommentEvents(Toast) {
 
       Toast.fire({
         icon: "error",
-        title: "Error al editar comentario",
+        title: "Error al editar comentario, por favor intente de nuevo.",
       });
     } finally {
       editCommentModal.close();
@@ -329,7 +352,7 @@ async function loadAddCommentEvents(Toast) {
 
       Toast.fire({
         icon: "error",
-        title: "Error al agregar comentario",
+        title: "Error al agregar comentario, por favor intente de nuevo.",
       });
     }
   });
@@ -377,7 +400,7 @@ function loadDeleteCommentEvents(Toast) {
 
       Toast.fire({
         icon: "error",
-        title: "Error al eliminar comentario",
+        title: "Error al eliminar comentario, por favor intente de nuevo.",
       });
     } finally {
       deleteCommentModal.close();
@@ -431,62 +454,42 @@ function loadDeletePostEvents(Toast) {
     ".cancel-delete-post"
   );
 
+  async function confirmDeleteHandler() {
+    const data = {
+      postId,
+    };
+
+    try {
+      await deletePostQuery(data);
+
+      Toast.fire({
+        icon: "success",
+        title: "Post eliminado correctamente, redirigiendo...",
+      });
+
+      setTimeout(() => {
+        window.location.href = "/perfil";
+      }, 3000);
+
+    } catch (error) {
+      console.error("Error:", error);
+
+      Toast.fire({
+        icon: "error",
+        title: "Error al eliminar post, por favor intente de nuevo.",
+      });
+    } finally {
+      deletePostModal.close();
+    }
+  }
+
   deletePostTrigger.addEventListener("click", () => {
     deletePostModal.showModal();
 
-    confirmDeletePostButton.addEventListener("click", async () => {
-      const url = `${deletePostBaseUrl}${postId}`;
+    confirmDeletePostButton.removeEventListener("click", confirmDeleteHandler);
 
-      console.log("URL to delete post:", url);
-      try {
-        const response = await fetch(url, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          console.log("Response is ok :)", response);
-
-          const parsedResponse = await response.json();
-          if (parsedResponse.success) {
-            console.log("Response is success :)", parsedResponse);
-
-            Toast.fire({
-              icon: "success",
-              title: "Publicación eliminada con éxito, redirigiendo...",
-            });
-
-            setTimeout(() => {
-              window.location.href = "/feed";
-            }, 3000);
-
-            return;
-          } else {
-            console.log("Response is not success :(", parsedResponse);
-
-            Toast.fire({
-              icon: "error",
-              title: "Error al eliminar publicación",
-            });
-          }
-        } else {
-          Toast.fire({
-            icon: "error",
-            title: "Error al eliminar publicación, por favor intente de nuevo",
-          });
-        }
-      } catch (error) {
-        console.error("Error:", error);
-
-        Toast.fire({
-          icon: "error",
-          title: "Error al eliminar publicación",
-        });
-      } finally {
-        deletePostModal.close();
-      }
+    confirmDeletePostButton.addEventListener("click", confirmDeleteHandler, {
+      once: true,
     });
   });
 
