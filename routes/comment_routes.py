@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, request, session, jsonify
-from db import get_last_comment_id, accion, eliminarimg
+from db import get_last_comment_id, accion, eliminarimg, seleccion
 from datetime import datetime
 
 #create a Blueprint for comment-related routes
@@ -42,10 +42,25 @@ def create_comment(id=None):
             
 @comment_blueprint.route('/eliminar-comentario/<int:idpost>/<int:idcomment>', methods=['DELETE'])
 def delete_comment(idpost=None, idcomment=None):
+    
+    if 'id' not in session:
+        return jsonify({'error': 'User not authorized to delete comment'}), 401
+    
     try: 
+        user_id = session['id']
+        user_email = session['ema']
+        
+        sql_check_author = f"SELECT correo FROM comment WHERE idpost = {idpost} AND id = {idcomment}"
+        res_check_author = seleccion(sql_check_author)
+        
+        if not res_check_author or res_check_author[0][0] != user_email:
+            print("User is not the owner of the comment")
+            return jsonify({'error': 'User not authorized to delete comment'}), 401
+        
+        print("User is the owner of the comment")
         sql = f"DELETE FROM comment WHERE idpost = {idpost} AND id = {idcomment}"
         resultado = eliminarimg(sql)
-        print("RESULT OF DELETE: ", resultado)
+        
         if resultado == 0:
             return jsonify({'error': 'Comment not found or user not authorized to delete'}), 404
         else:
@@ -56,11 +71,24 @@ def delete_comment(idpost=None, idcomment=None):
     
     
 @comment_blueprint.route('/editar-comentario/<int:idpost>/<int:idcomment>', methods=['PUT'])
-def edit_comment(idpost=None, idcomment=None):    
+def edit_comment(idpost=None, idcomment=None):
+    
+    if 'id' not in session:
+        return jsonify({'error': 'User not authorized to edit comment'}), 401
+    
     data = request.get_json()
     
     if not data:
         return jsonify({'error': 'Invalid request'}), 400
+    
+    user_id = session['id']
+    user_email = session['ema']
+    
+    sql_check_author = f"SELECT correo FROM comment WHERE idpost = {idpost} AND id = {idcomment}"
+    res_check_author = seleccion(sql_check_author)
+        
+    if not res_check_author or res_check_author[0][0] != user_email:
+        return jsonify({'error': 'User not authorized to delete comment'}), 401
 
     new_comment_text = data.get('commentText')
     

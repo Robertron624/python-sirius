@@ -18,7 +18,10 @@ async function addCommentQuery(data) {
   const addCommentUrl = `${window.location.origin}/new-comment/${postId}/`;
 
   const formData = new URLSearchParams();
-  formData.append("new_comment_text", commentText);
+
+  const sanitizedText = sanitizeText(commentText);
+
+  formData.append("new_comment_text", sanitizedText);
 
   try {
     const response = await fetch(addCommentUrl, {
