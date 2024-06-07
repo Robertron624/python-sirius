@@ -160,7 +160,25 @@ async function generateNewCommentElement(comment) {
     currentCommentToDeleteId = id;
   });
 
+  const commentEditButtonTrigger = document.createElement("button");
+  commentEditButtonTrigger.classList.add("edit-comment-trigger");
+  commentEditButtonTrigger.textContent = "Editar";
+
+  commentEditButtonTrigger.addEventListener("click", () => {
+    const editCommentModal = document.getElementById("edit-comment-modal");
+
+
+    const editCommentForm = document.getElementById("edit-comment-form");
+    const editCommentTextArea = editCommentForm.querySelector("#edit-comment-text");
+
+    editCommentTextArea.value = commentText;
+
+    editCommentModal.showModal();
+    currentCommentToEditId = id;
+  });
+
   commentToolbar.appendChild(commentDeleteButtonTrigger);
+  commentToolbar.appendChild(commentEditButtonTrigger);
 
   mainNewComment.appendChild(commentInfoContainer);
   mainNewComment.appendChild(commentToolbar);
