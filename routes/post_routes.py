@@ -19,17 +19,18 @@ def post_page(id=None):
         frm_search = Busqueda()
         frm_comentar = New_Comment()
         if request.method == 'GET':
-            sql = f"SELECT nombre, apellido, datepost, text, url FROM post WHERE id='{id}'"
+            sql = f"SELECT nombre, apellido, correo, datepost, text, url FROM post WHERE id='{id}'"
             res = seleccion(sql)
             
             # If the post does not exist, redirect to 404 page
             if len(res) == 0:
                 return render_template('404.html'), 404
+                        
+            correo = res[0][2]
             
-            nombre = res[0][0]
-            apellidos = res[0][1]
-            sql2 = f"SELECT correo,sexo FROM usuarios WHERE nombre='{nombre}' AND apellidos='{apellidos}'"
+            sql2 = f"SELECT correo,sexo FROM usuarios WHERE correo='{correo}'"
             res2 = seleccion(sql2)
+                        
             sex = res2[0][1]
             img_owner = res2[0][0]
             id_img = id
@@ -46,10 +47,10 @@ def post_page(id=None):
 
             post_data = {
                 'nombre': first_key,
-                'apellidos': tuple_values[0],
-                'datepost': format_datetime(tuple_values[1]),
-                'text': tuple_values[2],
-                'url': tuple_values[3]
+                'apellidos':    tuple_values[0],
+                'datepost': format_datetime(tuple_values[2]),
+                'text': tuple_values[3],
+                'url': tuple_values[4]
             }
 
             urlava = ''
@@ -158,6 +159,15 @@ def edit_post(id=None):
             return redirect(f'/busqueda/{texto}')
         elif request.method == 'PUT':
             
+            user_email = session['ema']
+        
+            sql_check_author = f"SELECT correo FROM post WHERE id = {id}"
+            res_check_author = seleccion(sql_check_author)
+            
+            if not res_check_author or res_check_author[0][0] != user_email:
+                print("User is not the owner of the comment")
+                return jsonify({'error': 'User not authorized to edit post'}), 401
+            
             data = request.get_json()
             text = escape(data.get('edited_text', '')).capitalize()
             sql = f"UPDATE post SET text='{text}' WHERE id='{id}'"
@@ -174,15 +184,24 @@ def edit_post(id=None):
             except Exception as e:
                 return jsonify({'error': 'Error al editar la publicación, intente de nuevo'}), 500
             
-@post_blueprint.route('/eliminarpost/<int:id>', methods=['DELETE'])
+@post_blueprint.route('/eliminar-post/<int:id>', methods=['DELETE'])
 def eliminar(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
+        
+        user_email = session['ema']
+        
+        sql_check_author = f"SELECT correo FROM post WHERE id = {id}"
+        res_check_author = seleccion(sql_check_author)
+        
+        if not res_check_author or res_check_author[0][0] != user_email:
+            print("User is not the owner of the comment")
+            return jsonify({'error': 'User not authorized to delete post'}), 401
+        
         sql = f"DELETE FROM post WHERE id IN ({id})"
         resultado = eliminarimg(sql)
         if resultado == 0:
-            flash('Error al eliminar la publicacion')
-            return redirect(f'/publicacion/{id}')
+            return jsonify({'error': 'Post not found or user not authorized to delete'}), 404
         else:
-            return redirect('/feed/')
+            return jsonify({'message': 'Post deleted successfully'}), 200

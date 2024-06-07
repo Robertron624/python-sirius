@@ -416,7 +416,7 @@ function loadDeleteCommentEvents(Toast) {
 
 function loadDeletePostEvents(Toast) {
   // Delete post
-  const deletePostBaseUrl = "/eliminarpost/";
+  const deletePostBaseUrl = "/eliminar-post/";
   const deletePostModal = document.getElementById("delete-post-modal");
   const postId = getCurrentPostId();
 
