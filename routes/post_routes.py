@@ -4,7 +4,7 @@ from db import eliminarimg, accion, seleccion, editarimg
 from werkzeug.utils import secure_filename
 from markupsafe import escape
 from datetime import datetime
-from formularios import New_Post, Busqueda, New_Comment, Edit_Post
+from formularios import New_Post, Search, New_Comment, Edit_Post
 from random import randint
 from utilidades import format_datetime, format_comment_datetime
 
@@ -16,7 +16,7 @@ def post_page(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_search = Busqueda()
+        frm_search = Search()
         frm_comentar = New_Comment()
         if request.method == 'GET':
             sql = f"SELECT nombre, apellido, correo, datepost, text, url FROM post WHERE id='{id}'"
@@ -78,9 +78,9 @@ def post_page(id=None):
             html_title = f"Publicación de {post_data['nombre']} {post_data['apellidos']}"
 
             return render_template('post-page.html', titulo=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_search=frm_search, form_comentar=frm_comentar, commentList=formatted_comments_data, include_header=True)
-        elif request.method == 'POST' and 'texto' in request.form:
-            texto = request.form['texto'].capitalize()
-            return redirect(f'/busqueda/{texto}')
+        elif request.method == 'POST' and 'search_text' in request.form:
+            search_text = request.form['search_text'].capitalize()
+            return redirect(f'/busqueda/{search_text}')
 
 @post_blueprint.route('/nueva-publicacion/', methods=['POST', 'GET'])
 def new_post():
@@ -88,7 +88,7 @@ def new_post():
         return redirect('/')
     else:
         frm_new_post = New_Post()
-        frm_search = Busqueda()
+        frm_search = Search()
         if request.method == 'GET':
             sex = session["urlava"]
             return render_template('new-post.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
@@ -133,9 +133,9 @@ def new_post():
                 errors = frm_new_post.errors
                 print("errors -> ", errors)
                 return jsonify({'error': 'Formulario inválido', 'errors': errors}), 400
-        elif request.method == 'POST' and 'texto' in request.form:
-            texto = request.form['texto'].capitalize()
-            return redirect(f'/busqueda/{texto}')
+        elif request.method == 'POST' and 'search_text' in request.form:
+            search_text = request.form['search_text'].capitalize()
+            return redirect(f'/busqueda/{search_text}')
 
 @post_blueprint.route('/editar/<int:id>', methods=['GET', 'POST', 'PUT'])
 def edit_post(id=None):
@@ -143,7 +143,7 @@ def edit_post(id=None):
         return redirect('/')
     else:
         frm_edit_post = Edit_Post()
-        frm_search = Busqueda()
+        frm_search = Search()
         if request.method == 'GET':
             idImg = id
             sex = session["urlava"]
@@ -154,9 +154,9 @@ def edit_post(id=None):
                 frm_edit_post.edited_text.data = res[0][0]
             
             return render_template('edit-post.html', titulo='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, form_search=frm_search, include_header=True)
-        elif request.method == 'POST' and 'texto' in request.form:
-            texto = request.form['texto'].capitalize()
-            return redirect(f'/busqueda/{texto}')
+        elif request.method == 'POST' and 'search_text' in request.form:
+            search_text = request.form['search_text'].capitalize()
+            return redirect(f'/busqueda/{search_text}')
         elif request.method == 'PUT':
             
             user_email = session['ema']

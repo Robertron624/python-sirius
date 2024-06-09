@@ -30,7 +30,7 @@ function main() {
 
                 Toast.fire({
                     icon: 'success',
-                    title: 'Ayuda enviada correctamente.'
+                    title: 'Ayuda enviada correctamente. Nos pondremos en contacto contigo lo antes posible.'
                 });
 
             }

@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
 from db import seleccion, accion, editarimg
 from utilidades import format_datetime
-from formularios import Edit_user, Busqueda, Change_password, Message
+from formularios import Edit_user, Search, Change_password, Message
 from utilidades import pass_valido, is_adult
 from markupsafe import escape
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -16,7 +16,7 @@ def profile(id=None):
     if 'id' not in session:
         return redirect('/')
     
-    frm_search = Busqueda()
+    frm_search = Search()
     user_id = session['id']  # ID del usuario logueado
 
     if id is None:
@@ -88,7 +88,7 @@ def home():
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_search = Busqueda()
+        frm_search = Search()
         if request.method == 'GET':
             sql = f"SELECT id, correo,nombre,apellido, datepost, text, url, sexo, urlavatar FROM post"
             resget = seleccion(sql)
@@ -105,16 +105,18 @@ def home():
 
             return render_template('feed.html', titulo='Feed', imglist=formatted_results, form_search=frm_search, include_header=True)
         else:
-            texto = request.form['texto'].capitalize()
-            return redirect(f'/busqueda/{texto}')
-        
+            search_text = request.form['search_text'].capitalize()
+            return redirect(f'/busqueda/{search_text}')
+
+
+# TODO: Implementar la funcionalidad de editar usuario usando javascript y Toast para mostrar mensajes        
 @user_blueprint.route('/editar-usuario/', methods=['POST', 'GET'])
 def edit_user():
     if 'id' not in session:
         return redirect('/')
     else:
         frm_edit_user = Edit_user()
-        frm_search = Busqueda()
+        frm_search = Search()
         if request.method == 'GET':
             return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', form_search=frm_search, include_header=True)
         else:
@@ -178,7 +180,7 @@ def change_password():
         return redirect('/')
     else:
         frm_change_password = Change_password()
-        frm_search = Busqueda()
+        frm_search = Search()
         if request.method == 'GET':
             return render_template('change-password.html', form_change_password=frm_change_password, form_search=frm_search, titulo='Cambiar contraseña', include_header=True)
         else:
@@ -225,7 +227,7 @@ def private_messages(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_search = Busqueda()
+        frm_search = Search()
         if request.method == 'GET':
             userid = id
 
@@ -235,23 +237,25 @@ def private_messages(id=None):
             return render_template('private-messages.html',
                                    form_search=frm_search, msgList=res, titulo='Mensajes privados', include_header=True)
         else:
-            texto = request.form['texto'].capitalize()
-            return redirect(f'/busqueda/{texto}')
-    
+            search_text = request.form['search_text'].capitalize()
+            return redirect(f'/busqueda/{search_text}')
+
+
+# TODO: Implementar la funcionalidad de enviar mensajes usando javascript y Toast para mostrar mensajes
 @user_blueprint.route('/enviar-mensaje/<int:idremitente>/<int:idreceptor>/', methods=['GET', 'POST'])
 def send_message(idremitente=None, idreceptor=None):
     if 'id' not in session:
         return redirect('/')
     else:
         frm_mensaje = Message()
-        frm_search = Busqueda()
+        frm_search = Search()
 
         if request.method == 'GET':
             receptor = idreceptor
             sex = session['urlava']
             sql2 = f"SELECT nombre, apellidos FROM usuarios WHERE id='{receptor}'"
             res2 = seleccion(sql2)
-            return render_template('send_message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
+            return render_template('send-message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
         elif request.method == 'POST' and ('btn_mensaje' or 'texto_mensaje'):
             remitente = idremitente
             receptor = idreceptor
@@ -269,10 +273,10 @@ def send_message(idremitente=None, idreceptor=None):
 
             if res == 0:
                 flash('Mensaje enviado correctamente')
-                return render_template('send_message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
+                return render_template('send-message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
             else:
                 flash('Error: no se pudo enviar el mensaje')
-                return render_template('send_message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
-        elif request.method == 'POST' and 'texto' in request.form:
-            texto = request.form['texto'].capitalize()
-            return redirect(f'/busqueda/{texto}')
+                return render_template('send-message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
+        elif request.method == 'POST' and 'search_text' in request.form:
+            search_text = request.form['search_text'].capitalize()
+            return redirect(f'/busqueda/{search_text}')

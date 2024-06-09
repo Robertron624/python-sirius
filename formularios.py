@@ -69,8 +69,8 @@ class Edit_Post(FlaskForm):
     save_edit = SubmitField('Guardar cambios')
 
 
-class Busqueda(FlaskForm):
-    texto = SearchField()
+class Search(FlaskForm):
+    search_text = SearchField()
 
 
 class New_Comment(FlaskForm):

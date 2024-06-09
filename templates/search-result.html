@@ -1,42 +1,88 @@
-{% extends 'base.html' %} {% block css %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/verpublicaciones.css' ) }}" />
+{% extends 'base.html' %} {% block css %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='/css/search-result.css' ) }}"
+/>
 {% endblock %} {% block contenido %}
-<div>
-    <img src="{{url_for('static', filename=ava)}}" id="logo" alt="avatar" />
-    <h3>{{session['nom']}} {{session['ape']}}</h3>
-</div>
+<div class="container">
+  <section id="search-results-header">
+    <h1>Resultados de la búsqueda</h1>
+    {% if results_count == 0%}
+        <h2 class="no-results-text">No se encontraron resultados</h2>
+    {% else %}
+    <h2>
+      {% if results_count == 1 %} Se encontró 1 resultado {% else %} Se
+      encontraron {{results_count}} resultados {% endif %}
+    </h2>
+    {% endif %}
+  </section>
 
+  <section id="users-results">
+    <h3>Usuarios encontrados</h3>
+    {% if not users_found %}
+    <h4 class="no-results-text">No se encontraron usuarios</h4>
+    {% else %}
+    <div class="users-list">
+      {% for user in users_found %}
+      <div class="user">
+        <a class="user-info" target="_blank" href="/perfil/{{user['id']}}">
+          <img
+            src="{{url_for('static', filename=user['url_avatar'])}}"
+            class="avatar"
+            alt="avatar de {{user['name']}}"
+          />
+          <p class="user-full-name">{{user['name']}} {{user['last_name']}}</p>
+        </a>
 
-<div id="user-results">
-
-    {% for user in userList %}
-    <div class="row">
-        <div class='c2'>{{user[1]}} {{user[2]}}</div>
-
-
-
-        <span class="mpicon">
-            <a href="/enviarmensaje/{{session['id']}}/{{idreceptor}}/"><img
-                    src="{{url_for('static', filename='img/msg.png')}}" alt="icono mensaje"></a>
-
-            {% if session['rolid'] == 'ADMINISTRADOR' or session['rolid'] == 'SUPERADMINISTRADOR' %}
-            <a href="/roles/{{idreceptor}}/"><img src="{{url_for('static', filename='img/rol.png')}}"
-                    alt="icono rol"></a>
-            {% endif %}
-        </span>
-
-
+        <a
+          class="send-private-message"
+          href="/enviar-mensaje/{{session['id']}}/{{user['id']}}/"
+          title="Enviar mensaje privado a {{user['name']}}"
+          >
+          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm16 2H4v12h16V6zM6 10h8v2H6v-2zm0 4h8v2H6v-2z"/>
+          </svg>
+          
+          
+        </a>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
+    {% endif %}
+  </section>
 
-</div>
-
-<div id="img-results">
-    {% for img in imglist %}
-    <a href="/publicacion/{{img[0]}}">
-        <img src="{{url_for('static', filename=img[2])}}" />
-    </a>
-    {% endfor %}
+  <section id="posts-results">
+    <h3>Publicaciones encontradas</h3>
+    {% if not posts_found %}
+    <h4 class="no-results-text">No se encontraron publicaciones</h4>
+    {% else %}
+    <div class="posts-list">
+      {% for post in posts_found %}
+      <div class="post">
+        <div class="post-header">
+          <img
+            src="{{url_for('static', filename=post['avatar'])}}"
+            alt="avatar de {{post['name']}}"
+          />
+          <div class="post-info">
+            <h3>{{post['name']}} {{post['last_name']}}</h3>
+            <h4>{{post['date']}}</h4>
+          </div>
+        </div>
+        <div class="post-content">
+          <img
+            src="{{url_for('static', filename=post['image_url'])}}"
+            alt="imagen de la publicación"
+          />
+          <p>{{post['text']}}</p>
+        </div>
+        <div class="post-footer">
+          <a href="/publicacion/{{post['id']}}">Ver publicación</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
 </div>
 {% endblock %}

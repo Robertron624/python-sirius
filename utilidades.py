@@ -27,3 +27,8 @@ def is_adult(birthdate: datetime) -> bool:
     current_date = datetime.now()
     age = current_date.year - birthdate.year - ((current_date.month, current_date.day) < (birthdate.month, birthdate.day))
     return age >= 18
+
+
+# Prevents Cross-Site Scripting (XSS) attacks by escaping special characters
+def escape_html(text: str) -> str:
+    return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", '&#39;')
