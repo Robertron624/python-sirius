@@ -79,8 +79,11 @@ class New_Comment(FlaskForm):
 
 
 class Message(FlaskForm):
-    texto_mensaje = TextAreaField()
-    btn_mensaje = SubmitField('Enviar')
+    message_text = TextAreaField()
+    attached_file = FileField('Seleccionar archivo', validators=[
+        FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Solo se permiten imágenes!')
+    ])
+    submit_message_button = SubmitField('Enviar')
 
 
 class Edit_user(FlaskForm):

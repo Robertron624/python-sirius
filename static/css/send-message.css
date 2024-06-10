@@ -1,0 +1,97 @@
+.container {
+    max-width: 1200px;
+    margin-inline: auto;
+    color: #ebe8e8;
+}
+
+.container h1 {
+    text-align: center;
+    font-size: 2rem;
+    background-color: #115270;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+#send-message-form {
+    margin-top: 2rem;
+    background-color: #115270;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+}
+
+#send-message-form .names {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+#send-message-form .names .receiver,
+#send-message-form .names .sender {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#send-message-form .names .receiver .receiver-avatar,
+#send-message-form .names .sender .logged-user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ebe8e8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.text-container {
+    margin-top: 2rem;
+}
+
+.text-container textarea {
+    width: -webkit-fill-available;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #ebe8e8;
+    color: #115270;
+    font-size: 1rem;
+    resize: none;
+}
+
+.file-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.file-container input[type="file"] {
+    background: #07263571;
+    color: #ebe8e8;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.submit-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.submit-container input[type="submit"] {
+    padding: .5rem 0rem;
+    width: 50%;
+    background-color: #072635;
+    border: 1px solid #072635;
+    color: #ebe8e8;
+    border-radius: 10px;
+}
+
+.submit-container input[type="submit"]:hover {
+    background-color: #177faf;
+}

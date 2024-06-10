@@ -145,7 +145,7 @@ p.username {
   font-weight: bold;
 }
 
-.profile-link {
+.send-message {
   border: none;
   outline: none;
   background: gold;
@@ -158,7 +158,7 @@ p.username {
   transition: all 0.3s ease-in-out;
 }
 
-.profile-link:hover {
+.send-message:hover {
   color: black;
   background: #c48319;
 }

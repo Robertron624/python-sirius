@@ -247,15 +247,22 @@ def send_message(idremitente=None, idreceptor=None):
     if 'id' not in session:
         return redirect('/')
     else:
-        frm_mensaje = Message()
+        frm_send_message = Message()
         frm_search = Search()
 
         if request.method == 'GET':
             receptor = idreceptor
             sex = session['urlava']
-            sql2 = f"SELECT nombre, apellidos FROM usuarios WHERE id='{receptor}'"
-            res2 = seleccion(sql2)
-            return render_template('send-message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
+            receiver_sql = f"SELECT nombre, apellidos, urlavatar FROM usuarios WHERE id='{receptor}'"
+            receiver_response = seleccion(receiver_sql)
+            
+            formatted_receiver = {
+                'name': receiver_response[0][0],
+                'last_name': receiver_response[0][1],
+                'url_avatar': receiver_response[0][2]
+            }
+            
+            return render_template('send-message.html', form_send_message=frm_send_message, form_search=frm_search, receiver=formatted_receiver, ava=sex, include_header=True)
         elif request.method == 'POST' and ('btn_mensaje' or 'texto_mensaje'):
             remitente = idremitente
             receptor = idreceptor
@@ -273,10 +280,10 @@ def send_message(idremitente=None, idreceptor=None):
 
             if res == 0:
                 flash('Mensaje enviado correctamente')
-                return render_template('send-message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
+                return render_template('send-message.html', form_send_message=frm_send_message, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
             else:
                 flash('Error: no se pudo enviar el mensaje')
-                return render_template('send-message.html', form_mensaje=frm_mensaje, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
+                return render_template('send-message.html', form_send_message=frm_send_message, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
         elif request.method == 'POST' and 'search_text' in request.form:
             search_text = request.form['search_text'].capitalize()
             return redirect(f'/busqueda/{search_text}')

@@ -12,8 +12,8 @@
   <div class="links">
     {% if is_this_third_party_profile %}
       <p class="username">{{user_personal_info.name}} {{user_personal_info.lastname}}</p>
-      <a href="/seguir/{{user_personal_info.id}}" class="profile-link">
-        Seguir
+      <a href="/enviar-mensaje/{{session['id']}}/{{user_personal_info.id}}" class="send-message">
+        Enviar mensaje privado
       </a>
     {% else %}
       <p class="username">{{session['nom']}} {{session['ape']}}</p>
