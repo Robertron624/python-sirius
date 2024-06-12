@@ -7,18 +7,48 @@
 
 {% block contenido %}
 
-<div class="mensajes">
-    {% if not msgList %}
+{% block js %}
+    <script defer src="{{ url_for('static', filename='/js/privateMessages.js' ) }}"></script>
+{% endblock %}
+
+<div class="messages-container">
+    {% if not message_list %}
         <div class='no-messages'>
             <p>No tienes mensajes privados</p>
         </div>
     {% else %}
-        {% for mensaje in msgList %}
-            <div class='message'>
-                <div class='sender'>{{ mensaje[0]}} {{mensaje[1]}}</div>
-                <div class='content'>{{ mensaje[2] }}</div>
-            </div>
-        {% endfor %}
+        <div class="message-list">
+            {% for message in message_list %}
+                <div class='message'>
+                    <div class="message-header">
+                        <p class='sender'>
+                            De: <span>
+                                {{ message['sender_name'] }} ({{ message['sender_last_name'] }})
+                            </span>
+                        </p>
+                        <p class='date'>
+                            Envíado en: <span>{{ message['created_at'] }}</span>
+                        </p>
+                    </div>
+                    <div class='content'>
+                        <p class="message-text">
+                            {{ message['text'] }}
+                        </p>
+                    
+                        {% if message['image_url'] %}
+                            <div class="attached-image">
+                                <img src="{{ url_for('static', filename='uploads/' + message['image']) }}" alt="Attached image">
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="message-footer">
+                        <button class="delete-message">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 </div>
 

@@ -22,6 +22,10 @@ def format_comment_datetime(date) -> str:
         datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
     return datetime_object.strftime('%B %d, %Y')
 
+def format_string_datetime(date: str) -> str:
+    datetime_object = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    return datetime_object.strftime('%B %d, %Y')
+
 # receives a datetime and returns whether the user is an adult or not
 def is_adult(birthdate: datetime) -> bool:
     current_date = datetime.now()

@@ -47,6 +47,19 @@
   gap: 1rem;
 }
 
+.links a {
+  color: #000;
+  background: gold;
+  padding: .5rem 1rem;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.links a:hover {
+  background: #c48319;
+  color: black;
+}
+
 p.username {
   color: white;
 }
@@ -162,21 +175,5 @@ p.username {
   color: black;
   background: #c48319;
 }
-
-/* ----------------------------------ICONOS RESULTADOS----------------------------  */
-
-.mpicon{
-  width: 10px;
-  margin-left: 600px;
-
-}
-.mpicon img{
-  bottom: 10px;
-  width: 50px;
-  height: 45px;
-}
-
-
-/* -------------------------------FINAL ICONOS RESULTADOS---------------------------- */
 
 

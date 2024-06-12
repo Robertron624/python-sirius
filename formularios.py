@@ -79,9 +79,9 @@ class New_Comment(FlaskForm):
 
 
 class Message(FlaskForm):
-    message_text = TextAreaField()
-    attached_file = FileField('Seleccionar archivo', validators=[
-        FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Solo se permiten imágenes!')
+    message_text = TextAreaField('Mensaje *', validators=[Length( min=1, max=500, message='Longitud fuera de rango'), InputRequired(message='Mensaje es requerido')])
+    attached_image = FileField('Seleccionar archivo', validators=[
+        FileAllowed(['jpg', 'jpeg', 'png', 'gif'], 'Solo se permiten adjuntar imágenes!')
     ])
     submit_message_button = SubmitField('Enviar')
 

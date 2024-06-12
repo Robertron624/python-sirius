@@ -11,7 +11,7 @@ from utilidades import format_datetime, format_comment_datetime
 #create a Blueprint for post-related routes
 
 post_blueprint = Blueprint('post', __name__)
-@post_blueprint.route('/publicacion/<int:id>/', methods=['GET'])
+@post_blueprint.route('/publicacion/<int:id>/', methods=['GET', 'POST'])
 def post_page(id=None):
     if 'id' not in session:
         return redirect('/')
@@ -111,7 +111,7 @@ def new_post():
                 try:
                     file.save(f"static{url_img}")
                 except Exception as e:
-                    return jsonify({'error': 'Error al tratar de guardar la imagen, intente de nuevo'}), 500
+                    return jsonify({'error': 'Error while trying to save the image, try again'}), 500
                 
                 user = session['ema']
                 first_name = session['nom']
@@ -165,7 +165,6 @@ def edit_post(id=None):
             res_check_author = seleccion(sql_check_author)
             
             if not res_check_author or res_check_author[0][0] != user_email:
-                print("User is not the owner of the comment")
                 return jsonify({'error': 'User not authorized to edit post'}), 401
             
             data = request.get_json()
@@ -196,7 +195,6 @@ def eliminar(id=None):
         res_check_author = seleccion(sql_check_author)
         
         if not res_check_author or res_check_author[0][0] != user_email:
-            print("User is not the owner of the comment")
             return jsonify({'error': 'User not authorized to delete post'}), 401
         
         sql = f"DELETE FROM post WHERE id IN ({id})"

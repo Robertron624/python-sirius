@@ -75,6 +75,39 @@
     color: #ebe8e8;
     padding: 0.5rem;
     border-radius: 10px;
+    cursor: pointer;
+}
+
+#image-preview-container {
+    margin-top: 1.4rem;
+    /* display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center; */
+}
+
+#image-preview-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    max-width: 200px;
+    margin-inline: auto;
+}
+
+#delete-image-button {
+    background-color: #c0330c;
+    border: 1px solid #c0330c;
+    color: #ebe8e8;
+    padding: 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-inline: auto;
+    margin-top: 1rem;
+    display: block;
+}
+
+#delete-image-button:hover {
+    background-color: #922101;
 }
 
 .submit-container {

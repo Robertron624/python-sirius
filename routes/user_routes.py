@@ -10,8 +10,8 @@ from datetime import datetime
 #create a Blueprint for user-related routes
 
 user_blueprint = Blueprint('user', __name__)
-@user_blueprint.route('/perfil/', methods=['GET'])
-@user_blueprint.route('/perfil/<int:id>', methods=['GET'])
+@user_blueprint.route('/perfil/', methods=['GET', 'POST'])
+@user_blueprint.route('/perfil/<int:id>', methods=['GET', 'POST'])
 def profile(id=None):
     if 'id' not in session:
         return redirect('/')
@@ -40,9 +40,6 @@ def profile(id=None):
             'email': user_personal_info[2], # 'correo' es el 'email' del usuario
             'url_avatar': user_personal_info[3]
         }
-        
-        print("user personal info raw -> ",user_personal_info)
-
         
         sql2 = f"SELECT id, nombre, apellido, datepost, text, urlavatar, url FROM post WHERE correo='{user_personal_info[2]}'"
         res2 = seleccion(sql2)
@@ -93,9 +90,9 @@ def home():
             sql = f"SELECT id, correo,nombre,apellido, datepost, text, url, sexo, urlavatar FROM post"
             resget = seleccion(sql)
 
-            formatted_results = [{ 'id': row[0], 
+            formatted_results = [{ 'id': row[0],
                        'correo': row[1], 
-                       'nombre': row[2], 
+                       'nombre': row[2],
                        'apellido': row[3], 
                        'datepost': format_datetime(row[4]),
                        'text': row[5], 
@@ -103,13 +100,12 @@ def home():
                        'sexo': row[7], 
                        'urlavatar': row[8] } for row in resget]
 
-            return render_template('feed.html', titulo='Feed', imglist=formatted_results, form_search=frm_search, include_header=True)
+            return render_template('feed.html', titulo='Feed', posts_list=formatted_results, form_search=frm_search, include_header=True)
         else:
             search_text = request.form['search_text'].capitalize()
             return redirect(f'/busqueda/{search_text}')
 
 
-# TODO: Implementar la funcionalidad de editar usuario usando javascript y Toast para mostrar mensajes        
 @user_blueprint.route('/editar-usuario/', methods=['POST', 'GET'])
 def edit_user():
     if 'id' not in session:
@@ -215,75 +211,110 @@ def change_password():
             res = editarimg(sql)
             
             if res == 0:
-                print('No se pudo cambiar la contraseña.')
                 return jsonify({'error': 'No se pudo cambiar la contraseña.'}), 400
             else:
                 session.clear()
                 return jsonify({'message': 'Contraseña cambiada correctamente.'}), 200
 
             
-@user_blueprint.route('/mensajes/<int:id>', methods=['GET', 'POST'])
+@user_blueprint.route('/mensajes', methods=['GET', 'POST'])
 def private_messages(id=None):
     if 'id' not in session:
         return redirect('/')
     else:
         frm_search = Search()
         if request.method == 'GET':
-            userid = id
-
-            sql = f"SELECT nomemi,apeemi, texto FROM mensajes WHERE receptor='{userid}'"
-            res = seleccion(sql)
-
+            user_id = session['id']
+            sql = f"""
+                SELECT u.nombre, u.apellidos, m.text, m.image_url, m.created_at, m.updated_at
+                FROM messages m
+                JOIN usuarios u ON m.sender_id = u.id
+                WHERE m.receiver_id = {user_id}
+            """
+            response = seleccion(sql)
+            
+            if len(response) == 0:
+                message_list = []
+            else:
+                message_list = [{
+                    'sender_name': row[0],
+                    'sender_last_name': row[1],
+                    'text': row[2],
+                    'image_url': row[3],
+                    'created_at': format_datetime(row[4]),
+                    'updated_at': format_datetime(row[5])
+                } for row in response]
+                
             return render_template('private-messages.html',
-                                   form_search=frm_search, msgList=res, titulo='Mensajes privados', include_header=True)
+                                   form_search=frm_search, message_list=message_list, titulo='Mensajes privados', include_header=True)
         else:
             search_text = request.form['search_text'].capitalize()
             return redirect(f'/busqueda/{search_text}')
 
 
-# TODO: Implementar la funcionalidad de enviar mensajes usando javascript y Toast para mostrar mensajes
-@user_blueprint.route('/enviar-mensaje/<int:idremitente>/<int:idreceptor>/', methods=['GET', 'POST'])
-def send_message(idremitente=None, idreceptor=None):
+@user_blueprint.route('/enviar-mensaje/<int:receiver_id>/', methods=['GET', 'POST'])
+def send_message(receiver_id=None):
     if 'id' not in session:
         return redirect('/')
     else:
         frm_send_message = Message()
         frm_search = Search()
-
-        if request.method == 'GET':
-            receptor = idreceptor
-            sex = session['urlava']
-            receiver_sql = f"SELECT nombre, apellidos, urlavatar FROM usuarios WHERE id='{receptor}'"
-            receiver_response = seleccion(receiver_sql)
             
-            formatted_receiver = {
-                'name': receiver_response[0][0],
-                'last_name': receiver_response[0][1],
-                'url_avatar': receiver_response[0][2]
-            }
+        if request.method == 'POST':
+        
+            # Handle search
+            if 'search_text' in request.form:
+                search_text = request.form['search_text'].capitalize()
+                return redirect(f'/busqueda/{search_text}')
             
-            return render_template('send-message.html', form_send_message=frm_send_message, form_search=frm_search, receiver=formatted_receiver, ava=sex, include_header=True)
-        elif request.method == 'POST' and ('btn_mensaje' or 'texto_mensaje'):
-            remitente = idremitente
-            receptor = idreceptor
-            mensaje = request.form['texto_mensaje']
-            sex = session['urlava']
-            nombre_emisor = session['nom']
-            apellido_emisor = session['ape']
+            # Handle message sending
+            sender_id = session['id']
+            
+            if receiver_id is None:
+                jsonify({'error': 'Receiver ID is required.'}), 400
+            
+            message_text = frm_send_message.message_text.data
+            if not message_text:
+                jsonify({'error': 'Message text is required.'}), 400
+            
+            attached_image = frm_send_message.attached_image.data
+            
+            if attached_image:
+                file_extension = attached_image.filename.split('.')[-1]
+                if file_extension not in ['jpg', 'jpeg', 'png', 'gif']:
+                    jsonify({'error': 'Invalid file type.'}), 400
 
-            sql = "INSERT INTO mensajes(remitente, receptor,nomemi, apeemi, texto) VALUES(?,?,?,?,?)"
-            res = accion(sql, (remitente, receptor,
-                               nombre_emisor, apellido_emisor, mensaje))
+                try:
+                    attached_image.save(f"static/uploads/{attached_image.filename}")
+                    image_url = f"/uploads/{attached_image.filename}"
+                except Exception as e:
+                    print("Error while trying to save the image, error:", e)
+                    jsonify({'error': 'Error while trying to save the image, try again'}), 500
+            else:
+                image_url = None
+                
+            created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-            sql2 = f"SELECT nombre, apellidos FROM usuarios WHERE id='{receptor}'"
-            res2 = seleccion(sql2)
+            sql = "INSERT INTO messages (sender_id, receiver_id, text, image_url, created_at, updated_at) VALUES (? ,? ,? ,? ,? ,?)"
+            res = accion(sql, (sender_id, receiver_id, message_text, image_url, created_at, updated_at))
 
             if res == 0:
-                flash('Mensaje enviado correctamente')
-                return render_template('send-message.html', form_send_message=frm_send_message, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
+                print('Could not send message.', res)
+                return jsonify({'error': 'Could not send message.'}), 400
             else:
-                flash('Error: no se pudo enviar el mensaje')
-                return render_template('send-message.html', form_send_message=frm_send_message, form_search=frm_search, receptor=res2, ava=sex, include_header=True)
-        elif request.method == 'POST' and 'search_text' in request.form:
-            search_text = request.form['search_text'].capitalize()
-            return redirect(f'/busqueda/{search_text}')
+                return jsonify({'message': 'Message sent successfully.'}), 200
+    
+        logged_user_avatar = session['urlava']
+        receiver_sql = f"SELECT nombre, apellidos, urlavatar FROM usuarios WHERE id='{receiver_id}'"
+        receiver_response = seleccion(receiver_sql)
+            
+        formatted_receiver = {
+            'name': receiver_response[0][0],
+            'last_name': receiver_response[0][1],
+            'url_avatar': receiver_response[0][2]
+        }
+            
+        return render_template('send-message.html', form_send_message=frm_send_message, form_search=frm_search, receiver=formatted_receiver, logged_user_avatar=logged_user_avatar, include_header=True)  
+                
+        

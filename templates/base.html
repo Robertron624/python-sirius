@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css' ) }}" />
     {% endblock %}
     <title>{{titulo}}</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='logo.ico') }}" />
 </head>
 
 <body>
@@ -31,7 +33,7 @@
               <a href="/ayuda/">Ayuda</a>
             </li>
             <li>
-              <a href="/mensajes/{{session['id']}}">Mis mensajes</a>
+              <a href="/mensajes">Mis mensajes</a>
             </li>
             <li>
               <a href="/salir/">Cerrar Sesion</a>

@@ -12,7 +12,7 @@
   <div class="links">
     {% if is_this_third_party_profile %}
       <p class="username">{{user_personal_info.name}} {{user_personal_info.lastname}}</p>
-      <a href="/enviar-mensaje/{{session['id']}}/{{user_personal_info.id}}" class="send-message">
+      <a href="/enviar-mensaje/{{user_personal_info.id}}" class="send-message">
         Enviar mensaje privado
       </a>
     {% else %}
