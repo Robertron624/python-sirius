@@ -2,6 +2,21 @@
     width: 100%;
 }
 
+.messages-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #e4e3ee;
+    text-align: center;
+}
+
+#message-count {
+    font-size: 1.5rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 1rem;
+    filter: brightness(1.5);
+}
+
 .message-list {
     display: grid;
     gap: 1rem;
@@ -45,14 +60,14 @@
     margin-top: 1rem;
 }
 
-.message .message-footer .delete-message {
+.message .message-footer .delete-message-trigger {
     background: #c0330c;
     color: white;
     padding: .5rem;
     border-radius: 5px;
 }
 
-.message .message-footer .delete-message:hover {
+.message .message-footer .delete-message-trigger:hover {
     background: #922101;
 }
 
@@ -67,6 +82,51 @@
     color: white;
     font-size: 1.5rem;
     text-align: center;
+}
+
+/* Modal confirm delete */
+
+#delete-message-modal {
+    background-color: rgba(125, 106, 236, 1);
+    color: antiquewhite;
+    border-radius: 10px;
+    border: none;
+}
+
+#delete-message-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#delete-message-modal p {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+#delete-message-modal .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.1rem;
+}
+
+#delete-message-modal button {
+    padding: 0.4rem 1rem;
+    border-radius: 10px;
+}
+
+#delete-message-modal #cancel-delete-message {
+    background-color: #ce9231;
+}
+
+#delete-message-modal #cancel-delete-message:hover {
+    background-color: #9a6105;
+}
+
+#delete-message-modal #confirm-delete-message {
+    background-color: #c0330c;
+}
+
+#delete-message-modal #confirm-delete-message:hover {
+    background-color: #922101;
 }
 
 /* Media queries */

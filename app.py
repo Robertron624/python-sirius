@@ -9,6 +9,7 @@ from routes.user_routes import user_blueprint
 from routes.comment_routes import comment_blueprint
 from routes.post_routes import post_blueprint
 from routes.auth_routes import auth_blueprint
+from routes.message_routes import message_blueprint
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -21,6 +22,7 @@ app.register_blueprint(user_blueprint)
 app.register_blueprint(comment_blueprint)
 app.register_blueprint(post_blueprint)
 app.register_blueprint(auth_blueprint)
+app.register_blueprint(message_blueprint)
 
 @app.route('/busqueda/<string:search_text>', methods=['POST', 'GET'])
 def search(search_text=None):

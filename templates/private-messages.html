@@ -9,17 +9,42 @@
 
 {% block js %}
     <script defer src="{{ url_for('static', filename='/js/privateMessages.js' ) }}"></script>
+    <script defer src="{{ url_for('static', filename='/js/sweetalert.js' ) }}"></script>
 {% endblock %}
 
+<dialog id="delete-message-modal">
+    <p>
+        ¿Estás seguro de que quieres eliminar este mensaje?
+    </p>
+    <div class="modal-buttons">
+        <button id="cancel-delete-message">
+            Cancelar
+        </button>
+        <button id="confirm-delete-message">
+            Eliminar
+        </button>
+    </div>
+</dialog>
 <div class="messages-container">
+    <h1>
+        Tus mensajes privados
+    </h1>
+
     {% if not message_list %}
         <div class='no-messages'>
             <p>No tienes mensajes privados</p>
         </div>
     {% else %}
+        <p id="message-count">
+            {% if message_list|length == 1 %}
+                Tienes 1 mensaje
+            {% else %}
+                Tienes <span>{{ message_list|length }}</span> mensajes
+            {% endif %}
+        </p>
         <div class="message-list">
             {% for message in message_list %}
-                <div class='message'>
+                <div class='message' id="message-{{ message['id'] }}">
                     <div class="message-header">
                         <p class='sender'>
                             De: <span>
@@ -42,7 +67,7 @@
                         {% endif %}
                     </div>
                     <div class="message-footer">
-                        <button class="delete-message">
+                        <button class="delete-message-trigger">
                             Eliminar
                         </button>
                     </div>
