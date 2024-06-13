@@ -5,7 +5,25 @@ function deleteCommentFromDOM(messageId) {
     message.remove()
     const messageCountElement = document.getElementById('message-count')
     const messageCount = messageCountElement.querySelector('span')
-    messageCount.textContent = parseInt(messageCount.textContent) - 1
+    const currentCount = parseInt(messageCount.textContent)
+
+    if (currentCount === 1) {
+        const noMessagesContainer = document.createElement('div')
+        noMessagesContainer.classList.add('no-messages')
+        const noMessages = document.createElement('p')
+        noMessages.textContent = 'No tienes mensajes privados'
+        noMessagesContainer.appendChild(noMessages)
+        messageCountElement.replaceWith(noMessagesContainer)
+        return
+    }
+
+    if(currentCount === 2) {
+        const newMessage = `Tienes <span>1</span> mensaje`
+        messageCountElement.innerHTML = `${newMessage}`
+        return
+    }
+
+    messageCount.textContent = currentCount - 1
 }
 
 async function deleteMessageQuery() {
@@ -55,6 +73,7 @@ function main(){
     }
 
     async function handleConfirmDelete() {
+        console.log("Deleting Message: ", messageToDeleteId)
         try {
             const queryResponse = await deleteMessageQuery()
 
@@ -63,12 +82,13 @@ function main(){
             }
 
             deleteCommentFromDOM(messageToDeleteId)
-            messageToDeleteId = null
 
             Toast.fire({
                 icon: 'success',
                 title: 'Mensaje eliminado correctamente.'
             })
+
+            console.log("Message Deleted Successfully")
 
         } catch (error) {
             console.error("Error Deleting Message: ", error)
@@ -76,9 +96,13 @@ function main(){
                 icon: 'error',
                 title: 'Error al eliminar el mensaje. Intente nuevamente.'
             })
+
+            console.log("Error Deleting Message")
         } finally {
             messageToDeleteId = null
             deleteMessageModal.close()
+
+            console.log("Message Deletion Process Finished")
         }
     }
 
@@ -90,9 +114,7 @@ function main(){
         messageToDeleteId = null
     })
 
-    confirmButton.addEventListener('click', handleConfirmDelete, {
-        once: true
-    })
+    confirmButton.addEventListener('click', handleConfirmDelete)
 
     // Close modal if user clicks outside of it
     deleteMessageModal.addEventListener('click', (event) => {

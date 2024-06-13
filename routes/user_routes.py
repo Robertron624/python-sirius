@@ -16,6 +16,10 @@ def profile(id=None):
     if 'id' not in session:
         return redirect('/')
     
+    if request.method == 'POST' and 'search_text' in request.form:
+        search_text = request.form['search_text'].capitalize()
+        return redirect(f'/busqueda/{search_text}')
+    
     frm_search = Search()
     user_id = session['id']  # ID del usuario logueado
 
