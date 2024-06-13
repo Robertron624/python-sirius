@@ -62,7 +62,7 @@
                     
                         {% if message['image_url'] %}
                             <div class="attached-image">
-                                <img src="{{ url_for('static', filename='uploads/' + message['image']) }}" alt="Attached image">
+                                <img src="{{ url_for('static', filename=message['image_url']) }}" alt="Attached image">
                             </div>
                         {% endif %}
                     </div>
