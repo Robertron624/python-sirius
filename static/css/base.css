@@ -109,6 +109,16 @@ header {
   flex-wrap: wrap;
 }
 
+.profile-link .my-account {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.profile-link .my-account span {
+  font-size: .75rem;
+}
+
 hr {
   margin: 4px 0;
 }
