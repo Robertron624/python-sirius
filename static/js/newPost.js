@@ -10,6 +10,16 @@ function main() {
     const imagePlaceholder = document.getElementById('image-placeholder');
     const originalImagePlaceholder = imagePlaceholder.src;
     const allowedExtensions = ['image/jpeg', 'image/png', 'image/gif'];
+    const removeImageButton = document.getElementById('remove-image-button');
+
+    function clearImagePlaceholder() {
+        fileInputEl.value = ''; // Clear the file input
+        imagePlaceholder.src = originalImagePlaceholder;
+        removeImageButton.setAttribute('hidden', true);
+
+        imagePlaceholder.classList.remove('submitted');
+
+    }
 
     imagePlaceholder.addEventListener('click', () => {
         fileInputEl.click();
@@ -19,7 +29,7 @@ function main() {
         const file = event.target.files[0];
 
         if (!file) {
-            imagePlaceholder.src = originalImagePlaceholder;    
+            clearImagePlaceholder();
             return;
         }
 
@@ -29,8 +39,7 @@ function main() {
                 title: 'Solo se permiten imágenes en formato JPG, PNG o GIF.',
             });
 
-            fileInputEl.value = ''; // Clear the file input
-            imagePlaceholder.src = originalImagePlaceholder;
+            clearImagePlaceholder();
             return;
         }
 
@@ -38,9 +47,13 @@ function main() {
 
         reader.onload = (e) => {
             imagePlaceholder.src = e.target.result;
+            imagePlaceholder.classList.add('submitted');
         }
 
         reader.readAsDataURL(file);
+
+        // Set the hidden attribute of the remove image button to false
+        removeImageButton.removeAttribute('hidden');
         
     });
 
@@ -91,6 +104,10 @@ function main() {
                 title: 'Hubo un error al procesar la solicitud. Inténtalo de nuevo.',
             });
         }
+    });
+
+    removeImageButton.addEventListener('click', () => {
+        clearImagePlaceholder();
     });
 }
 

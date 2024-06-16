@@ -34,16 +34,20 @@ main {
 
 .upload-container {
     max-width: 406px;
-    height: 180px;
     cursor: pointer;
-    margin-block: 1.2rem;
+    margin-block: 2rem;
 }
 
 .upload-container figure img {
     width: 150px;
     height: 150px;
     border-radius: 25px;
-  }
+}
+
+.upload-container figure img.submitted {
+    width: 100%;
+    object-fit: cover;
+}
 
 .textarea-container {
     width: 100%;
@@ -79,6 +83,7 @@ main {
     border: none;
     border-radius: 10px;
     padding: .5rem;
+    cursor: pointer;
 }
 
 .new-post-buttons input[type="submit"] {
@@ -95,4 +100,16 @@ main {
 
 .new-post-buttons input[type="submit"]:hover {
     background-color: #ffcc00;
+}
+
+#remove-image-button {
+    background-color: #c0330c;
+    color: white;
+    border-radius: 10px;
+    padding: .5rem;
+    font-size: 1.4rem;
+}
+
+#remove-image-button:hover {
+    background-color: #922101;
 }
