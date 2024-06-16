@@ -1,63 +1,56 @@
-{% extends 'base.html' %}
-
-{% block css %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/send-message.css' ) }}" />
-{% endblock %}
-
-{% block contenido %}
-{% block js %}
-    <script src="{{ url_for('static', filename='/js/sendMessage.js') }}"></script>
-    <script src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
+{% extends 'base.html' %} {% block css %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='/css/send-message.css' ) }}"
+/>
+{% endblock %} {% block contenido %} {% block js %} {{ super() }}
+<script src="{{ url_for('static', filename='/js/sendMessage.js') }}"></script>
 {% endblock %}
 <div class="container">
-    <h1>
-        Enviar mensaje
-    </h1>
-    <form id="send-message-form" enctype="multipart/form-data">
-        <div class="names">
-            <div class="sender">
-                <img src="{{url_for('static', filename=logged_user_avatar)}}" class="logged-user-avatar" alt="Avatar de {{session['nom']}} {{session['ape']}}">
-                <p>
-                    <span>
-                        De:
-                    </span>
-                    {{session['nom']}} {{session['ape']}}
-                </p>
-            </div>
-            <div class="receiver">
-                <img src="{{url_for('static', filename=receiver['url_avatar'])}}" class="receiver-avatar" alt="Avatar de {{receiver['name']}} {{receiver['last_name']}}">
-                <p>
-                    <span>
-                        Para:
-                    </span>
-                    {{receiver['name']}} {{receiver['last_name']}}
-                </p>
-                
-            </div>
-        </div>
+  <h1>Enviar mensaje</h1>
+  <form id="send-message-form" enctype="multipart/form-data">
+    <div class="names">
+      <div class="sender">
+        <img
+          src="{{url_for('static', filename=logged_user_avatar)}}"
+          class="logged-user-avatar"
+          alt="Avatar de {{session['nom']}} {{session['ape']}}"
+        />
+        <p>
+          <span> De: </span>
+          {{session['nom']}} {{session['ape']}}
+        </p>
+      </div>
+      <div class="receiver">
+        <img
+          src="{{url_for('static', filename=receiver['url_avatar'])}}"
+          class="receiver-avatar"
+          alt="Avatar de {{receiver['name']}} {{receiver['last_name']}}"
+        />
+        <p>
+          <span> Para: </span>
+          {{receiver['name']}} {{receiver['last_name']}}
+        </p>
+      </div>
+    </div>
 
-        <div class="text-container">
-            {{form_send_message.message_text(placeholder="Escribe aquí tu mensaje")}}
-        </div>
+    <div class="text-container">
+      {{form_send_message.message_text(placeholder="Escribe aquí tu mensaje")}}
+    </div>
 
-        <div class="file-container">
-            <label for="attached_image">
-                Adjuntar imagen
-            </label>
-            {{form_send_message.attached_image()}}
-        </div>
+    <div class="file-container">
+      <label for="attached_image"> Adjuntar imagen </label>
+      {{form_send_message.attached_image()}}
+    </div>
 
-        <div id="image-preview-container" hidden>
-            <img src="" alt="Imagen adjunta" id="image-preview">
-            <button type="button" id="delete-image-button">
-                Eliminar imagen
-            </button>
-        </div>
+    <div id="image-preview-container" hidden>
+      <img src="" alt="Imagen adjunta" id="image-preview" />
+      <button type="button" id="delete-image-button">Eliminar imagen</button>
+    </div>
 
-        <div class="submit-container">
-            {{form_send_message.submit_message_button()}}
-        </div>
-    </form>
+    <div class="submit-container">
+      {{form_send_message.submit_message_button()}}
+    </div>
+  </form>
 </div>
 {% endblock %}

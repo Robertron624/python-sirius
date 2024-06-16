@@ -4,9 +4,11 @@
 {% endblock %} 
 
 {% block contenido %}
-<script src="{{ url_for('static', filename='/js/login.js' ) }}"></script>
-<script defer src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
 
+{% block js %}
+{{ super() }}
+<script src="{{ url_for('static', filename='/js/login.js' ) }}"></script>
+{% endblock %}
 <div class="title-subtitle">
     <h1 class="app-name">Python Regius</h1>
     <p class="slogan">Comparte tus mejores momentos.</p>

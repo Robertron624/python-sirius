@@ -4,16 +4,15 @@
   href="{{ url_for('static', filename='/css/post-page.css' ) }}"
 />
 {% endblock %} {% block contenido %}
+
+
+{% block js %} 
+{{ super() }}
 <script
   defer
   src="{{ url_for('static', filename='/js/postPage.js') }}"
 ></script>
-<script
-  defer
-  src="{{ url_for('static', filename='/js/sweetalert.js') }}"
-></script>
-
-{% block js %} {% endblock %}
+{% endblock %}
 
 <div class="container-full-post">
   <div class="publication-header">

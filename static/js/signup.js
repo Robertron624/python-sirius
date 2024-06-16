@@ -33,8 +33,6 @@ function main() {
             sex,
         }
 
-        console.log(rawData);
-
         const isDataValid = checkSignupData(rawData);
 
         if(isDataValid.hasError) {

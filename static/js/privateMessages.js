@@ -37,12 +37,12 @@ async function deleteMessageQuery() {
         if (response.status === 200) {
             return {success: true}
         } else {
-            console.log("Error Deleting Message, Status Code: ", response.status)
+            console.error("Error Deleting Message, Status Code: ", response.status)
             return {success: false}
         }
     
     } catch (error) {
-        console.log("Error Deleting Message")
+        console.error("Error Deleting Message")
         throw error
     }
 }
@@ -73,7 +73,6 @@ function main(){
     }
 
     async function handleConfirmDelete() {
-        console.log("Deleting Message: ", messageToDeleteId)
         try {
             const queryResponse = await deleteMessageQuery()
 
@@ -88,21 +87,15 @@ function main(){
                 title: 'Mensaje eliminado correctamente.'
             })
 
-            console.log("Message Deleted Successfully")
-
         } catch (error) {
             console.error("Error Deleting Message: ", error)
             Toast.fire({
                 icon: 'error',
                 title: 'Error al eliminar el mensaje. Intente nuevamente.'
             })
-
-            console.log("Error Deleting Message")
         } finally {
             messageToDeleteId = null
             deleteMessageModal.close()
-
-            console.log("Message Deletion Process Finished")
         }
     }
 

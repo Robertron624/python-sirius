@@ -8,8 +8,8 @@
 {% block contenido %}
 
 {% block js %}
+{{ super() }}
     <script defer src="{{ url_for('static', filename='/js/privateMessages.js' ) }}"></script>
-    <script defer src="{{ url_for('static', filename='/js/sweetalert.js' ) }}"></script>
 {% endblock %}
 
 <dialog id="delete-message-modal">

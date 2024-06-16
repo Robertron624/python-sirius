@@ -5,7 +5,7 @@
 
 {% block contenido %}
   {% block js %}
-    <script src="{{ url_for('static', filename='/js/sweetalert.js') }}"></script>
+    {{ super() }}
     <script src="{{ url_for('static', filename='/js/newPost.js') }}"></script>
   {% endblock %}
 <div class="container">

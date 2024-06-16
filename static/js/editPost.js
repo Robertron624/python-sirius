@@ -21,8 +21,6 @@ function main() {
         const postId = getCurrentPostId();
         const edited_text = formData.get('edited_text');
 
-        console.log("Edited test from js form data: ", edited_text)
-
         const body = {
             edited_text,
         };
