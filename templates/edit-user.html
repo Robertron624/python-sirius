@@ -1,7 +1,14 @@
 {% extends 'base.html' %} {% block css %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/edit-user.css' ) }}" />
-{% endblock %} {% block contenido %}
+{% endblock %} 
+
+{% block js %}
+{{ super() }}
+    <script defer src="{{ url_for('static', filename='/js/editUser.js') }}"></script>
+{% endblock %}
+
+{% block contenido %}
 <form class="edit-user" name="edit-user" id="edit-user" action="/editar-usuario/" method="POST">
     <h1>Editar Usuario</h1>
 

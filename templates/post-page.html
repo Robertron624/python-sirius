@@ -3,8 +3,7 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='/css/post-page.css' ) }}"
 />
-{% endblock %} {% block contenido %}
-
+{% endblock %}
 
 {% block js %} 
 {{ super() }}
@@ -14,6 +13,8 @@
 ></script>
 {% endblock %}
 
+
+{% block contenido %}
 <div class="container-full-post">
   <div class="publication-header">
     <div class="avausuario">

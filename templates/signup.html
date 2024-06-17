@@ -3,9 +3,13 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='/css/signup.css' ) }}"
 />
-{% endblock %} {% block contenido %} {% block js %} {{ super() }}
+{% endblock %} 
+
+{% block js %} {{ super() }}
 <script defer src="{{ url_for('static', filename='/js/signup.js' ) }}"></script>
 {% endblock %}
+
+{% block contenido %}
 
 <form class="signup-form" name="signup-form" id="signup-form">
   <h1 class="title">Regístrate</h1>

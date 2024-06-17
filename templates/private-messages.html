@@ -5,13 +5,12 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/private-messages.css' ) }}" />
 {% endblock %}
 
-{% block contenido %}
-
 {% block js %}
 {{ super() }}
     <script defer src="{{ url_for('static', filename='/js/privateMessages.js' ) }}"></script>
 {% endblock %}
 
+{% block contenido %}
 <dialog id="delete-message-modal">
     <p>
         ¿Estás seguro de que quieres eliminar este mensaje?

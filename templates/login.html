@@ -3,12 +3,12 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='/css/login.css' ) }}" />
 {% endblock %} 
 
-{% block contenido %}
-
 {% block js %}
 {{ super() }}
 <script src="{{ url_for('static', filename='/js/login.js' ) }}"></script>
 {% endblock %}
+
+{% block contenido %}
 <div class="title-subtitle">
     <h1 class="app-name">Python Regius</h1>
     <p class="slogan">Comparte tus mejores momentos.</p>

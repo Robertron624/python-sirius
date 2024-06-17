@@ -3,9 +3,13 @@
   rel="stylesheet"
   href="{{ url_for('static', filename='/css/send-message.css' ) }}"
 />
-{% endblock %} {% block contenido %} {% block js %} {{ super() }}
+{% endblock %}
+
+{% block js %} {{ super() }}
 <script src="{{ url_for('static', filename='/js/sendMessage.js') }}"></script>
 {% endblock %}
+
+{% block contenido %} 
 <div class="container">
   <h1>Enviar mensaje</h1>
   <form id="send-message-form" enctype="multipart/form-data">
