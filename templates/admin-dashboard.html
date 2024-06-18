@@ -28,20 +28,22 @@
             </thead>
             <tbody>
                 {% for user in users_list %}
-                <tr>
+                <tr
+                    data-user-id="{{ user.id }}"
+                >
                     <td>{{ user.first_name }}</td>
                     <td>{{ user.last_name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.sex }}</td>
                     <td>{{ user.role }}</td>
                     <td>
-                        <button class="btn btn-danger" title="Eliminar">
+                        <button class="trigger-delete-user" title="Eliminar">
                             <span class="sr-only">
                                 Eliminar
                             </span>
                             <svg viewBox="0 0 1024 1024" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill="currentColor" d="M160 256H96a32 32 0 0 1 0-64h256V95.936a32 32 0 0 1 32-32h256a32 32 0 0 1 32 32V192h256a32 32 0 1 1 0 64h-64v672a32 32 0 0 1-32 32H192a32 32 0 0 1-32-32V256zm448-64v-64H416v64h192zM224 896h576V256H224v640zm192-128a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32zm192 0a32 32 0 0 1-32-32V416a32 32 0 0 1 64 0v320a32 32 0 0 1-32 32z"></path></g></svg>
                         </button>
-                        <button class="edit-role" title="Cambiar rol">
+                        <button class="trigger-edit-role" title="Cambiar rol">
                             <span class="sr-only">  
                                 Cambiar rol
                             </span>
@@ -54,5 +56,28 @@
         </table>
     </div>
 </section>
-
+<dialog id="delete-user-modal">
+    <div class="content">
+        <p class="modal-title">Eliminar usuario</p>
+        <p class="modal-subtitle">¿Está seguro que desea eliminar este usuario?</p>
+        <div class="buttons">
+            <button class="cancel" id="cancel-delete-user" value="cancel">Cancelar</button>
+            <button class="confirm" id="confirm-delete-user" value="confirm">Eliminar</button>
+        </div>
+    </div>
+</dialog>
+<dialog id="edit-role-modal">
+    <form class="content">
+        <p class="modal-title">Cambiar rol</p>
+        <label for="role">Rol</label>
+        <select name="role" id="role">
+            <option value="admin">Administrador</option>
+            <option value="user">Usuario</option>
+        </select>
+        <div class="buttons">
+            <button class="cancel" id="cancel-edit-role" value="cancel">Cancelar</button>
+            <button class="confirm" id="confirm-edit-role" value="confirm">Cambiar</button>
+        </div>
+    </form>
+</dialog>
 {% endblock %}

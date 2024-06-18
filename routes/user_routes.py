@@ -233,10 +233,8 @@ def users_dashboard():
             return redirect('/')
         
         current_user_role = session['rol_id']
-        print("Current user role:", current_user_role)
         
         if current_user_role != "ADMINISTRADOR":
-            print("User is not an admin.")
             return redirect('/')
         
         sql_all_users = "SELECT id, nombre, apellidos, correo, sexo, rol_id FROM usuarios"
@@ -259,3 +257,51 @@ def users_dashboard():
         search_text = request.form['search_text']
         return redirect(f'/busqueda/{search_text}')
 
+@user_blueprint.route('/delete-user/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    if 'id' not in session:
+        return redirect('/')
+    
+    if request.method == 'DELETE':
+        current_user_role = session['rol_id']
+        
+        if current_user_role != "ADMINISTRADOR":
+            return jsonify({'error': 'Current user does not have enough permission to perform this action.'}), 403
+        
+        sql = f"DELETE FROM usuarios WHERE id={id}"
+        res = editarimg(sql)
+        
+        if res == 0:
+            return jsonify({'error': 'User could not be deleted.'}), 400
+        else:
+            return jsonify({'message': 'User successfully deleted.'}), 200
+        
+
+@user_blueprint.route('/edit-user-role/<int:id>', methods=['PUT'])
+def edit_user_role(id):
+    if 'id' not in session:
+        return redirect('/')
+    
+    if request.method == 'PUT':
+        current_user_role = session['rol_id']
+        
+        if current_user_role != "ADMINISTRADOR":
+            return jsonify({'error': 'Current user does not have enough permission to perform this action.'}), 403
+        
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({'error': 'No data provided.'}), 400
+        
+        new_role = escape(data.get('new_role', ''))
+        
+        if new_role not in ['ADMINISTRADOR', 'USUARIO']:
+            return jsonify({'error': 'Invalid role provided.'}), 400
+        
+        sql = f"UPDATE usuarios SET rol_id='{new_role}' WHERE id={id}"
+        res = editarimg(sql)
+        
+        if res == 0:
+            return jsonify({'error': 'User role could not be updated.'}), 400
+        else:
+            return jsonify({'message': 'User role successfully updated.'}), 200

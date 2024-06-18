@@ -63,24 +63,90 @@ table tbody tr td {
   border-radius: 5px;
 }
 
-.table-hover tbody tr td:last-child .btn-danger {
+.table-hover tbody tr td:last-child .trigger-delete-user {
   color: #c74747e8;
   background-color: #fff;
   border: 1px solid #c74747e8;
 }
 
-.table-hover tbody tr td:last-child .btn-danger:hover {
+.table-hover tbody tr td:last-child .trigger-delete-user:hover {
   color: #fff;
   background-color: #c74747e8;
 }
 
-.table-hover tbody tr td:last-child .edit-role {
+.table-hover tbody tr td:last-child .trigger-delete-role {
   color: #376ad6;
   background-color: #fff;
   border: 1px solid #376ad6;
 }
 
-.table-hover tbody tr td:last-child .edit-role:hover {
+.table-hover tbody tr td:last-child .trigger-delete-role:hover {
   color: #fff;
   background-color: #376ad6;
+}
+
+/* Delete and Edit role modals */
+
+#edit-role-modal,
+#delete-user-modal {
+  border-radius: 10px;
+  padding: 2rem
+}
+
+#delete-user-modal .content .modal-title,
+#edit-role-modal .content .modal-title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+#delete-user-modal .content .modal-subtitle {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+#delete-user-modal .content .buttons,
+#edit-role-modal .content .buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+#delete-user-modal .content .buttons button,
+#edit-role-modal .content .buttons button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+#delete-user-modal .content .buttons button.cancel,
+#edit-role-modal .content .buttons button.cancel {
+  color: #fff;
+  background-color: #c74747e8;
+  border: 1px solid #c74747e8;
+}
+
+#delete-user-modal .content .buttons button.cancel:hover,
+#edit-role-modal .content .buttons button.cancel:hover {
+  color: #c74747e8;
+  background-color: #fff;
+}
+
+#delete-user-modal .content .buttons button.confirm,
+#edit-role-modal .content .buttons button.confirm {
+  color: #fff;
+  background-color: #376ad6;
+  border: 1px solid #376ad6;
+}
+
+#delete-user-modal .content .buttons button.confirm:hover,
+#edit-role-modal .content .buttons button.confirm:hover {
+  color: #376ad6;
+  background-color: #fff;
+}
+
+#edit-role-modal::backdrop,
+#delete-user-modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
 }
