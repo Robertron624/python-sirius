@@ -110,7 +110,7 @@ def home():
             return redirect(f'/busqueda/{search_text}')
 
 
-@user_blueprint.route('/editar-usuario/', methods=['POST', 'GET'])
+@user_blueprint.route('/editar-usuario/', methods=['PUT', 'GET'])
 def edit_user():
     if 'id' not in session:
         return redirect('/')
@@ -119,13 +119,18 @@ def edit_user():
         frm_search = Search()
         if request.method == 'GET':
             return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', form_search=frm_search, include_header=True)
-        else:
-            # Recuperar los datos del formulario
-            first_name = escape(request.form['edit_first_name']).capitalize()
-            last_name = escape(request.form['edit_last_name']).capitalize()
-            password = escape(request.form['edit_password']).strip()
-            birthdate_str = escape(request.form['edit_birthdate'])
-            sex = escape(frm_edit_user.edit_sex.data)
+        elif request.method == 'PUT':
+            
+            request_data = request.get_json()
+            
+            user_id = session['id']
+            
+            # Get all the data from the form
+            first_name = escape(request_data.get('edit_first_name', '')).capitalize()
+            last_name = escape(request_data.get('edit_last_name', '')).capitalize()
+            password = escape(request_data.get('edit_password', '')).strip()
+            birthdate_str = escape(request_data.get('edit_birthdate', ''))
+            sex = escape(request_data.get('edit_sex', ''))
             
             birthdate_object = datetime.strptime(birthdate_str, '%Y-%m-%d')
             is_new_adult = is_adult(birthdate_object)
@@ -139,40 +144,38 @@ def edit_user():
             elif sex == "P":
                 urlava = "avatares/otro.png"
 
-            swerror = False
             if first_name == None or len(first_name) == 0:
-                flash('ERROR: Debe suministrar un nombre.')
-                swerror = True
+                return jsonify({'error': 'You must provide a first name.', 'error-type': 'invalid-first-name'}), 400
             if last_name == None or len(last_name) == 0:
-                flash('ERROR: Debe suministrar sus apellidos.')
-                swerror = True
+                return jsonify({'error': 'You must provide a last name.', 'error-type': 'invalid-last-name'}), 400
             if password == None or len(password) == 0 or not pass_valido(password):
-                flash('ERROR: Debe suministrar una contraseña valida.')
-                swerror = True
+                return jsonify({'error': 'You must provide a valid password.', 'error-type': 'invalid-password'}), 400
             if birthdate_str == None or len(birthdate_str) == 0 or is_new_adult == False:
-                flash('ERROR: Debes tener +18 para registrarte.')
-                swerror = True
+                return jsonify({'error': 'You must provide a valid birthdate.', 'error-type': 'invalid birthdate'}), 400
+            
             pwd = escape(frm_edit_user.edit_password.data.strip())
             sql = f"SELECT contraseña FROM usuarios WHERE correo='{email}'"
             res2 = seleccion(sql)
             cbd = res2[0][0]
 
             if check_password_hash(cbd, pwd) == False:
-                flash('ERROR: La contraseña no coincide.')
-                swerror = True
-            if not swerror:
-                sql = f"UPDATE usuarios SET nombre='{first_name}',apellidos='{last_name}',fnac='{birthdate_object}',sexo='{sex}',urlavatar='{urlava}' WHERE correo='{email}'"
-                res = editarimg(sql)
-                # Proceso los resultados
-                if res == 0:
-                    flash(
-                        'ERROR: No se pudieron registrar los datos, intente nuevamente')
-
-                    return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario')
-                else:
-                    flash('Cambios efectuados correctamente.')
-
-            return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario')
+                print("The password is incorrect.")
+                return jsonify({'error': 'The password is incorrect.', 'error_type': 'incorrect_password'}), 400
+            
+            sql = f"UPDATE usuarios SET nombre='{first_name}',apellidos='{last_name}',fnac='{birthdate_object}',sexo='{sex}',urlavatar='{urlava}' WHERE id='{user_id}'"
+            res = editarimg(sql)
+            # Proceso los resultados
+            if res == 0:
+                    print("Error updating user data.", res)
+                    return jsonify({'error': 'Could not update user data.'}), 400
+                
+            
+            # Update the session data
+            session['nom'] = first_name
+            session['ape'] = last_name
+            session['urlava'] = urlava
+             
+            return jsonify({'message': 'User updated successfully'}), 200
         
 @user_blueprint.route('/cambiar-contraseña/', methods=['PUT', 'GET'])
 def change_password():

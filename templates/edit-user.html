@@ -1,18 +1,18 @@
 {% extends 'base.html' %} {% block css %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/edit-user.css' ) }}" />
-{% endblock %} 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit-user.css' ) }}" />
+{% endblock %}
 
 {% block js %}
 {{ super() }}
-    <script defer src="{{ url_for('static', filename='/js/editUser.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/editUser.js') }}"></script>
 {% endblock %}
 
 {% block contenido %}
-<form class="edit-user" name="edit-user" id="edit-user" action="/editar-usuario/" method="POST">
+<form class="edit-user" name="edit-user" id="edit-user">
     <h1>Editar Usuario</h1>
 
-    <div class="name-lastname">
+    <div class="name-last-name">
         {{form_edit_user.edit_first_name(placeholder="Nombres")}} 
         {{form_edit_user.edit_last_name(placeholder="Apellidos")}}
     </div>
@@ -41,3 +41,4 @@
 </form>
 <a class="go-back" href="/perfil/">Volver</a>
 {% endblock %}
+
