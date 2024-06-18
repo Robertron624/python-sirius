@@ -107,8 +107,4 @@ class Change_password(FlaskForm):
         min=5, max=40, message='Longitud fuera de rango'), InputRequired(message='Clave es requerido')])
     submit_new_password = SubmitField('Cambiar')
 
-class Roles(FlaskForm):
-    btn_admin = SubmitField('Administrador')
-    btn_user = SubmitField('Usuario')
-
 

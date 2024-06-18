@@ -1,7 +1,7 @@
-from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
-from db import seleccion, accion, editarimg
+from flask import Blueprint, redirect, render_template, request, session, jsonify
+from db import seleccion, editarimg
 from utilidades import format_datetime
-from formularios import Edit_user, Search, Change_password, Message
+from formularios import Edit_user, Search, Change_password
 from utilidades import pass_valido, is_adult
 from markupsafe import escape
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -223,7 +223,39 @@ def change_password():
                 session.clear()
                 return jsonify({'message': 'Contraseña cambiada correctamente.'}), 200
 
-            
-  
-                
+
+@user_blueprint.route('/admin-dashboard', methods=['GET', 'POST'])
+def users_dashboard():
+    frm_search = Search()
+    if request.method == 'GET':
+        if 'id' not in session:
+            print("User is not logged in.")
+            return redirect('/')
         
+        current_user_role = session['rol_id']
+        print("Current user role:", current_user_role)
+        
+        if current_user_role != "ADMINISTRADOR":
+            print("User is not an admin.")
+            return redirect('/')
+        
+        sql_all_users = "SELECT id, nombre, apellidos, correo, sexo, rol_id FROM usuarios"
+        res_all_users = seleccion(sql_all_users)
+        
+        if not res_all_users:
+            return render_template('404.html'), 404
+        
+        formatted_results = [{
+            'id': row[0],
+            'first_name': row[1],
+            'last_name': row[2],
+            'email': row[3],
+            'sex': row[4],
+            'role': row[5]
+        } for row in res_all_users]
+        
+        return render_template('admin-dashboard.html', form_search=frm_search, users_list=formatted_results)
+    elif request.method == 'POST' and 'search_text' in request.form:
+        search_text = request.form['search_text']
+        return redirect(f'/busqueda/{search_text}')
+

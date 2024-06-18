@@ -1,133 +1,86 @@
-@font-face {
-  font-family: dark;
-  src: url(../img/Dark.otf);
-}
-* {
-  margin: 0;
-  padding: 0;
-  text-decoration: none;
-  list-style: none;
-  box-sizing: border-box;
-}
-body {
-  position: absolute;
-  margin: 0;
-  background: url(../img/fondo.png) /*#2A2740*/;
-  background-size: cover;
-  font-family: sans-serif;
-  height: 100vh;
-  width: 100vw;
-  overflow: auto;
-  resize: none;
-}
-
-.enlace {
-  position: absolute;
-  padding: 3px;
-}
-
-.checkbtn {
-  color: red;
-  float: right;
-  line-height: 60px;
-  margin: 5px 5px;
-  cursor: pointer;
-}
-#check {
-  display: none;
-}
-
-#roles {
-  top: 3%;
-  width: 450px;
-  height: 450px;
-  background: #342a7d;
-  color: white;
-  padding: 70px 30px;
-  border-radius: 5%;
-  box-shadow: 3px 3px 50px 7px black;
-  position: relative;
-  left: 36%;
-  top: 75px;
-}
-
-#roles label {
-  font-family: sans-serif;
-  color: white;
-  font-size: 25px;
-  font-weight: bold;
-  position: absolute;
-  text-align: left;
-  top: 3%;
-  left: 5%;
-}
-
-
-#logo {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    position: absolute;
-}
-.usrform {
-  font-weight: bold;
-  position: relative;
-  left: 18%;
-}
-.rolact {
-  font-weight: bold;
-  position: absolute;
-  top: 20%;
-  left: 22%;
-  width: 40vw;
-}
-
-
-h4 {
-  font-family: sans-serif;
-  font-size: 18px;
-  color: white;
-  position: absolute;
-  top: 35%;
-  left: 7%;
-}
-#radio .user,
-#radio .admin {
-  padding: 5px 5px;
-  display: inline-block;
-  position: relative;
-  font-size: 1em;
-  border-radius: 3px;
-  cursor: pointer;
-  left: 23%;
-  top: 120px;
-  color: white;
-}
-#radio .user:hover,
-#radio .admin:hover {
+section h1 {
+  text-align: center;
+  margin-bottom: 4rem;
+  color: #fff;
   background: rgba(0, 0, 0, 0.5);
-}
-#radio input[type="radio"]:checked + label {
-  content: "";
-  color: gold;
+  font-size: 2.5rem;
 }
 
-#roles input[type="submit"] {
-    width: 200px;
-    border: none;
-    outline: none;
-    height: 40px;
-    background: gold;
-    color: black;
-    font-size: 19px;
-    border-radius: 20px;
-    font-weight: bold;
+section .table-container {
+  margin-top: 2rem;
+  background-color: #376ad6;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
+table thead tr th {
+  text-align: left;
+  border-bottom: 2px solid #fff;
+  padding: 1rem;
+  font-size: 1.25rem;
+}
 
-.registro input[type="submit"]:hover {
-  color: black;
-  background: #c48319;
-  cursor: pointer;
+table thead tr th:last-child {
+  text-align: center;
+}
+
+table tbody {
+  margin-top: 2rem;
+}
+
+table tbody tr td {
+  padding: 1rem;
+}
+
+.table .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.table .table-striped tbody tr:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.table-hover tbody tr td:last-child {
+  display: flex;
+  gap: .875rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-hover tbody tr td:last-child button {
+  padding: 0.2rem .25rem;
+  max-width: 50%;
+  border-radius: 5px;
+}
+
+.table-hover tbody tr td:last-child .btn-danger {
+  color: #c74747e8;
+  background-color: #fff;
+  border: 1px solid #c74747e8;
+}
+
+.table-hover tbody tr td:last-child .btn-danger:hover {
+  color: #fff;
+  background-color: #c74747e8;
+}
+
+.table-hover tbody tr td:last-child .edit-role {
+  color: #376ad6;
+  background-color: #fff;
+  border: 1px solid #376ad6;
+}
+
+.table-hover tbody tr td:last-child .edit-role:hover {
+  color: #fff;
+  background-color: #376ad6;
 }

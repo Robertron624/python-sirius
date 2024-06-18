@@ -49,7 +49,7 @@ def login():
                 session['con'] = login_password
                 session['fna'] = res[0][3]
                 session['sex'] = res[0][5]
-                session['rolid'] = res[0][6]
+                session['rol_id'] = res[0][6]
                 session['urlava'] = res[0][7]
                 
                 return jsonify({'success': True}), 200
@@ -58,7 +58,7 @@ def login():
                 return jsonify({'error': 'Usuario o contraseña no valido'}), 401
             
 @auth_blueprint.route('/registro/', methods=['POST', 'GET'])
-def registro():
+def sign_up():
     frm_register = Signup()
     if request.method == 'GET':
         return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')

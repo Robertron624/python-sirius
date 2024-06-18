@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, redirect, render_template, request, session, flash, jsonify
+from flask import Blueprint, redirect, render_template, request, session, jsonify
 from db import eliminarimg, accion, seleccion, editarimg
 from werkzeug.utils import secure_filename
 from markupsafe import escape

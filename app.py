@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template, request, session, flash, redirect, jsonify
 
-from formularios import Search, Roles, Help
-from db import editarimg, seleccion
+from formularios import Search, Help
+from db import seleccion
 from utilidades import escape_html
 
 from routes.user_routes import user_blueprint
@@ -43,9 +43,6 @@ def search(search_text=None):
                 users_found = [dict(id=user[0], name=user[1], last_name=user[2], url_avatar=user[3]) for user in response_user_search]
             else:
                 users_found = []
-                
-            print("USERS FOUND: ", users_found)
-            
 
             # Search for the text in the post
             post_text_search = f"%{str(sanitized_search_text).lower()}%"
@@ -83,55 +80,6 @@ def help():
             
             return jsonify({"message": "Ayuda enviada correctamente"}), 200
     return render_template("help.html", form=frm, titulo="Ayuda")
-
-@app.route('/roles/<int:iduser>/', methods=['GET', 'POST'])
-def asigroles(iduser=None):
-    frm = Roles()
-    frm_search = Search()
-    if request.method == 'GET':
-        idbus = iduser
-        sql = f"SELECT nombre, apellidos, rol_id FROM usuarios WHERE id='{idbus}'"
-        res = seleccion(sql)
-        nombre = res[0][0]
-        apellido = res[0][1]
-        rol = res[0][2]
-        sex = session["urlava"]
-
-        return render_template('roles.html', form=frm, nom=nombre, ape=apellido, rol=rol, ava=sex, form_search=frm_search, rolLog=session['rolid'])
-    elif request.method == 'POST' and 'btn_admin' in request.form:
-        idbus = iduser
-        sql = f"SELECT nombre, apellidos, rol_id FROM usuarios WHERE id='{idbus}'"
-        res = seleccion(sql)
-        sex = session["urlava"]
-        nombre = res[0][0]
-        apellido = res[0][1]
-        rol = res[0][2]
-        sql2 = f"UPDATE usuarios SET rol_id='ADMINISTRADOR' WHERE id='{idbus}'"
-        res2 = editarimg(sql2)
-
-        if res == 0:
-            flash('Error al cambiar de rol')
-            return render_template('roles.html', form=frm, nom=nombre, ava=sex, ape=apellido, rol=rol, rolLog=session['rolid'])
-        else:
-            return redirect(f'/roles/{idbus}')
-    elif request.method == 'POST' and 'btn_user' in request.form:
-        idbus = iduser
-        sql = f"SELECT nombre, apellidos, rol_id FROM usuarios WHERE id='{idbus}'"
-        res = seleccion(sql)
-        sex = session["urlava"]
-        nombre = res[0][0]
-        apellido = res[0][1]
-        rol = res[0][2]
-        sql2 = f"UPDATE usuarios SET rol_id='USUARIO' WHERE id='{idbus}'"
-        res2 = editarimg(sql2)
-        if res2 == 0:
-
-            return render_template('roles.html', form=frm, nom=nombre, ava=sex, ape=apellido, rol=rol)
-        else:
-            return redirect(f'/roles/{idbus}')
-    elif request.method == 'POST' and 'search_text' in request.form:
-        search_text = request.form['search_text']
-        return redirect(f'/busqueda/{search_text}')
 
 
 if __name__ == '__main__':
