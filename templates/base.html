@@ -247,6 +247,13 @@
               </svg>
             </a>
           </li>
+          {% if session['rol_id'] == 'ADMINISTRADOR' %}
+          <li>
+            <a href="/admin-dashboard">
+              Panel de administración
+            </a>
+          </li>
+        {% endif %}
           <li>
             <a href="/salir/" title="Cerrar sesión">
               <svg
@@ -274,13 +281,6 @@
               </svg>
             </a>
           </li>
-          {% if session['rol_id'] == 'ADMINISTRADOR' %}
-            <li>
-              <a href="/admin-dashboard">
-                Panel de administración
-              </a>
-            </li>
-          {% endif %}
         </ul>
       </nav>
       <form class="search-area" method="POST">

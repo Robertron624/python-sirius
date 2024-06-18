@@ -74,13 +74,13 @@ table tbody tr td {
   background-color: #c74747e8;
 }
 
-.table-hover tbody tr td:last-child .trigger-delete-role {
+.table-hover tbody tr td:last-child .trigger-edit-role {
   color: #376ad6;
   background-color: #fff;
   border: 1px solid #376ad6;
 }
 
-.table-hover tbody tr td:last-child .trigger-delete-role:hover {
+.table-hover tbody tr td:last-child .trigger-edit-role:hover {
   color: #fff;
   background-color: #376ad6;
 }
@@ -149,4 +149,20 @@ table tbody tr td {
 #edit-role-modal::backdrop,
 #delete-user-modal::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+#edit-role-modal .content .form-group {
+  margin-bottom: 1rem;
+}
+
+#edit-role-modal .content .form-group label {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+#edit-role-modal .content .form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 5px;
+  margin-top: .5rem;
 }

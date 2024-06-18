@@ -252,7 +252,7 @@ def users_dashboard():
             'role': row[5]
         } for row in res_all_users]
         
-        return render_template('admin-dashboard.html', form_search=frm_search, users_list=formatted_results)
+        return render_template('admin-dashboard.html', form_search=frm_search, users_list=formatted_results, include_header=True)
     elif request.method == 'POST' and 'search_text' in request.form:
         search_text = request.form['search_text']
         return redirect(f'/busqueda/{search_text}')
@@ -293,7 +293,7 @@ def edit_user_role(id):
         if not data:
             return jsonify({'error': 'No data provided.'}), 400
         
-        new_role = escape(data.get('new_role', ''))
+        new_role = escape(data.get('new-role', ''))
         
         if new_role not in ['ADMINISTRADOR', 'USUARIO']:
             return jsonify({'error': 'Invalid role provided.'}), 400
