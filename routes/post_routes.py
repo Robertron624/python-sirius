@@ -77,7 +77,7 @@ def post_page(id=None):
                                             'urlavatar': row[6] } for row in res3]
             html_title = f"Publicación de {post_data['nombre']} {post_data['apellidos']}"
 
-            return render_template('post-page.html', titulo=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_search=frm_search, form_comentar=frm_comentar, commentList=formatted_comments_data, include_header=True)
+            return render_template('post-page.html', title=html_title, postInfo=post_data, ava=urlava, owner=img_owner, id_img=id_img, form_search=frm_search, form_comentar=frm_comentar, commentList=formatted_comments_data, include_header=True)
         elif request.method == 'POST' and 'search_text' in request.form:
             search_text = request.form['search_text'].capitalize()
             return redirect(f'/busqueda/{search_text}')
@@ -91,7 +91,7 @@ def new_post():
         frm_search = Search()
         if request.method == 'GET':
             sex = session["urlava"]
-            return render_template('new-post.html', titulo='Subir publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
+            return render_template('new-post.html', title='Nueva publicación', form_new_post=frm_new_post, ava=sex, form_search=frm_search, include_header=True)
         elif request.method == 'POST':
 
             if frm_new_post.validate_on_submit():
@@ -153,7 +153,7 @@ def edit_post(id=None):
             if len(res) != 0:
                 frm_edit_post.edited_text.data = res[0][0]
             
-            return render_template('edit-post.html', titulo='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, form_search=frm_search, include_header=True)
+            return render_template('edit-post.html', title='Editar publicación', form_edit_post=frm_edit_post, ava=sex, id_img=idImg, form_search=frm_search, include_header=True)
         elif request.method == 'POST' and 'search_text' in request.form:
             search_text = request.form['search_text'].capitalize()
             return redirect(f'/busqueda/{search_text}')

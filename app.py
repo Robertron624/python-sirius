@@ -79,7 +79,7 @@ def help():
             print(f"Ayuda enviada por {help_username} con el mensaje: {help_doubt}")
             
             return jsonify({"message": "Ayuda enviada correctamente"}), 200
-    return render_template("help.html", form=frm, titulo="Ayuda")
+    return render_template("help.html", form=frm, title="Ayuda")
 
 
 if __name__ == '__main__':

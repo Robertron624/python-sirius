@@ -59,7 +59,7 @@ def profile(id=None):
             'url': row[6]
         } for row in res2]
 
-        return render_template('profile.html', titulo='Perfil', postList=formatted_results, form_search=frm_search, include_header=True, is_this_third_party_profile=True, user_personal_info=user_personal_info_formatted)
+        return render_template('profile.html', title='Perfil', postList=formatted_results, form_search=frm_search, include_header=True, is_this_third_party_profile=True, user_personal_info=user_personal_info_formatted)
     
     else:
         # Mostrar perfil del usuario logueado
@@ -82,7 +82,7 @@ def profile(id=None):
             'url': row[6]
         } for row in res]
 
-        return render_template('profile.html', titulo='Mi perfil', ava=sex, form_search=frm_search, postList=formatted_results, include_header=True, is_this_third_party_profile=False)
+        return render_template('profile.html', title='Mi perfil', ava=sex, form_search=frm_search, postList=formatted_results, include_header=True, is_this_third_party_profile=False)
     
 @user_blueprint.route('/feed/', methods=['POST', 'GET'])
 def home():
@@ -104,7 +104,7 @@ def home():
                        'sexo': row[7], 
                        'urlavatar': row[8] } for row in resget]
 
-            return render_template('feed.html', titulo='Feed', posts_list=formatted_results, form_search=frm_search, include_header=True)
+            return render_template('feed.html', title='Feed', posts_list=formatted_results, form_search=frm_search, include_header=True)
         else:
             search_text = request.form['search_text'].capitalize()
             return redirect(f'/busqueda/{search_text}')
@@ -118,7 +118,7 @@ def edit_user():
         frm_edit_user = Edit_user()
         frm_search = Search()
         if request.method == 'GET':
-            return render_template('edit-user.html', form_edit_user=frm_edit_user, titulo='Editar usuario', form_search=frm_search, include_header=True)
+            return render_template('edit-user.html', form_edit_user=frm_edit_user, title='Editar usuario', form_search=frm_search, include_header=True)
         elif request.method == 'PUT':
             
             request_data = request.get_json()
@@ -185,7 +185,7 @@ def change_password():
         frm_change_password = Change_password()
         frm_search = Search()
         if request.method == 'GET':
-            return render_template('change-password.html', form_change_password=frm_change_password, form_search=frm_search, titulo='Cambiar contraseña', include_header=True)
+            return render_template('change-password.html', form_change_password=frm_change_password, form_search=frm_search, title='Cambiar contraseña', include_header=True)
         else:
             
             data = request.get_json()
@@ -252,7 +252,7 @@ def users_dashboard():
             'role': row[5]
         } for row in res_all_users]
         
-        return render_template('admin-dashboard.html', form_search=frm_search, users_list=formatted_results, include_header=True)
+        return render_template('admin-dashboard.html', form_search=frm_search, users_list=formatted_results, include_header=True, title="Dashboard de administrador")
     elif request.method == 'POST' and 'search_text' in request.form:
         search_text = request.form['search_text']
         return redirect(f'/busqueda/{search_text}')

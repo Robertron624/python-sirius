@@ -21,7 +21,7 @@ def login():
         if 'id' in session:
             return redirect('/feed/')
         else:
-            return render_template('login.html', form_login=frm_login, titulo='Login de usuario')
+            return render_template('login.html', form_login=frm_login, title='Login de usuario')
     else:
         # Recuperar datos del formulario
         login_user = escape(frm_login.login_user.data.strip()).lower()
@@ -61,7 +61,7 @@ def login():
 def sign_up():
     frm_register = Signup()
     if request.method == 'GET':
-        return render_template('signup.html', form_register=frm_register, titulo='Registro de usuario')
+        return render_template('signup.html', form_register=frm_register, title='Registro de usuario')
     else:
         
         data = request.get_json()
@@ -142,4 +142,4 @@ def salir():
 @auth_blueprint.route('/recuperar-contraseña/', methods=['POST', 'GET'])
 def password_recovery():
     frm_recover_password = Password_Recovery()
-    return render_template('password-recovery.html', form_recover_password=frm_recover_password, titulo='Recuperar contraseña')
+    return render_template('password-recovery.html', form_recover_password=frm_recover_password, title='Recuperar contraseña')

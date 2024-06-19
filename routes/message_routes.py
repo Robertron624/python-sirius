@@ -57,7 +57,7 @@ def private_messages(id=None):
                 } for row in response]
                 
             return render_template('private-messages.html',
-                                   form_search=frm_search, message_list=message_list, titulo='Mensajes privados', include_header=True)
+                                   form_search=frm_search, message_list=message_list, title='Mensajes privados', include_header=True)
         else:
             search_text = request.form['search_text'].capitalize()
             return redirect(f'/busqueda/{search_text}')

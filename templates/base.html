@@ -4,13 +4,42 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Python Regius es una red social para programadores y desarrolladores de software."
+    />
+    <meta
+      name="keywords"
+      content="Python, Django, Flask, programación, desarrollo de software, red social, desarrollo web, API, REST, GraphQL"
+    />
+
+    <meta name="author" content="Python Regius Team" />
+
+    <meta property="og:title" content="{{title}} | Python Regius" />
+    <meta
+      property="og:description"
+      content="Python Regius es una red social para programadores y desarrolladores de software."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pythonregius.com" />
+    <meta property="og:image" content="{{ url_for('static', filename='logo.ico') }}" />
+    <meta property="og:site_name" content="Python Regius" />
+    <meta property="og:locale" content="es_ES" />
+
+    <meta name="robots" content="index, follow" />
+
+    
+    <link rel="canonical" href="https://pythonregius.com" />
+
+    <title>{{title}} | Python Regius</title>
+
+
     {% block css %}
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/base.css' ) }}"
     />
     {% endblock %}
-    <title>{{titulo}}</title>
 
     <link rel="icon" href="{{ url_for('static', filename='logo.ico') }}" />
   </head>
