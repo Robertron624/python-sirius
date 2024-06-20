@@ -17,7 +17,8 @@ This is a full-stack web application (a social network) created with the python 
 This is a social network in which users can create post and submit images with them.
 
 ## Screenshot
-- In Progress
+
+![screenshot](https://github.com/Robertron624/python-sirius/assets/72587880/f9fe7b66-c121-427b-b44e-b0d4b230876f)
 
 ## Live Demo
 
