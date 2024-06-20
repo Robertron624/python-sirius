@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, request, session, flash, redirect, jsonify
+from flask import Flask, render_template, request, session, redirect, jsonify, url_for, make_response
+from datetime import datetime, timedelta
 
 from formularios import Search, Help
 from db import seleccion
@@ -80,6 +81,23 @@ def help():
             
             return jsonify({"message": "Ayuda enviada correctamente"}), 200
     return render_template("help.html", form=frm, title="Ayuda")
+
+@app.route('/sitemap.xml', methods=['GET'])
+def sitemap():
+    pages = []
+    ten_days_ago = (datetime.now() - timedelta(days=10)).date().isoformat()
+    
+    for rule in app.url_map.iter_rules():
+        if "GET" in rule.methods and rule.defaults is not None and len(rule.defaults) >= len(rule.arguments):
+            pages.append(
+                [url_for(rule.endpoint, **(rule.defaults or {})), ten_days_ago]
+            )
+    
+    sitemap_xml = render_template('sitemap_template.xml', pages=pages)
+    response = make_response(sitemap_xml)
+    response.headers["Content-Type"] = "application/xml"
+    
+    return response
 
 
 if __name__ == '__main__':
